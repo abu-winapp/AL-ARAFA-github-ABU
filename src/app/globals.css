@@ -1,0 +1,683 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/**
+ * Al-Arafa Restaurant - Global Styles
+ * Brand colors matching mobile app design system
+ */
+
+@layer base {
+     :root {
+        /* Brand Colors */
+        --color-primary: #9f0008;
+        --color-primary-dark: #A40301;
+        --color-primary-light: #c4000a;
+        --color-secondary: #FFC016;
+        --color-secondary-light: #FFD666;
+        /* Background */
+        --background: 0 0% 100%;
+        --background-gray: #F5F7FA;
+        --background-dark: #242424;
+        --foreground: 224 71.4% 4.1%;
+        /* Text Colors */
+        --text-primary: #242424;
+        --text-secondary: #4a5568;
+        --text-tertiary: #718096;
+        --text-light: #a0aec0;
+        --text-white: #ffffff;
+        /* Semantic Colors */
+        --color-success: #48bb78;
+        --color-success-light: #9ae6b4;
+        --color-error: #f56565;
+        --color-error-light: #fc8181;
+        --color-warning: #ed8936;
+        --color-warning-light: #fbd38d;
+        --color-info: #4299e1;
+        --color-info-light: #90cdf4;
+        /* Border Colors */
+        --border-light: #e2e8f0;
+        --border-medium: #cbd5e0;
+        --border-dark: #a0aec0;
+        /* Order Status Colors */
+        --status-pending: #ed8936;
+        --status-confirmed: #4299e1;
+        --status-preparing: #805ad5;
+        --status-ready: #38b2ac;
+        --status-out-for-delivery: #3182ce;
+        --status-delivered: #48bb78;
+        --status-cancelled: #f56565;
+        /* shadcn/ui CSS Variables */
+        --card: 0 0% 100%;
+        --card-foreground: 224 71.4% 4.1%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 224 71.4% 4.1%;
+        --primary: 355 100% 31.2%;
+        --primary-foreground: 210 20% 98%;
+        --secondary: 45 100% 55%;
+        --secondary-foreground: 220 8.9% 13.9%;
+        --muted: 220 14.3% 95.9%;
+        --muted-foreground: 220 8.9% 46.1%;
+        --accent: 220 14.3% 95.9%;
+        --accent-foreground: 220 8.9% 46.1%;
+        --destructive: 0 84.2% 60.2%;
+        --destructive-foreground: 210 20% 98%;
+        --border: 220 13% 91%;
+        --input: 220 13% 91%;
+        --ring: 355 100% 31.2%;
+        --radius: 0.5rem;
+        --chart-1: 12 76% 61%;
+        --chart-2: 173 58% 39%;
+        --chart-3: 197 37% 24%;
+        --chart-4: 43 74% 66%;
+        --chart-5: 27 87% 67%;
+    }
+    .dark {
+        --background: 224 71.4% 4.1%;
+        --foreground: 210 20% 98%;
+        --card: 224 71.4% 4.1%;
+        --card-foreground: 210 20% 98%;
+        --popover: 224 71.4% 4.1%;
+        --popover-foreground: 210 20% 98%;
+        --primary: 355 100% 31.2%;
+        --primary-foreground: 210 20% 98%;
+        --secondary: 215 27.9% 16.9%;
+        --secondary-foreground: 210 20% 98%;
+        --muted: 215 27.9% 16.9%;
+        --muted-foreground: 217.9 10.6% 64.9%;
+        --accent: 215 27.9% 16.9%;
+        --accent-foreground: 210 20% 98%;
+        --destructive: 0 62.8% 30.6%;
+        --destructive-foreground: 210 20% 98%;
+        --border: 215 27.9% 16.9%;
+        --input: 215 27.9% 16.9%;
+        --ring: 355 100% 31.2%;
+        --chart-1: 220 70% 50%;
+        --chart-2: 160 60% 45%;
+        --chart-3: 30 80% 55%;
+        --chart-4: 280 65% 60%;
+        --chart-5: 340 75% 55%;
+    }
+    /* Base Styles */
+}
+
+
+/* home page */
+
+.home-page {
+    font-family: "Brandon Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+
+/* Headings
+   Wrapped in :where() so these act as DEFAULTS only (0 specificity).
+   Any Tailwind utility class (e.g. text-[...], leading-[...], tracking-[...])
+   used directly on an element will now win, instead of being silently
+   overridden by this class+tag selector (which previously had higher
+   specificity than a single utility class). */
+
+.home-page :where(h1, h2, h3, h4, h5, h6) {
+    font-family: "Montserrat Variable", Montserrat, sans-serif;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: -0.035em;
+}
+
+
+/* Hero Heading (default only, overridable by utility classes) */
+
+.home-page :where(h1) {
+    font-size: clamp(2.2rem, 4vw, 3.8rem);
+}
+
+
+/* Section Headings (default only, overridable by utility classes) */
+
+.home-page :where(h2) {
+    font-size: clamp(1.9rem, 2.8vw, 2.5rem);
+}
+
+
+/* Body / Buttons / Links */
+
+.home-page :where(p, button, a) {
+    font-family: "Brandon Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+
+/* Body Text (default only, overridable by utility classes) */
+
+.home-page :where(p) {
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.65;
+}
+
+
+/* Small Labels / Eyebrows — custom classes, safe to keep as-is */
+
+.home-page .home-label,
+.home-page .eyebrow,
+.home-page .section-label {
+    font-family: "Brandon Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.4;
+    letter-spacing: 0.18em;
+}
+
+
+/* NOTE: the old ".home-page .uppercase { font-size: 11px; letter-spacing: 0.12em; }"
+   rule was removed. It was hijacking Tailwind's own `uppercase` utility class
+   (used for text-transform on the eyebrow, the hero <h1>, and buttons) and
+   force-shrinking every element that had `uppercase` in its className to 11px
+   font-size — this was the main cause of the hero left-content sizing bug.
+   If you need that 11px/0.12em treatment for a specific label, give that
+   element its own class (e.g. `home-uppercase-label`) instead of reusing
+   Tailwind's `uppercase`. */
+
+
+/* Base Styles */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+}
+
+body {
+    background: var(--background);
+    color: var(--foreground);
+    font-family: "Libre Franklin Variable", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+
+/* 
+   TYPOGRAPHY SYSTEM
+    */
+
+
+/* Main headings */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: "Montserrat Variable", Montserrat, sans-serif;
+    color: var(--text-primary);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+}
+
+
+/* Main page / section heading */
+
+h1,
+h2 {
+    font-size: 36px;
+}
+
+
+/* Supporting headings */
+
+h3 {
+    font-size: 30px;
+}
+
+h4 {
+    font-size: 26px;
+}
+
+h5 {
+    font-size: 22px;
+}
+
+h6 {
+    font-size: 18px;
+}
+
+
+/* Body text */
+
+p {
+    font-family: "Libre Franklin Variable", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: var(--text-secondary);
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1.65;
+    margin-bottom: 1rem;
+}
+
+
+/* Subheadings / labels / eyebrow text */
+
+.subheading,
+.eyebrow,
+.section-label {
+    font-family: "Libre Franklin Variable", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: 0.08em;
+}
+
+
+/* Small text */
+
+.text-small {
+    font-family: "Libre Franklin Variable", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+
+/* Buttons */
+
+button {
+    cursor: pointer;
+    font-family: "Libre Franklin Variable", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    transition: all 0.2s ease;
+}
+
+button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+
+/* Links */
+
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: var(--color-primary-dark);
+}
+
+
+/* Images */
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+
+/* Utility Classes */
+
+.container {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+    .container {
+        padding: 0 2rem;
+    }
+}
+
+
+/* Custom Scrollbar */
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--background-gray);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-medium);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--border-dark);
+}
+
+
+/* Focus Styles */
+
+*:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+
+/* Animation Utilities */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInDropdown {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(10px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+}
+
+
+/* Hide Scrollbar */
+
+.scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+
+
+/* Text Truncation */
+
+.line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+}
+
+.line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+
+/* Stats Card Animations */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+}
+
+@keyframes float {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.stat-card {
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.stat-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.stat-card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.stat-card:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.stat-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+.stat-icon {
+    animation: float 3s ease-in-out infinite;
+}
+
+.stat-card:nth-child(1) .stat-icon {
+    animation-delay: 0s;
+}
+
+.stat-card:nth-child(2) .stat-icon {
+    animation-delay: 0.5s;
+}
+
+.stat-card:nth-child(3) .stat-icon {
+    animation-delay: 1s;
+}
+
+.stat-card:nth-child(4) .stat-icon {
+    animation-delay: 1.5s;
+}
+
+.stat-number {
+    background: linear-gradient(90deg, currentColor 40%, rgba(255, 255, 255, 0.5) 50%, currentColor 60%);
+    background-size: 200% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+
+
+/* Feature Card Animations */
+
+.feature-card {
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+}
+
+.feature-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.feature-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.feature-card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.feature-card:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.feature-card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12) !important;
+}
+
+.feature-card:hover>div:first-child {
+    height: 6px !important;
+}
+
+
+/* Why Choose Us Card Animations */
+
+.why-card {
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+}
+
+.why-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.why-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.why-card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.why-card:nth-child(4) {
+    animation-delay: 0.4s;
+}
+
+.why-card:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 192, 22, 0.3) !important;
+    transform: translateX(8px);
+}
+
+
+/* Order Options Grid Responsive */
+
+.order-options-grid {
+    display: grid;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+/* Mobile: 1 column */
+
+@media (max-width: 767px) {
+    .order-options-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* Tablet: 2 columns */
+
+@media (min-width: 768px) and (max-width: 1023px) {
+    .order-options-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+/* Desktop: responsive columns centered with max width */
+
+@media (min-width: 1024px) {
+    .order-options-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 320px));
+        justify-content: center;
+    }
+}
+
+
+/* Signature Dishes Card Hover Effects */
+
+.dish-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15) !important;
+}
+
+.order-button:hover {
+    background-color: #7a0006 !important;
+    transform: scale(1.05);
+}
+
+.view-menu-button:hover {
+    background-color: #7a0006 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(159, 0, 8, 0.3) !important;
+}
+
+.home-hero-section::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+}
+
+.wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    top: 60px;
+    width: 200%;
+    height: 120px;
+    /* background: radial-gradient(circle at 50% 0, transparent 55px, #fff 56px); */
+    background: radial-gradient(circle at 50% 0, #fff 55px, #0000 56px) 0 0 / 90px 150px;
+    /* background-size: 120px 120px; */
+    animation: waveMove 8s linear infinite;
+}
+
+@keyframes waveMove {
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-120px);
+    }
+}

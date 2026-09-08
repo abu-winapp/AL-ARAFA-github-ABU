@@ -1,0 +1,741 @@
+
+{/* signature dishes header */}
+              <div className="mb-10 flex flex-col gap-7 md:flex-row md:items-end md:justify-between">
+                <div>
+                  <div className="mb-3 flex items-center gap-2">
+                    <span className="text-[15px] text-[#a32d2d]">✦</span>
+
+                    <span className="text-[12px] font-bold uppercase tracking-[0.18em] text-[#8f2b2b]">
+                      Our Signature Dishes
+                    </span>
+                  </div>
+
+                  <p className="mt-3 max-w-[420px] text-[15px] leading-6 text-[#4f4842] sm:text-[16px]">
+                    Handpicked favorites, prepared with passion and crafted to
+                    perfection.
+                  </p>
+                </div>
+
+                <button className="group flex w-fit items-center gap-4 rounded-full border border-[#963333] px-5 py-2.5 text-[13px] font-medium text-[#963333] transition-all duration-300 hover:bg-[#963333] hover:text-white">
+                  <span>View Full Menu</span>
+
+                  <span className="text-[20px] leading-none transition-transform duration-300 group-hover:translate-x-1">
+                    →
+                  </span>
+                </button>
+              </div>
+
+
+
+              {/*  DISH CARDS for signature dishes  */}
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                {dishes.map((dish, index) => (
+                  <div
+                    key={index}
+                    className="group overflow-hidden rounded-[17px] bg-[#fffaf2] shadow-[0_5px_18px_rgba(70,45,25,0.10)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(70,45,25,0.16)]"
+                  >
+                    {/* Image */}
+                    <div className="relative p-3 pb-0">
+                      <div className="relative aspect-[1.65/1] overflow-hidden rounded-[12px]">
+                        <img
+                          src={dish.image}
+                          alt={dish.title}
+                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                        />
+
+                        {/* Badge */}
+                        <div className="absolute right-2.5 top-2.5 flex h-9 w-9 items-center justify-center rounded-full bg-[#fffaf2] text-[17px] shadow-md">
+                          {dish.badge}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="px-3.5 pb-4 pt-3">
+                      <h3 className="text-[18px] font-bold leading-6 text-[#211a16]">
+                        {dish.title}
+                      </h3>
+
+                      <p className="mt-1.5 min-h-[48px] text-[14px] leading-[1.45] text-[#5b514a]">
+                        {dish.description}
+                      </p>
+
+                      {/* Bottom */}
+                      <div className="mt-4 flex items-center justify-between">
+                        <span className="text-[19px] font-bold text-[#a02f2f]">
+                          {dish.price}
+                        </span>
+
+                        <button className="group/cart flex items-center gap-2 text-[14px] font-semibold text-[#9c3030] transition-colors hover:text-[#7e2020]">
+                          <span>Add to Cart</span>
+
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                            className="h-[20px] w-[20px] transition-transform duration-200 group-hover/cart:scale-110"
+                          >
+                            <path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.5L21 8H6" />
+                            <circle cx="10" cy="20" r="1.3" />
+                            <circle cx="18" cy="20" r="1.3" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+                            <div className="mb-10 flex flex-col gap-7 md:flex-row md:items-end md:justify-between">
+                <div>
+                  <div className="mb-3 flex items-center gap-2">
+                    <span className="text-[15px] text-[#a32d2d]">✦</span>
+
+                    <span className="text-[12px] font-bold uppercase tracking-[0.18em] text-[#8f2b2b]">
+                      Most popular
+                    </span>
+                  </div>
+
+                  <p className="mt-3 max-w-[420px] text-[15px] leading-6 text-[#4f4842] sm:text-[16px]">
+                    Handpicked favorites, prepared with passion and crafted to
+                    perfection.
+                  </p>
+                </div>
+
+                <button className="group flex w-fit items-center gap-4 rounded-full border border-[#963333] px-5 py-2.5 text-[13px] font-medium text-[#963333] transition-all duration-300 hover:bg-[#963333] hover:text-white">
+                  <span>View Full Menu</span>
+
+                  <span className="text-[20px] leading-none transition-transform duration-300 group-hover:translate-x-1">
+                    →
+                  </span>
+                </button>
+              </div>
+
+
+
+              {/*  DISH CARDS 1 */}
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                {dishes.map((dish, index) => (
+                  <div
+                    key={index}
+                    className="group overflow-hidden rounded-[17px] bg-[#fffaf2] shadow-[0_5px_18px_rgba(70,45,25,0.10)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(70,45,25,0.16)]"
+                  >
+                    {/* Image */}
+                    <div className="relative p-3 pb-0">
+                      <div className="relative aspect-[1.65/1] overflow-hidden rounded-[12px]">
+                        <img
+                          src={dish.image}
+                          alt={dish.title}
+                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                        />
+
+                        {/* Badge */}
+                        <div className="absolute right-2.5 top-2.5 flex h-9 w-9 items-center justify-center rounded-full bg-[#fffaf2] text-[17px] shadow-md">
+                          {dish.badge}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="px-3.5 pb-4 pt-3">
+                      <h3 className="text-[18px] font-bold leading-6 text-[#211a16]">
+                        {dish.title}
+                      </h3>
+
+                      <p className="mt-1.5 min-h-[48px] text-[14px] leading-[1.45] text-[#5b514a]">
+                        {dish.description}
+                      </p>
+
+                      {/* Bottom */}
+                      <div className="mt-4 flex items-center justify-between">
+                        <span className="text-[19px] font-bold text-[#a02f2f]">
+                          {dish.price}
+                        </span>
+
+                        <button className="group/cart flex items-center gap-2 text-[14px] font-semibold text-[#9c3030] transition-colors hover:text-[#7e2020]">
+                          <span>Add to Cart</span>
+
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                            className="h-[20px] w-[20px] transition-transform duration-200 group-hover/cart:scale-110"
+                          >
+                            <path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.5L21 8H6" />
+                            <circle cx="10" cy="20" r="1.3" />
+                            <circle cx="18" cy="20" r="1.3" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* DISH CARD 2 */}
+                            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                {dishes.map((dish, index) => (
+                  <div
+                    key={index}
+                    className="group overflow-hidden rounded-[17px] bg-[#fffaf2] shadow-[0_5px_18px_rgba(70,45,25,0.10)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(70,45,25,0.16)]"
+                  >
+                    {/* Image */}
+                    <div className="relative p-3 pb-0">
+                      <div className="relative aspect-[1.65/1] overflow-hidden rounded-[12px]">
+                        <img
+                          src={dish.image}
+                          alt={dish.title}
+                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                        />
+
+                        {/* Badge */}
+                        <div className="absolute right-2.5 top-2.5 flex h-9 w-9 items-center justify-center rounded-full bg-[#fffaf2] text-[17px] shadow-md">
+                          {dish.badge}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="px-3.5 pb-4 pt-3">
+                      <h3 className="text-[18px] font-bold leading-6 text-[#211a16]">
+                        {dish.title}
+                      </h3>
+
+                      <p className="mt-1.5 min-h-[48px] text-[14px] leading-[1.45] text-[#5b514a]">
+                        {dish.description}
+                      </p>
+
+                      {/* Bottom */}
+                      <div className="mt-4 flex items-center justify-between">
+                        <span className="text-[19px] font-bold text-[#a02f2f]">
+                          {dish.price}
+                        </span>
+
+                        <button className="group/cart flex items-center gap-2 text-[14px] font-semibold text-[#9c3030] transition-colors hover:text-[#7e2020]">
+                          <span>Add to Cart</span>
+
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                            className="h-[20px] w-[20px] transition-transform duration-200 group-hover/cart:scale-110"
+                          >
+                            <path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.5L21 8H6" />
+                            <circle cx="10" cy="20" r="1.3" />
+                            <circle cx="18" cy="20" r="1.3" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+import { useLayoutEffect, useRef, useState } from "react";
+import { ChevronLeft, ChevronRight, Star } from "lucide-react";
+import gsap from "gsap";
+
+const reviews = [
+  {
+    name: "Vijay K",
+    role: "Happy Guest",
+    initial: "V",
+    title: "A wonderful experience",
+    text: "Amazing taste. This has quickly become one of my favourite restaurants.",
+    date: "2 MONTHS AGO",
+  },
+  {
+    name: "Sneha R",
+    role: "Happy Guest",
+    initial: "S",
+    title: "Perfect food and service",
+    text: "Great food and really good value. The chicken was perfectly cooked and full of flavour.",
+    date: "2 MONTHS AGO",
+  },
+  {
+    name: "James S",
+    role: "Happy Guest",
+    initial: "J",
+    title: "A truly special evening",
+    text: "The best restaurant I've visited in this city. Everything was crafted to perfection.",
+    date: "1 MONTH AGO",
+  },
+  {
+    name: "Sarah M",
+    role: "Happy Guest",
+    initial: "S",
+    title: "Absolutely delicious",
+    text: "The flavours were incredible and the atmosphere made the whole experience memorable.",
+    date: "3 WEEKS AGO",
+  },
+  {
+    name: "Ahmed R",
+    role: "Happy Guest",
+    initial: "A",
+    title: "Worth coming back for",
+    text: "Wonderful food, excellent service and a beautiful atmosphere. We will definitely return.",
+    date: "1 WEEK AGO",
+  },
+];
+
+const Stars = () => (
+  <div className="flex gap-1">
+    {[1, 2, 3, 4, 5].map((star) => (
+      <Star
+        key={star}
+        size={14}
+        fill="currentColor"
+        strokeWidth={0}
+        className="text-[#92251c]"
+      />
+    ))}
+  </div>
+);
+
+const Profile = ({ review }) => {
+  return (
+    <div className="flex items-center gap-4">
+      <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-[#92251c]/20 bg-[#f9eee9] text-sm font-semibold text-[#92251c]">
+        {review.initial}
+      </div>
+
+      <div>
+        <h3 className="text-[15px] font-semibold text-[#111]">
+          {review.name}
+        </h3>
+
+        <p className="mt-0.5 text-xs text-[#777]">
+          {review.role}
+        </p>
+
+        <div className="mt-2">
+          <Stars />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const ReviewCard = ({ review }) => {
+  return (
+    <div className="review-card h-full w-full rounded-[26px] border border-[#92251c]/10 bg-[#fffaf5] px-8 py-8 sm:px-10 sm:py-9">
+
+      {/* PROFILE */}
+      <div className="review-profile">
+        <Profile review={review} />
+      </div>
+
+      {/* REVIEW */}
+      <div className="review-content mt-10 sm:mt-14">
+
+        <div className="mb-2 text-5xl leading-none text-[#92251c]/15">
+          “
+        </div>
+
+        <h3 className="review-title text-2xl font-semibold tracking-[-0.03em] text-[#111] sm:text-[28px]">
+          {review.title}
+        </h3>
+
+        <p className="review-text mt-4 max-w-[580px] text-sm leading-7 text-[#555] sm:text-[15px]">
+          {review.text}
+        </p>
+
+        <div className="review-date mt-7 flex items-center gap-3">
+          <span className="h-px w-7 bg-[#92251c]/30" />
+
+          <span className="text-[10px] font-medium tracking-[0.16em] text-[#999]">
+            {review.date}
+          </span>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default function GuestReviews() {
+  const sectionRef = useRef(null);
+
+  const previousRef = useRef(null);
+  const activeRef = useRef(null);
+  const nextRef = useRef(null);
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [direction, setDirection] = useState(1);
+  const [animating, setAnimating] = useState(false);
+
+  const getIndex = (index) => {
+    return (index + reviews.length) % reviews.length;
+  };
+
+  const previousIndex = getIndex(activeIndex - 1);
+  const nextIndex = getIndex(activeIndex + 1);
+
+  /*
+   * INITIAL SCROLL ANIMATION
+   */
+  useLayoutEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(".review-heading", {
+        y: 35,
+        opacity: 0,
+        duration: 1,
+        ease: "power3.out",
+      });
+
+      gsap.from(".review-description", {
+        y: 20,
+        opacity: 0,
+        duration: 0.8,
+        delay: 0.15,
+        ease: "power3.out",
+      });
+
+      gsap.from(activeRef.current, {
+        y: 45,
+        opacity: 0,
+        scale: 0.96,
+        duration: 1,
+        delay: 0.2,
+        ease: "power3.out",
+      });
+
+      gsap.from([previousRef.current, nextRef.current], {
+        opacity: 0,
+        scale: 0.9,
+        duration: 0.9,
+        delay: 0.35,
+        stagger: 0.1,
+        ease: "power3.out",
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  /*
+   * CHANGE REVIEW
+   */
+  const changeReview = (newIndex, newDirection) => {
+    if (animating) return;
+
+    setAnimating(true);
+    setDirection(newDirection);
+
+    const oldActive = activeRef.current;
+
+    /*
+     * OLD ACTIVE CARD
+     * moves slightly away and fades
+     */
+    gsap.to(oldActive, {
+      x: newDirection * -60,
+      opacity: 0,
+      scale: 0.96,
+      duration: 0.4,
+      ease: "power2.in",
+    });
+
+    /*
+     * SIDE CARDS
+     * slightly fade while preparing for movement
+     */
+    gsap.to([previousRef.current, nextRef.current], {
+      opacity: 0.25,
+      duration: 0.25,
+      ease: "power2.out",
+    });
+
+    /*
+     * CHANGE DATA AFTER OLD CARD LEAVES
+     */
+    setTimeout(() => {
+      setActiveIndex(newIndex);
+    }, 250);
+  };
+
+  /*
+   * ANIMATE NEW ACTIVE CARD
+   */
+  useLayoutEffect(() => {
+    if (!animating) return;
+
+    const newActive = activeRef.current;
+
+    gsap.fromTo(
+      newActive,
+      {
+        x: direction * 70,
+        opacity: 0,
+        scale: 0.94,
+      },
+      {
+        x: 0,
+        opacity: 1,
+        scale: 1,
+        duration: 0.65,
+        ease: "power3.out",
+      }
+    );
+
+    /*
+     * New side cards
+     */
+    gsap.fromTo(
+      [previousRef.current, nextRef.current],
+      {
+        opacity: 0,
+        scale: 0.92,
+      },
+      {
+        opacity: 0.5,
+        scale: 0.96,
+        duration: 0.55,
+        delay: 0.05,
+        stagger: 0.05,
+        ease: "power3.out",
+        onComplete: () => {
+          setAnimating(false);
+        },
+      }
+    );
+  }, [activeIndex]);
+
+  const goNext = () => {
+    changeReview(getIndex(activeIndex + 1), 1);
+  };
+
+  const goPrevious = () => {
+    changeReview(getIndex(activeIndex - 1), -1);
+  };
+
+  return (
+    <section
+      ref={sectionRef}
+      className="overflow-hidden bg-[#f7f0e5] py-20 sm:py-24 lg:py-28"
+    >
+      <div className="mx-auto max-w-[1450px] px-5 sm:px-8 lg:px-10">
+
+        {/*  HEADER  */}
+
+        <div className="flex items-end justify-between">
+
+          <div className="max-w-[620px]">
+
+            <p className="review-heading mb-3 text-[11px] font-medium uppercase tracking-[0.22em] text-[#92251c]">
+              Customer Reviews
+            </p>
+
+            <h2 className="review-heading text-4xl font-semibold tracking-[-0.045em] text-[#111] sm:text-5xl lg:text-[54px]">
+              What Our Guests Say
+            </h2>
+
+            <p className="review-description mt-5 max-w-[520px] text-sm leading-6 text-[#666] sm:text-[15px]">
+              We take pride in our guests sharing their unforgettable
+              experiences. Your feedback inspires us to be even better.
+            </p>
+
+          </div>
+
+          {/* DESKTOP ARROWS */}
+
+          <div className="hidden gap-3 sm:flex">
+
+            <button
+              onClick={goPrevious}
+              disabled={animating}
+              className="
+                group flex h-11 w-11 items-center justify-center
+                rounded-full border border-black/10
+                bg-white/70
+                transition-all duration-300
+                hover:border-[#92251c]/30
+                hover:bg-white
+                disabled:pointer-events-none
+              "
+            >
+              <ChevronLeft
+                size={18}
+                className="transition-transform duration-300 group-hover:-translate-x-0.5"
+              />
+            </button>
+
+            <button
+              onClick={goNext}
+              disabled={animating}
+              className="
+                group flex h-11 w-11 items-center justify-center
+                rounded-full border border-black/10
+                bg-white/70
+                transition-all duration-300
+                hover:border-[#92251c]/30
+                hover:bg-white
+                disabled:pointer-events-none
+              "
+            >
+              <ChevronRight
+                size={18}
+                className="transition-transform duration-300 group-hover:translate-x-0.5"
+              />
+            </button>
+
+          </div>
+        </div>
+
+        {/*  MOBILE ARROWS  */}
+
+        <div className="mt-6 flex gap-3 sm:hidden">
+
+          <button
+            onClick={goPrevious}
+            disabled={animating}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white"
+          >
+            <ChevronLeft size={17} />
+          </button>
+
+          <button
+            onClick={goNext}
+            disabled={animating}
+            className="flex h-10 w-10 items-center justify-center rounded-full border border-black/10 bg-white"
+          >
+            <ChevronRight size={17} />
+          </button>
+
+        </div>
+
+        {/*  CAROUSEL  */}
+
+        <div className="relative mt-14 sm:mt-16">
+
+          <div className="relative h-[390px]">
+
+            {/*  PREVIOUS  */}
+
+            <div
+              ref={previousRef}
+              className="
+                absolute left-[-18%]
+                top-1/2
+                hidden
+                h-[350px]
+                w-[38%]
+                -translate-y-1/2
+                md:block
+              "
+            >
+              <ReviewCard review={reviews[previousIndex]} />
+            </div>
+
+            {/*  ACTIVE  */}
+
+            <div
+              ref={activeRef}
+              className="
+                absolute
+                left-1/2
+                top-0
+                z-20
+                h-full
+                w-full
+                -translate-x-1/2
+                md:w-[58%]
+              "
+            >
+              <ReviewCard review={reviews[activeIndex]} />
+            </div>
+
+            {/*  NEXT  */}
+
+            <div
+              ref={nextRef}
+              className="
+                absolute right-[-18%]
+                top-1/2
+                hidden
+                h-[350px]
+                w-[38%]
+                -translate-y-1/2
+                md:block
+              "
+            >
+              <ReviewCard review={reviews[nextIndex]} />
+            </div>
+
+          </div>
+        </div>
+
+        {/*  PAGINATION  */}
+
+        <div className="mt-8 flex items-center justify-center gap-2">
+
+          {reviews.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => {
+                if (index === activeIndex || animating) return;
+
+                const newDirection =
+                  index > activeIndex ? 1 : -1;
+
+                changeReview(index, newDirection);
+              }}
+              className={`
+                h-1.5 rounded-full
+                transition-all duration-500
+                ${
+                  activeIndex === index
+                    ? "w-8 bg-[#92251c]"
+                    : "w-1.5 bg-[#92251c]/25 hover:bg-[#92251c]/50"
+                }
+              `}
+            />
+          ))}
+
+        </div>
+
+      </div>
+    </section>
+  );
+}

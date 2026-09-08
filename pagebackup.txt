@@ -1,0 +1,2984 @@
+"use client";
+
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import {
+  ArrowRight,
+  CalendarDays,
+  ChefHat,
+  Flame,
+  Heart,
+  Leaf,
+  Utensils,
+  ChevronLeft,
+  ChevronRight,
+  Star,
+  Quote,
+  ShoppingBag,
+  Bike,
+  Phone,
+  Mail,
+  MessageCircle,
+  MapPin,
+  ArrowUpRight,
+  ConciergeBell,
+  Soup,
+  Sandwich,
+  Pizza,
+  CupSoda,
+} from "lucide-react";
+import Image from "next/image";
+// as of now clicking how would you like to order will navigate to the menu page,
+//  but we can change it later
+
+import { useRouter } from "next/navigation";
+
+const herobg = "/images/HeroBg.webp";
+
+const serving = "/images/serving.png";
+const alarafa = "/images/AL-ARAFA.png";
+
+const heroFood = "/images/food_4.png";
+const food1 = "/images/food_1.png";
+const food2 = "/images/food_2.png";
+const food3 = "/images/food_3.png";
+
+const img1 = "/images/rating.png";
+const img2 = "/images/happycostomer.png";
+const img3 = "/images/fast.png";
+const img4 = "/images/legacy.png";
+
+const Trust1 = "/images/TrustAndQuality-1.png";
+const Trust2 = "/images/TrustAndQuality-2.png";
+const Trust3 = "/images/TrustAndQuality-3.png";
+const Trust4 = "/images/TrustAndQuality-4.png";
+const Trust5 = "/images/TrustAndQuality-5.png";
+const Trust6 = "/images/TrustAndQuality-6.png";
+
+const dish1 = "/images/dish-1.jpg";
+const dish2 = "/images/dish-2.png";
+const dish3 = "/images/dish-3.jpg";
+const dish4 = "/images/dish-4.jpg";
+const goodfoodbg = "/images/goodfoodbg.png";
+
+
+export default function Home() {
+
+  const phone = "+65 1234 5678";
+  const email = "hello@alarafa.com";
+  const whatsapp = "6512345678";
+  const address =
+    "123 Restaurant Street, Singapore";
+
+  const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
+    address
+  )}`;
+
+  const menuCards = [
+    {
+      title: "Fork Theory",
+      description: "Global street food fusions",
+      price: "$13.99",
+      icon: Utensils,
+      image: food1,
+      accent: "green" as const,
+    },
+    {
+      title: "Melt District",
+      description: "Cheesy, indulgent, feel-right vibes",
+      price: "$10.50",
+      icon: Flame,
+      image: food2,
+      accent: "orange" as const,
+    },
+    {
+      title: "Fork Theory",
+      description: "Global street food fusions",
+      price: "$13.99",
+      icon: Utensils,
+      image: food3,
+      accent: "blue" as const,
+    },
+    {
+      title: "Fork Theory",
+      description: "Global street food fusions",
+      price: "$13.99",
+      icon: Utensils,
+      image: food3,
+      accent: "green" as const,
+    },
+  ];
+
+  const trustCards = [
+    {
+      title: "Google Rating",
+      description:
+        "Loved by our customers for our authentic taste, quality ingredients, and delicious food.",
+      icon: img1,
+    },
+    {
+      title: "50K+ Happy Customers",
+      description:
+        "Serving thousands of happy customers with great food, warm service.",
+      icon: img2,
+    },
+    {
+      title: "30 Min Fast Delivery",
+      description:
+        "Enjoy your favorite meals delivered hot and fresh to your doorstep with quick and reliable service.",
+      icon: img3,
+    },
+    {
+      title: "Years of Legacy",
+      description:
+        "Built on years of experience, tradition, and a passion for serving delicious food to every customer.",
+      icon: img4,
+    },
+  ];
+
+  const images = [
+    {
+      src: "/images/restaurant-1.png",
+      alt: "Restaurant food",
+    },
+    {
+      src: "/images/restaurant-2.png",
+      alt: "Restaurant dining",
+    },
+    {
+      src: "/images/restaurant-3.png",
+      alt: "Restaurant experience",
+    },
+  ];
+
+  const trustItems = [
+    {
+      image: Trust1,
+      title: "100% Halal",
+      description: "Prepared with care and trusted ingredients.",
+    },
+    {
+      image: Trust2,
+      title: "Fresh Ingredients",
+      description: "Only fresh, quality ingredients go into every dish.",
+    },
+    {
+      image: Trust3,
+      title: "Hygienic Kitchen",
+      description: "Maintaining high standards of cleanliness and hygiene.",
+    },
+    {
+      image: Trust4,
+      title: "Made Fresh Daily",
+      description: "Freshly prepared every day for better taste.",
+    },
+    {
+      image: Trust5,
+      title: "Authentic Recipes",
+      description: "Traditional recipes made with authentic flavours.",
+    },
+    {
+      image: Trust6,
+      title: "No Preservatives",
+      description: "Good food made without unnecessary preservatives.",
+    },
+  ];
+
+  const dishes = [
+    {
+      image: dish1,
+      title: "Hyderabadi Chicken Biryani",
+      description:
+        "A royal blend of basmati rice, tender chicken and aromatic spices.",
+      price: "S$399",
+      badge: "🔥",
+    },
+    {
+      image: dish2,
+      title: "Mutton Seekh Kebab",
+      description:
+        "Juicy minced mutton, blended with spices and slow grilled to perfection.",
+      price: "S$299",
+      badge: "★",
+    },
+    {
+      image: dish3,
+      title: "Butter Chicken",
+      description:
+        "Succulent chicken simmered in a rich, creamy tomato-based gravy.",
+      price: "S$349",
+      badge: "🌿",
+    },
+    {
+      image: dish4,
+      title: "Paneer Tikka Masala",
+      description:
+        "Grilled cottage cheese cubes cooked in a spiced, creamy masala sauce.",
+      price: "S$279",
+      badge: "🌿",
+    },
+  ];
+
+  const orderOptions = [
+    {
+      title: "Self Collect",
+      description: "Order ahead and collect when ready.",
+      icon: ShoppingBag,
+      type: "pickup",
+      available: true,
+    },
+    {
+      title: "Delivery",
+      description: "Enjoy your favourites at your doorstep.",
+      icon: Bike,
+      type: "delivery",
+      available: true,
+    },
+    {
+      title: "Dine In",
+      description: "Come in and enjoy freshly prepared food.",
+      icon: Utensils,
+      type: "dine-in",
+      available: true,
+    },
+  ];
+
+  const router = useRouter();
+
+  const handleOrder = (type: string) => {
+    router.push(`/menu?orderType=${type}`);
+  };
+
+  // ---- Hero plate slideshow ----
+  // 5 dishes, changing every ~4s with a clockwise rotate-in transition.
+  const heroPlates = [
+    { src: heroFood, alt: "Chef's signature platter" },
+    { src: food1, alt: "Fork Theory street food fusion" },
+    { src: food2, alt: "Melt District cheesy indulgence" },
+    { src: food3, alt: "Fresh seasonal special" },
+    { src: dish1, alt: "Hyderabadi chicken biryani" },
+  ];
+
+  const [activePlate, setActivePlate] = useState(0);
+  const [plateEntered, setPlateEntered] = useState(false);
+
+  useEffect(() => {
+    setPlateEntered(false);
+    const raf1 = requestAnimationFrame(() => {
+      const raf2 = requestAnimationFrame(() => setPlateEntered(true));
+      return () => cancelAnimationFrame(raf2);
+    });
+    return () => cancelAnimationFrame(raf1);
+  }, [activePlate]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActivePlate((prev) => (prev + 1) % heroPlates.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [heroPlates.length]);
+
+  const foodCategories = [
+    { label: "Main Course", icon: ConciergeBell },
+    { label: "Biryani", icon: Soup },
+    { label: "Burgers", icon: Sandwich },
+    { label: "Pizza", icon: Pizza },
+    { label: "Beverages", icon: CupSoda },
+  ];
+
+  return (
+    <>
+      <div className="home-page">
+        {/* MAIN SECTION */}
+        <section className="text-[#202020]">
+          {/* HERO */}
+          <div
+            className="relative min-h-screen w-full overflow-hidden bg-[#f5eee3]"
+            style={{
+              backgroundPosition: "center",
+              backgroundSize: "cover",
+            }}
+          >
+            {/* Background Glow */}
+            <div className="pointer-events-none absolute left-[45%] top-[12%] h-[420px] w-[420px] -translate-x-1/2 rounded-full bg-[#e9d7b7]/25 blur-[100px] sm:h-[500px] sm:w-[500px]" />
+
+            <div className="pointer-events-none absolute bottom-[5%] right-[5%] h-[320px] w-[320px] rounded-full bg-orange-100/30 blur-[100px] sm:h-[420px] sm:w-[420px]" />
+
+            {/* RESPONSIVE MAIN CONTAINER */}
+            <div className="relative z-10 flex min-h-screen w-full flex-col gap-[clamp(1rem,2vw,2rem)] px-4 sm:px-6 lg:px-8 xl:px-10">
+              {/* HERO CONTENT */}
+
+
+<div
+  className="
+    relative
+    z-20
+    mx-auto
+    grid
+    w-full
+    max-w-[1600px]
+    flex-1
+    items-center
+
+    grid-cols-1
+
+    gap-8
+    px-5
+    py-10
+
+    sm:px-8
+    sm:py-12
+
+    md:px-10
+    md:py-14
+
+    lg:grid-cols-[0.95fr_1.05fr]
+    lg:gap-4
+    lg:px-12
+    lg:py-6
+
+    xl:grid-cols-[0.92fr_1.08fr]
+    xl:gap-8
+    xl:px-16
+
+    2xl:grid-cols-[0.9fr_1.1fr]
+    2xl:px-20
+  "
+>
+
+
+{/* 
+    HERO — LEFT CONTENT
+ */}
+<div
+  className="
+    relative z-20
+    flex w-full
+    flex-col
+    items-center
+    text-center
+
+    lg:items-start
+    lg:text-left
+  "
+>
+  {/* 
+      EYEBROW
+   */}
+  <div
+    className="
+      mb-5
+      flex items-center
+      justify-center
+      gap-2.5
+
+      text-[10px]
+      font-semibold
+      uppercase
+      tracking-[0.16em]
+      text-[#B27719]
+
+      sm:text-[11px]
+
+      lg:justify-start
+      lg:text-[11px]
+      lg:tracking-[0.18em]
+    "
+  >
+    <span
+      className="
+        relative
+        h-px
+        w-6
+        bg-[#C99232]
+
+        after:absolute
+        after:-right-1
+        after:top-1/2
+        after:h-[3px]
+        after:w-[3px]
+        after:-translate-y-1/2
+        after:rotate-45
+        after:bg-[#C99232]
+      "
+    />
+
+    <span>
+      Good Food. Great Memories.
+    </span>
+
+    <span
+      className="
+        relative
+        h-px
+        w-6
+        bg-[#C99232]
+
+        before:absolute
+        before:-left-1
+        before:top-1/2
+        before:h-[3px]
+        before:w-[3px]
+        before:-translate-y-1/2
+        before:rotate-45
+        before:bg-[#C99232]
+      "
+    />
+  </div>
+
+
+  {/* 
+      MAIN HEADING
+   */}
+  <h1
+    className="
+      m-0
+      w-full
+      max-w-[520px]
+
+      font-serif
+      font-bold
+      uppercase
+
+      leading-[0.96]
+      tracking-[-0.025em]
+
+      text-[#151515]
+
+      text-[2.65rem]
+
+      sm:text-[3rem]
+
+      md:text-[3.25rem]
+
+      lg:max-w-[520px]
+      lg:text-[3.35rem]
+
+      xl:text-[3.55rem]
+
+      2xl:text-[3.75rem]
+    "
+  >
+    <span className="block">
+      A Place Where
+    </span>
+
+    <span className="block">
+      Palates Are
+    </span>
+
+    <span
+      className="
+        block
+        text-[#A71919]
+      "
+    >
+      Surprised
+    </span>
+  </h1>
+
+
+  {/* 
+      ORNAMENTAL DIVIDER
+   */}
+  <div
+    className="
+      my-5
+      flex
+      items-center
+      justify-center
+      gap-2
+
+      lg:my-[18px]
+      lg:justify-start
+    "
+  >
+    <span
+      className="
+        h-px
+        w-12
+        bg-[#C99536]
+
+        sm:w-14
+      "
+    />
+
+    <span
+      className="
+        relative
+        flex
+        h-3
+        w-5
+        items-center
+        justify-center
+        text-[#C99536]
+      "
+    >
+      <span
+        className="
+          absolute
+          left-1/2
+          top-1/2
+          h-[5px]
+          w-[5px]
+          -translate-x-1/2
+          -translate-y-1/2
+          rotate-45
+          border
+          border-[#C99536]
+        "
+      />
+
+      <span
+        className="
+          absolute
+          left-[2px]
+          top-1/2
+          h-[3px]
+          w-[3px]
+          -translate-y-1/2
+          rotate-45
+          bg-[#C99536]
+        "
+      />
+
+      <span
+        className="
+          absolute
+          right-[2px]
+          top-1/2
+          h-[3px]
+          w-[3px]
+          -translate-y-1/2
+          rotate-45
+          bg-[#C99536]
+        "
+      />
+    </span>
+
+    <span
+      className="
+        h-px
+        w-12
+        bg-[#C99536]
+
+        sm:w-14
+      "
+    />
+  </div>
+
+
+  {/* 
+      DESCRIPTION
+   */}
+  <p
+    className="
+      m-0
+      max-w-[400px]
+
+      text-[10px]
+      font-medium
+      uppercase
+
+      leading-[1.7]
+      tracking-[0.055em]
+
+      text-[#514A43]
+
+      sm:text-[11px]
+
+      lg:max-w-[410px]
+      lg:text-[11.5px]
+      lg:leading-[1.75]
+    "
+  >
+    Tasteory turns ordinary meals into
+    lasting moments through balance,
+    boldness, and beauty.
+  </p>
+
+
+  {/* 
+      CTA BUTTONS
+   */}
+  <div
+    className="
+      mt-6
+      flex
+      w-full
+      max-w-[350px]
+
+      flex-col
+      gap-2.5
+
+      sm:flex-row
+
+      lg:mt-6
+      lg:max-w-none
+      lg:gap-5
+    "
+  >
+
+    {/* 
+        EXPLORE MENU
+     */}
+    <button
+      type="button"
+      className="
+        group
+        flex
+        h-[37px]
+        w-full
+
+        items-center
+        justify-center
+        gap-2
+
+        rounded-full
+
+        bg-[#A71919]
+
+        px-5
+
+        text-[10px]
+        font-semibold
+        uppercase
+        tracking-[0.04em]
+        text-white
+
+        shadow-[0_7px_18px_rgba(167,25,25,0.16)]
+
+        transition-all
+        duration-300
+
+        hover:-translate-y-[1px]
+        hover:bg-[#8F1515]
+        hover:shadow-[0_10px_22px_rgba(167,25,25,0.22)]
+
+        active:translate-y-0
+
+        sm:w-[165px]
+      "
+    >
+      <span>
+        Explore Menu
+      </span>
+
+      <Utensils
+        size={14}
+        strokeWidth={1.8}
+        className="
+          transition-transform
+          duration-300
+          group-hover:rotate-6
+        "
+      />
+    </button>
+
+
+    {/* 
+        CONTACT US
+     */}
+    <button
+      type="button"
+      className="
+        group
+        flex
+        h-[37px]
+        w-full
+
+        items-center
+        justify-center
+        gap-2
+
+        rounded-full
+
+        border
+        border-[#C58B32]
+
+        bg-transparent
+
+        px-5
+
+        text-[10px]
+        font-semibold
+        uppercase
+        tracking-[0.04em]
+        text-[#292522]
+
+        transition-all
+        duration-300
+
+        hover:-translate-y-[1px]
+        hover:bg-[#FFF8EA]
+
+        active:translate-y-0
+
+        sm:w-[150px]
+      "
+    >
+      <span>
+        Contact Us
+      </span>
+
+      <MessageCircle
+        size={14}
+        strokeWidth={1.8}
+        className="
+          text-[#252525]
+          transition-transform
+          duration-300
+          group-hover:scale-105
+        "
+      />
+    </button>
+
+  </div>
+</div>
+
+
+  {/* 
+      RIGHT — FOOD IMAGE
+  = */}
+  <div
+    className="
+      relative
+      flex
+      min-h-[340px]
+      items-center
+      justify-center
+
+      sm:min-h-[420px]
+
+      md:min-h-[480px]
+
+      lg:min-h-[560px]
+
+      xl:min-h-[620px]
+
+      2xl:min-h-[660px]
+    "
+  >
+    {/* ========
+        OUTER GOLD RING
+    ========= */}
+    <div
+      className="
+        pointer-events-none
+        absolute
+        left-1/2
+        top-1/2
+        aspect-square
+        w-[82%]
+        max-w-[680px]
+        -translate-x-1/2
+        -translate-y-1/2
+
+        rounded-full
+
+        border
+        border-[#C9A24B]
+      "
+    />
+
+
+    {/* ========
+        INNER GOLD/RING DETAIL
+    ========= */}
+    <div
+      className="
+        pointer-events-none
+        absolute
+        left-1/2
+        top-1/2
+        aspect-square
+        w-[78%]
+        max-w-[650px]
+        -translate-x-1/2
+        -translate-y-1/2
+
+        rounded-full
+
+        border
+        border-[#C9A24B]/70
+      "
+    />
+
+
+    {/* ========
+        SOLID RED PLATE / BAND
+    ========= */}
+    <div
+      className="
+        pointer-events-none
+        absolute
+        left-1/2
+        top-1/2
+        aspect-square
+        w-[72%]
+        max-w-[600px]
+        -translate-x-1/2
+        -translate-y-1/2
+
+        rounded-full
+
+        bg-[#92251C]
+
+        shadow-[0_25px_60px_rgba(80,20,10,0.14)]
+      "
+    />
+
+
+    {/* ========
+        SIDE MARKER — LEFT
+    ========= */}
+    <span
+      className="
+        pointer-events-none
+        absolute
+        left-[10%]
+        top-1/2
+
+        z-20
+
+        hidden
+        h-4
+        w-4
+        -translate-y-1/2
+
+        rounded-full
+
+        bg-[#92251C]
+
+        ring-4
+        ring-[#F7F0E5]
+
+        sm:block
+      "
+    />
+
+
+    {/* ========
+        SIDE MARKER — RIGHT
+    ========= */}
+    <span
+      className="
+        pointer-events-none
+        absolute
+        right-[10%]
+        top-1/2
+
+        z-20
+
+        hidden
+        h-4
+        w-4
+        -translate-y-1/2
+
+        rounded-full
+
+        bg-[#92251C]
+
+        ring-4
+        ring-[#F7F0E5]
+
+        sm:block
+      "
+    />
+
+
+    {/* ========
+        FOOD IMAGE
+    ========= */}
+    <div
+      className="
+        relative
+        z-10
+        aspect-square
+
+        w-[64%]
+        max-w-[440px]
+
+        overflow-hidden
+
+        rounded-full
+
+        border-[8px]
+        border-white
+
+        bg-white
+
+        shadow-[0_20px_45px_rgba(0,0,0,0.16)]
+
+        sm:w-[64%]
+        sm:max-w-[470px]
+        sm:border-[9px]
+
+        md:w-[64%]
+        md:max-w-[500px]
+
+        lg:w-[66%]
+        lg:max-w-[520px]
+
+        xl:w-[67%]
+        xl:max-w-[550px]
+
+        2xl:max-w-[580px]
+      "
+    >
+      <img
+        key={activePlate}
+        src={heroPlates[activePlate].src}
+        alt={heroPlates[activePlate].alt}
+        className={`
+          h-full
+          w-full
+          origin-center
+          object-cover
+
+          transition-all
+          duration-700
+          ease-out
+
+          ${
+            plateEntered
+              ? "rotate-0 scale-100 opacity-100"
+              : "-rotate-[16deg] scale-105 opacity-0"
+          }
+        `}
+      />
+    </div>
+  </div>
+</div>
+
+
+            </div>
+          </div>
+
+              {/* FOOD CATEGORIES */}
+              <section className="w-full bg-[#f5eee3] px-4 pb-16 pt-2 sm:px-6 lg:px-8 xl:px-10">
+                <div className="mx-auto w-full max-w-[1100px] text-center">
+                  <div className="mb-3 flex items-center justify-center gap-3 text-[11px] font-semibold tracking-[0.22em] text-[#B08D3E]">
+                    <span className="h-px w-7 bg-[#C9A24B]" />
+                    FOOD CATEGORIES
+                    <span className="h-px w-7 bg-[#C9A24B]" />
+                  </div>
+
+                  <h2 className="font-serif text-2xl font-bold text-[#1d1d1d] sm:text-3xl">
+                    Palates Are <span className="text-[#92251c]">Surprised</span>
+                  </h2>
+
+                  <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+                    {foodCategories.map(({ label, icon: Icon }) => (
+                      <div
+                        key={label}
+                        className="flex flex-col items-center gap-3 rounded-2xl border border-[#EADFC9] bg-white px-4 py-7 shadow-[0_2px_10px_rgba(146,37,28,0.06)] transition duration-300 hover:-translate-y-1 hover:shadow-[0_8px_20px_rgba(146,37,28,0.12)]"
+                      >
+                        <Icon className="h-7 w-7 text-[#92251c]" strokeWidth={1.5} />
+                        <span className="text-[13px] font-semibold tracking-wide text-[#1d1d1d]">
+                          {label}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </section>
+
+          {/* most ordered dishes */}
+
+          <section className="w-full bg-[#f5eee3] px-4 py-14 sm:px-6 lg:px-8 xl:px-10">
+            <div className="mx-auto w-full max-w-[1280px] lg:max-w-[1400px] xl:max-w-[1500px] 2xl:max-w-[1650px]">
+              {/*  HEADER  */}
+              <div className="mb-10 flex flex-col gap-7 md:flex-row md:items-end md:justify-between">
+                <div>
+                  <div className="mb-3 flex items-center gap-2">
+                    <span className="text-[15px] text-[#a32d2d]">✦</span>
+
+                    <span className="text-[12px] font-bold uppercase tracking-[0.18em] text-[#8f2b2b]">
+                      Most Ordered Dishes
+                    </span>
+                  </div>
+
+                  <p className="mt-3 max-w-[420px] text-[15px] leading-6 text-[#4f4842] sm:text-[16px]">
+                    Handpicked favorites, prepared with passion and crafted to
+                    perfection.
+                  </p>
+                </div>
+
+                <button className="group flex w-fit items-center gap-4 rounded-full border border-[#963333] px-5 py-2.5 text-[13px] font-medium text-[#963333] transition-all duration-300 hover:bg-[#963333] hover:text-white">
+                  <span>View Full Menu</span>
+
+                  <span className="text-[20px] leading-none transition-transform duration-300 group-hover:translate-x-1">
+                    →
+                  </span>
+                </button>
+              </div>
+
+              {/* Menu Cards */}
+              <div className="relative z-20 pb-8 sm:pb-10 lg:pb-6">
+                <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 lg:gap-5">
+                  {menuCards.map((card, index) => (
+                    <MenuCard key={index} {...card} />
+                  ))}
+                </div>
+              </div>
+
+              {/* signature dishes header */}
+              <div className="mb-10 flex flex-col gap-7 md:flex-row md:items-end md:justify-between">
+                <div>
+                  <div className="mb-3 flex items-center gap-2">
+                    <span className="text-[15px] text-[#a32d2d]">✦</span>
+
+                    <span className="text-[12px] font-bold uppercase tracking-[0.18em] text-[#8f2b2b]">
+                      Our Signature Dishes
+                    </span>
+                  </div>
+
+                  <p className="mt-3 max-w-[420px] text-[15px] leading-6 text-[#4f4842] sm:text-[16px]">
+                    Handpicked favorites, prepared with passion and crafted to
+                    perfection.
+                  </p>
+                </div>
+
+                <button className="group flex w-fit items-center gap-4 rounded-full border border-[#963333] px-5 py-2.5 text-[13px] font-medium text-[#963333] transition-all duration-300 hover:bg-[#963333] hover:text-white">
+                  <span>View Full Menu</span>
+
+                  <span className="text-[20px] leading-none transition-transform duration-300 group-hover:translate-x-1">
+                    →
+                  </span>
+                </button>
+              </div>
+
+              {/* SPACING BETWEEN SECTIONS */}
+              <div className="h-8 sm:h-10 lg:h-12" />
+
+              {/*  DISH CARDS for signature dishes  */}
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                {dishes.map((dish, index) => (
+                  <div
+                    key={index}
+                    className="group overflow-hidden rounded-[17px] bg-[#fffaf2] shadow-[0_5px_18px_rgba(70,45,25,0.10)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(70,45,25,0.16)]"
+                  >
+                    {/* Image */}
+                    <div className="relative p-3 pb-0">
+                      <div className="relative aspect-[1.65/1] overflow-hidden rounded-[12px]">
+                        <img
+                          src={dish.image}
+                          alt={dish.title}
+                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                        />
+
+                        {/* Badge */}
+                        <div className="absolute right-2.5 top-2.5 flex h-9 w-9 items-center justify-center rounded-full bg-[#fffaf2] text-[17px] shadow-md">
+                          {dish.badge}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="px-3.5 pb-4 pt-3">
+                      <h3 className="text-[18px] font-bold leading-6 text-[#211a16]">
+                        {dish.title}
+                      </h3>
+
+                      <p className="mt-1.5 min-h-[48px] text-[14px] leading-[1.45] text-[#5b514a]">
+                        {dish.description}
+                      </p>
+
+                      {/* Bottom */}
+                      <div className="mt-4 flex items-center justify-between">
+                        <span className="text-[19px] font-bold text-[#a02f2f]">
+                          {dish.price}
+                        </span>
+
+                        <button className="group/cart flex items-center gap-2 text-[14px] font-semibold text-[#9c3030] transition-colors hover:text-[#7e2020]">
+                          <span>Add to Cart</span>
+
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                            className="h-[20px] w-[20px] transition-transform duration-200 group-hover/cart:scale-110"
+                          >
+                            <path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.5L21 8H6" />
+                            <circle cx="10" cy="20" r="1.3" />
+                            <circle cx="18" cy="20" r="1.3" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* SPACING BETWEEN SECTIONS */}
+              <div className="h-8 sm:h-10 lg:h-12" />
+
+              <div className="mb-10 flex flex-col gap-7 md:flex-row md:items-end md:justify-between">
+                <div>
+                  <div className="mb-3 flex items-center gap-2">
+                    <span className="text-[15px] text-[#a32d2d]">✦</span>
+
+                    <span className="text-[12px] font-bold uppercase tracking-[0.18em] text-[#8f2b2b]">
+                      Most popular
+                    </span>
+                  </div>
+
+                  <p className="mt-3 max-w-[420px] text-[15px] leading-6 text-[#4f4842] sm:text-[16px]">
+                    Handpicked favorites, prepared with passion and crafted to
+                    perfection.
+                  </p>
+                </div>
+
+                <button className="group flex w-fit items-center gap-4 rounded-full border border-[#963333] px-5 py-2.5 text-[13px] font-medium text-[#963333] transition-all duration-300 hover:bg-[#963333] hover:text-white">
+                  <span>View Full Menu</span>
+
+                  <span className="text-[20px] leading-none transition-transform duration-300 group-hover:translate-x-1">
+                    →
+                  </span>
+                </button>
+              </div>
+
+              {/* SPACING BETWEEN SECTIONS */}
+              <div className="h-8 sm:h-10 lg:h-12" />
+
+              {/*  DISH CARDS 1 */}
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                {dishes.map((dish, index) => (
+                  <div
+                    key={index}
+                    className="group overflow-hidden rounded-[17px] bg-[#fffaf2] shadow-[0_5px_18px_rgba(70,45,25,0.10)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(70,45,25,0.16)]"
+                  >
+                    {/* Image */}
+                    <div className="relative p-3 pb-0">
+                      <div className="relative aspect-[1.65/1] overflow-hidden rounded-[12px]">
+                        <img
+                          src={dish.image}
+                          alt={dish.title}
+                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                        />
+
+                        {/* Badge */}
+                        <div className="absolute right-2.5 top-2.5 flex h-9 w-9 items-center justify-center rounded-full bg-[#fffaf2] text-[17px] shadow-md">
+                          {dish.badge}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="px-3.5 pb-4 pt-3">
+                      <h3 className="text-[18px] font-bold leading-6 text-[#211a16]">
+                        {dish.title}
+                      </h3>
+
+                      <p className="mt-1.5 min-h-[48px] text-[14px] leading-[1.45] text-[#5b514a]">
+                        {dish.description}
+                      </p>
+
+                      {/* Bottom */}
+                      <div className="mt-4 flex items-center justify-between">
+                        <span className="text-[19px] font-bold text-[#a02f2f]">
+                          {dish.price}
+                        </span>
+
+                        <button className="group/cart flex items-center gap-2 text-[14px] font-semibold text-[#9c3030] transition-colors hover:text-[#7e2020]">
+                          <span>Add to Cart</span>
+
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                            className="h-[20px] w-[20px] transition-transform duration-200 group-hover/cart:scale-110"
+                          >
+                            <path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.5L21 8H6" />
+                            <circle cx="10" cy="20" r="1.3" />
+                            <circle cx="18" cy="20" r="1.3" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* SPACING BETWEEN SECTIONS */}
+              <div className="h-8 sm:h-10 lg:h-12" />
+
+              {/* DISH CARD 2 */}
+              <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 ">
+                {dishes.map((dish, index) => (
+                  <div
+                    key={index}
+                    className="group overflow-hidden rounded-[17px] bg-[#fffaf2] shadow-[0_5px_18px_rgba(70,45,25,0.10)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(70,45,25,0.16)] "
+                  >
+                    {/* Image */}
+                    <div className="relative p-3 pb-0">
+                      <div className="relative aspect-[1.65/1] overflow-hidden rounded-[12px]">
+                        <img
+                          src={dish.image}
+                          alt={dish.title}
+                          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+                        />
+
+                        {/* Badge */}
+                        <div className="absolute right-2.5 top-2.5 flex h-9 w-9 items-center justify-center rounded-full bg-[#fffaf2] text-[17px] shadow-md">
+                          {dish.badge}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Content */}
+                    <div className="px-3.5 pb-4 pt-3">
+                      <h3 className="text-[18px] font-bold leading-6 text-[#211a16]">
+                        {dish.title}
+                      </h3>
+
+                      <p className="mt-1.5 min-h-[48px] text-[14px] leading-[1.45] text-[#5b514a]">
+                        {dish.description}
+                      </p>
+
+                      {/* Bottom */}
+                      <div className="mt-4 flex items-center justify-between">
+                        <span className="text-[19px] font-bold text-[#a02f2f]">
+                          {dish.price}
+                        </span>
+
+                        <button className="group/cart flex items-center gap-2 text-[14px] font-semibold text-[#9c3030] transition-colors hover:text-[#7e2020]">
+                          <span>Add to Cart</span>
+
+                          <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.8"
+                            className="h-[20px] w-[20px] transition-transform duration-200 group-hover/cart:scale-110"
+                          >
+                            <path d="M3 4h2l2.4 11.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.5L21 8H6" />
+                            <circle cx="10" cy="20" r="1.3" />
+                            <circle cx="18" cy="20" r="1.3" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/*  AMBIENCE  */}
+              <div className="mt-8 overflow-hidden rounded-[17px] bg-[#1d2a1d]">
+                <div className="grid min-h-[305px] grid-cols-1 lg:grid-cols-2">
+                  {/* Left */}
+                  <div className="relative flex flex-col justify-center overflow-hidden px-8 py-10 sm:px-12 lg:px-[70px]">
+                    {/* Decorative leaf */}
+                    <div className="pointer-events-none absolute -bottom-16 right-0 opacity-20">
+                      <svg
+                        viewBox="0 0 220 300"
+                        className="h-[280px] w-[210px]"
+                        fill="none"
+                      >
+                        <path
+                          d="M105 300C110 230 125 145 180 55"
+                          stroke="white"
+                          strokeWidth="1.2"
+                        />
+                        <path
+                          d="M126 205C95 178 75 150 62 118C94 126 118 151 126 205Z"
+                          stroke="white"
+                          strokeWidth="1.2"
+                        />
+                        <path
+                          d="M143 165C116 139 104 112 101 82C128 96 143 124 143 165Z"
+                          stroke="white"
+                          strokeWidth="1.2"
+                        />
+                        <path
+                          d="M109 245C74 226 49 199 37 165C72 177 98 203 109 245Z"
+                          stroke="white"
+                          strokeWidth="1.2"
+                        />
+                        <path
+                          d="M157 119C145 91 147 63 158 37C177 59 175 91 157 119Z"
+                          stroke="white"
+                          strokeWidth="1.2"
+                        />
+                        <path
+                          d="M92 270C62 265 35 247 17 219C48 219 76 237 92 270Z"
+                          stroke="white"
+                          strokeWidth="1.2"
+                        />
+                      </svg>
+                    </div>
+
+                    <div className="relative z-10">
+                      {/* Label */}
+                      <div className="mb-3 flex items-center gap-2">
+                        <span className="text-[15px] text-[#e6bd67]">✦</span>
+
+                        <span className="text-[12px] font-bold uppercase tracking-[0.18em] text-[#d8b86a]">
+                          Ambience
+                        </span>
+                      </div>
+
+                      <h3 className="max-w-[500px] text-[28px] font-bold leading-[1.2] text-[#f7f0e5] sm:text-[31px]">
+                        Good Food. Great Ambience.
+                        <br />
+                        Unforgettable Moments.
+                      </h3>
+
+                      <p className="mt-3 max-w-[480px] text-[14px] leading-6 text-[#d4d0c7] sm:text-[15px]">
+                        Step into a warm and welcoming space where every detail
+                        is designed for your comfort and delight.
+                      </p>
+
+                      <button className="group mt-6 flex w-fit items-center gap-4 rounded-full border border-[#d4ad55] px-5 py-2.5 text-[13px] font-medium text-[#e2bd6c] transition-all duration-300 hover:bg-[#d4ad55] hover:text-[#1d2a1d]">
+                        <span>Explore Our Space</span>
+
+                        <span className="text-[19px] transition-transform duration-300 group-hover:translate-x-1">
+                          →
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Right Image */}
+                  <div className="relative min-h-[260px] overflow-hidden lg:min-h-full">
+                    <img
+                      src={goodfoodbg}
+                      alt="Restaurant ambience"
+                      className="absolute inset-0 h-full w-full object-cover"
+                    />
+
+                    {/* Subtle overlay */}
+                    <div className="absolute inset-0 bg-black/10" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </section>
+        
+        {/* Trust Section */}
+        <section className="bg-[#f5eee3] px-5 py-20 sm:px-6 lg:px-8">
+          <div className="mx-auto w-full max-w-[1280px] lg:max-w-[1400px] xl:max-w-[1500px] 2xl:max-w-[1650px]">
+            <div className="mx-auto mb-12 max-w-3xl text-center sm:mb-14">
+              <h2 className="text-2xl font-medium tracking-tight text-neutral-900 sm:text-3xl lg:text-[34px]">
+                Made With Care. Served With Trust.
+              </h2>
+
+              <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-neutral-700 sm:text-base sm:leading-7">
+                From authentic recipes to fresh ingredients, every dish is
+                prepared with care, quality, and the standards you can taste in
+                every bite.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {trustCards.map((card, index) => {
+                const cardColors = [
+                  "#0F5C4D", // Silk Green
+                  "#123B66", // Sapphire Blue
+                  "#C9A227", // Champagne Gold
+                  "#8B1E2D", // Burgundy Red
+                ];
+
+                const bgColor = cardColors[index % cardColors.length];
+
+                return (
+                  <div
+                    key={index}
+                    style={{ backgroundColor: bgColor }}
+                    className="group relative h-[390px] overflow-hidden rounded-[22px] border border-white/20 transition-all duration-500 hover:-translate-y-1 hover:shadow-[0_20px_50px_rgba(20,20,20,0.18)]"
+                  >
+                    {/* Soft background glow */}
+                    <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-white/10 blur-3xl transition-all duration-700 group-hover:bg-white/20" />
+
+                    {/* Card Content */}
+                    <div className="relative z-20 p-7 lg:p-8">
+                      {/* Small index */}
+                      <div className="mb-5 flex items-center gap-3">
+                        <span className="text-[11px] font-medium tracking-[0.2em] text-white/70">
+                          0{index + 1}
+                        </span>
+                      </div>
+
+                      <h3 className="max-w-[280px] text-[25px] font-semibold leading-[1.08] tracking-[-0.02em] text-white lg:text-[27px]">
+                        {card.title}
+                      </h3>
+
+                      <p className="mt-4 max-w-[285px] text-[14px] leading-[1.7] text-white/75">
+                        {card.description}
+                      </p>
+                    </div>
+
+                    {/* Image area */}
+                    <div className="absolute bottom-0 left-0 right-0 z-10 h-[215px]">
+                      {/* Image fade */}
+                      <div className="absolute inset-x-0 top-0 z-10 h-20 bg-gradient-to-b from-transparent to-transparent" />
+
+                      <div className="absolute inset-0 flex items-end justify-center">
+                        <img
+                          src={card.icon}
+                          alt={card.title}
+                          className="h-[215px] w-full object-contain object-bottom transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Bottom subtle gradient */}
+                    <div className="pointer-events-none absolute bottom-0 left-0 right-0 z-20 h-20 bg-gradient-to-t from-black/15 to-transparent" />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+     
+        {/* trust and quality */}
+        <section className="relative w-full overflow-hidden bg-[#F5F1E8]">
+          {/* Very subtle background texture */}
+          <div
+            className="absolute inset-0 bg-cover bg-center opacity-[0.10]"
+            style={{
+              backgroundImage: "url('/images/trust-bg.jpg')",
+            }}
+          />
+
+          {/* Soft vignette */}
+          <div className="absolute inset-0 bg-[#f5f1e8]/20" />
+
+          {/* Responsive Full-Width Container */}
+          <div
+            className="relative mx-auto w-full max-w-[1280px] px-6 py-20
+                  sm:px-10 sm:py-24
+                  lg:max-w-[1400px] lg:px-12 lg:py-28
+                  xl:max-w-[1500px] xl:px-16 xl:py-32
+                  2xl:max-w-[1650px] 2xl:px-20 2xl:py-36"
+          >
+            {/* Header */}
+            <div
+              className="mx-auto w-full max-w-3xl text-center
+                    xl:max-w-4xl
+                    2xl:max-w-5xl"
+            >
+              {/* Eyebrow */}
+              <div
+                className="mb-5 flex items-center justify-center
+                      xl:mb-6
+                      2xl:mb-7"
+              >
+                <span
+                  className="text-[10px] font-medium uppercase tracking-[0.3em] text-[#92251c]
+                         sm:text-xs
+                         xl:text-sm
+                         2xl:text-[15px]"
+                >
+                  Our Promise
+                </span>
+              </div>
+
+              {/* Heading */}
+              <h2
+                className="font-serif text-3xl font-medium leading-tight tracking-[-0.02em] text-[#171717]
+                     sm:text-4xl
+                     lg:text-[46px]
+                     xl:text-[52px]
+                     2xl:text-[60px]"
+              >
+                Made With Care.
+               
+                <span className="text-[#92251c]"> Served With Trust.</span>
+              </h2>
+
+              {/* Description */}
+              <p
+                className="mx-auto mt-6 max-w-2xl text-sm leading-7 text-neutral-600
+                    sm:text-[15px]
+                    lg:mt-7
+                    xl:mt-8 xl:max-w-3xl xl:text-base xl:leading-8
+                    2xl:mt-9 2xl:max-w-4xl 2xl:text-[17px] 2xl:leading-8"
+              >
+                From authentic recipes to the finest ingredients, every dish is
+                prepared with care, quality, and the standards you can taste in
+                every bite.
+              </p>
+            </div>
+
+            {/* Trust Items */}
+            <div
+              className="mx-auto mt-12 grid w-full grid-cols-1
+                    sm:mt-14 sm:grid-cols-2
+                    lg:mt-16 lg:grid-cols-3
+                    xl:mt-20
+                    2xl:mt-24"
+            >
+              {trustItems.map((item) => (
+                <div
+                  key={item.title}
+                  className="
+            group
+            flex
+            min-h-[300px]
+            flex-col
+            items-center
+            justify-center
+            px-8
+            py-12
+            text-center
+
+            sm:min-h-[320px]
+            sm:px-10
+
+            lg:min-h-[340px]
+            lg:px-12
+
+            xl:min-h-[360px]
+            xl:px-16
+
+            2xl:min-h-[390px]
+            2xl:px-20
+          "
+                >
+                  {/* Icon */}
+                  <div
+                    className="
+              flex h-[105px] w-[105px]
+              items-center justify-center
+
+              sm:h-[115px] sm:w-[115px]
+
+              lg:h-[125px] lg:w-[125px]
+
+              xl:h-[135px] xl:w-[135px]
+
+              2xl:h-[150px] 2xl:w-[150px]
+            "
+                  >
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      className="
+                h-full
+                w-full
+                object-contain
+                opacity-90
+                transition-all
+                duration-700
+                ease-out
+                group-hover:scale-105
+                group-hover:opacity-100
+              "
+                    />
+                  </div>
+
+                  {/* Title */}
+                  <h3
+                    className="
+              mt-7
+              font-serif
+              text-[19px]
+              font-medium
+              tracking-tight
+              text-[#171717]
+
+              sm:text-xl
+
+              lg:mt-8
+              lg:text-[21px]
+
+              xl:mt-9
+              xl:text-[23px]
+
+              2xl:mt-10
+              2xl:text-[25px]
+            "
+                  >
+                    {item.title}
+                  </h3>
+
+                  {/* Description */}
+                  <p
+                    className="
+              mt-3
+              max-w-[230px]
+              text-[13px]
+              leading-6
+              text-neutral-500
+
+              sm:text-sm
+
+              lg:mt-4
+              lg:max-w-[260px]
+
+              xl:max-w-[280px]
+              xl:text-[15px]
+              xl:leading-7
+
+              2xl:max-w-[300px]
+              2xl:text-base
+              2xl:leading-7
+            "
+                  >
+                    {item.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* Bottom statement */}
+            <div
+              className="
+        mt-16
+        text-center
+
+        sm:mt-20
+
+        lg:mt-24
+
+        xl:mt-28
+
+        2xl:mt-32
+      "
+            >
+              <p
+                className="
+          font-serif
+          text-base
+          italic
+          text-[#92251c]/80
+
+          sm:text-lg
+
+          xl:text-xl
+
+          2xl:text-2xl
+        "
+              >
+                "Every meal is prepared with purpose."
+              </p>
+            </div>
+          </div>
+        </section>
+        {/* Story Telling */}
+        <section className="w-full overflow-hidden bg-[#f5eee3]">
+          <div className="mx-auto w-full max-w-[1650px] px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10 xl:px-10">
+            {/* Row 1 — Image Left / Content Right */}
+            <div className="grid w-full grid-cols-1 overflow-hidden rounded-[24px] md:grid-cols-2 lg:rounded-[28px]">
+              {/* Image 1 */}
+              <div className="group relative h-[45vh] min-h-[360px] w-full overflow-hidden md:h-[560px] lg:h-[600px] xl:h-[640px]">
+                <Image
+                  src={images[0].src}
+                  alt={images[0].alt}
+                  fill
+                  priority
+                  sizes="(max-width: 767px) 100vw, 50vw"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                />
+              </div>
+
+              {/* Content 1 */}
+              <div className="flex min-h-[430px] w-full items-center justify-center bg-[#faf9f6] px-7 py-14 text-center sm:px-12 sm:py-16 md:min-h-0 md:px-12 lg:px-16 xl:px-20 2xl:px-24">
+                <div className="max-w-[560px]">
+                  <img
+                    src={serving}
+                    alt="Every meal served with love"
+                    className="mx-auto mb-6 h-auto w-[90px] sm:mb-7 sm:w-[110px] lg:w-[120px]"
+                  />
+
+                  <span className="mb-4 block text-[11px] font-medium uppercase tracking-[0.3em] text-[#92251c]/70 sm:text-[12px]">
+                    Our Story
+                  </span>
+
+                  <h2 className="mb-5 font-serif text-[30px] leading-[1.12] text-[#252525] sm:text-[36px] lg:mb-6 lg:text-[44px] xl:text-[46px]">
+                    A Tradition Made With Passion
+                  </h2>
+
+                  <p className="font-serif text-[16px] leading-[1.8] text-[#555] sm:text-[17px] lg:text-[18px]">
+                    Every dish carries a story of tradition, craftsmanship, and
+                    generations of culinary passion. From carefully selected
+                    ingredients to the final presentation, we believe every meal
+                    deserves to be remembered.
+                  </p>
+
+                  <div className="mt-7 flex items-center justify-center lg:mt-8">
+                    <span className="h-px w-10 bg-[#92251c]/30 sm:w-12" />
+                    <span className="mx-3 text-[15px] text-[#92251c]/70 sm:mx-4 sm:text-[16px]">
+                      ✦
+                    </span>
+                    <span className="h-px w-10 bg-[#92251c]/30 sm:w-12" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* SPACE BETWEEN STORY ROWS */}
+            <div className="h-6 sm:h-8 lg:h-10" />
+
+            {/* Row 2 — Content Left / Image Right */}
+            <div className="grid w-full grid-cols-1 overflow-hidden rounded-[24px] md:grid-cols-2 lg:rounded-[28px]">
+              {/* Content 2 */}
+              <div className="order-2 flex min-h-[430px] w-full items-center justify-center bg-[#f5f3ef] px-7 py-14 text-center sm:px-12 sm:py-16 md:order-1 md:min-h-0 md:px-12 lg:px-16 xl:px-20 2xl:px-24">
+                <div className="max-w-[560px]">
+                  <img
+                    src={serving}
+                    alt="Every meal served with love"
+                    className="mx-auto mb-6 h-auto w-[90px] sm:mb-7 sm:w-[110px] lg:w-[120px]"
+                  />
+
+                  <span className="mb-4 block text-[11px] font-medium uppercase tracking-[0.3em] text-[#92251c]/70 sm:text-[12px]">
+                    The Craft
+                  </span>
+
+                  <h2 className="mb-5 font-serif text-[30px] leading-[1.12] text-[#252525] sm:text-[36px] lg:mb-6 lg:text-[44px] xl:text-[46px]">
+                    Where Every Detail Matters
+                  </h2>
+
+                  <p className="font-serif text-[16px] leading-[1.8] text-[#555] sm:text-[17px] lg:text-[18px]">
+                    We bring together timeless techniques and carefully chosen
+                    flavours to create an experience that feels both familiar
+                    and extraordinary. It is this attention to detail that makes
+                    every plate part of our story.
+                  </p>
+
+                  <div className="mt-7 flex items-center justify-center lg:mt-8">
+                    <span className="h-px w-10 bg-[#92251c]/30 sm:w-12" />
+                    <span className="mx-3 text-[15px] text-[#92251c]/70 sm:mx-4 sm:text-[16px]">
+                      ✦
+                    </span>
+                    <span className="h-px w-10 bg-[#92251c]/30 sm:w-12" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Image 2 */}
+              <div className="group relative order-1 h-[45vh] min-h-[360px] w-full overflow-hidden md:order-2 md:h-[560px] lg:h-[600px] xl:h-[640px]">
+                <Image
+                  src={images[1].src}
+                  alt={images[1].alt}
+                  fill
+                  sizes="(max-width: 767px) 100vw, 50vw"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+                />
+              </div>
+            </div>
+
+            {/* SPACE BEFORE FULL WIDTH IMAGE */}
+            <div className="h-6 sm:h-8 lg:h-10" />
+
+            {/* Row 3 — Full Width Image */}
+            <div className="group relative h-[45vh] min-h-[360px] w-full overflow-hidden rounded-[24px] sm:h-[50vh] lg:h-[600px] xl:h-[650px] lg:rounded-[28px]">
+              <Image
+                src={images[2].src}
+                alt={images[2].alt}
+                fill
+                sizes="100vw"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
+              />
+            </div>
+          </div>
+        </section>
+        {/* CUSTOMER REVIEWS */}
+        <CustomerReviews />
+        {/* Order Options Section */}
+        <section className="bg-[#f5eee3] px-5 py-20 sm:px-6 lg:px-8">
+          <div className="mx-auto w-full max-w-[1280px] lg:max-w-[1400px] xl:max-w-[1500px] 2xl:max-w-[1650px]">
+            {/* Heading */}
+
+            {/* Options */}
+            <section className="bg-[#f5eee3] px-5 py-20 sm:px-6 lg:px-8">
+              <div className="mx-auto w-full max-w-[1280px] lg:max-w-[1400px] xl:max-w-[1500px] 2xl:max-w-[1650px]">
+                {/* Heading */}
+                <div className="mx-auto mb-12 max-w-3xl text-center sm:mb-14">
+                  <h2 className="text-2xl font-medium tracking-tight text-neutral-900 sm:text-3xl lg:text-[34px]">
+                    Order in Your Preferable Way
+                  </h2>
+
+                  <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-neutral-700 sm:text-base sm:leading-7">
+                    From authentic recipes to fresh ingredients, every dish is
+                    prepared with care, quality, and the standards you can taste
+                    in every bite.
+                  </p>
+                </div>
+
+                {/* Options */}
+                <div className="grid grid-cols-1 gap-5 md:grid-cols-3">
+                  {orderOptions.map((option) => {
+                    const Icon = option.icon;
+
+                    return (
+                      <button
+                        key={option.type}
+                        type="button"
+                        onClick={() => handleOrder(option.type)}
+                        className="group relative overflow-hidden rounded-[24px] border border-[#92251c]/20 bg-[#fffaf3] p-7 text-left transition-all duration-300 hover:-translate-y-1 hover:border-[#92251c] hover:shadow-[0_20px_45px_rgba(80,55,25,0.10)]"
+                      >
+                        {/* Icon */}
+                        <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[#92251c]/30 bg-[#92251c]/5">
+                          <Icon
+                            size={21}
+                            strokeWidth={1.6}
+                            className="text-[#92251c]"
+                          />
+                        </div>
+
+                        {/* Content */}
+                        <div className="mt-7">
+                          <h3 className="text-xl font-semibold text-[#181818]">
+                            {option.title}
+                          </h3>
+
+                          <p className="mt-2 max-w-[280px] text-sm leading-6 text-[#6b6257]">
+                            {option.description}
+                          </p>
+                        </div>
+
+                        {/* Bottom */}
+                        <div className="mt-8 flex items-center justify-between">
+                          <span className="text-xs font-medium uppercase tracking-[0.12em] text-[#92251c]">
+                            {option.available ? "Available now" : "Unavailable"}
+                          </span>
+
+                          <span className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1d1b18] text-white transition-transform duration-300 group-hover:translate-x-1">
+                            →
+                          </span>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </section>
+          </div>
+        </section>
+        {/*  LOCATION & HOURS — PREMIUM VERSION  */}
+        <section className="w-full bg-[#F5F1E8] px-5 py-16 sm:px-8 md:px-12 lg:px-16 xl:px-20">
+      <div className="mx-auto max-w-[1500px]">
+
+        {/* Heading */}
+        <div className="mb-8 md:mb-10">
+          <p className="mb-3 text-xs font-medium uppercase tracking-[0.25em] text-[#92251C] sm:text-sm">
+            Find Your Way To Us
+          </p>
+
+          <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
+            <h2 className="font-serif text-4xl leading-[1.05] text-[#1E1B18] sm:text-5xl md:text-6xl">
+              Visit Al-Arafa
+            </h2>
+
+            <p className="max-w-md text-sm leading-6 text-[#1E1B18]/65 sm:text-base">
+              We're looking forward to welcoming you. Come for the flavours,
+              stay for the experience.
+            </p>
+          </div>
+        </div>
+
+        {/* Main Grid */}
+        <div className="grid gap-5 lg:grid-cols-[1.45fr_1fr]">
+
+          {/* ================= MAP ================= */}
+          <div className="relative min-h-[380px] overflow-hidden rounded-[24px] border border-black/5 bg-white shadow-[0_10px_40px_rgba(0,0,0,0.04)] sm:min-h-[460px] lg:min-h-[500px]">
+
+            <iframe
+              title="Al-Arafa Restaurant Location"
+              src={`https://www.google.com/maps?q=${encodeURIComponent(
+                address
+              )}&output=embed`}
+              className="absolute inset-0 h-full w-full border-0 grayscale-[0.7]"
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+
+            {/* Map overlay */}
+            <div className="pointer-events-none absolute inset-0 bg-[#F5F1E8]/5" />
+
+            {/* Directions Button */}
+            <a
+              href={mapUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="
+                absolute
+                bottom-5
+                left-5
+                right-5
+                flex
+                items-center
+                justify-center
+                gap-2
+                rounded-full
+                bg-[#92251C]
+                px-6
+                py-4
+                text-sm
+                font-medium
+                uppercase
+                tracking-[0.12em]
+                text-white
+                shadow-lg
+                transition-all
+                duration-300
+                hover:bg-[#7d1f18]
+                hover:shadow-xl
+                sm:left-auto
+                sm:right-5
+                sm:w-auto
+              "
+            >
+              Get Directions
+              <ArrowUpRight size={17} strokeWidth={1.8} />
+            </a>
+          </div>
+
+          {/* ================= CONTACT ================= */}
+          <div className="flex flex-col justify-between rounded-[24px] border border-black/5 bg-white p-7 shadow-[0_10px_40px_rgba(0,0,0,0.04)] sm:p-9 lg:p-10">
+
+            <div>
+
+              <div className="mb-8">
+                <p className="mb-2 text-xs font-medium uppercase tracking-[0.22em] text-[#92251C]">
+                  Get In Touch
+                </p>
+
+                <h3 className="font-serif text-3xl text-[#1E1B18] sm:text-4xl">
+                  We'd love to hear from you.
+                </h3>
+              </div>
+
+              {/* Contact Items */}
+              <div className="divide-y divide-black/10">
+
+                {/* Phone */}
+                <a
+                  href={`tel:${phone.replace(/\s/g, "")}`}
+                  className="group flex items-center gap-5 py-5 first:pt-0"
+                >
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#92251C]/10 text-[#92251C] transition-colors group-hover:bg-[#92251C] group-hover:text-white">
+                    <Phone size={20} strokeWidth={1.7} />
+                  </div>
+
+                  <div>
+                    <p className="mb-1 text-xs uppercase tracking-[0.16em] text-[#1E1B18]/45">
+                      Phone
+                    </p>
+                    <p className="text-base font-medium text-[#1E1B18]">
+                      {phone}
+                    </p>
+                  </div>
+                </a>
+
+                {/* Email */}
+                <a
+                  href={`mailto:${email}`}
+                  className="group flex items-center gap-5 py-5"
+                >
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#92251C]/10 text-[#92251C] transition-colors group-hover:bg-[#92251C] group-hover:text-white">
+                    <Mail size={20} strokeWidth={1.7} />
+                  </div>
+
+                  <div className="min-w-0">
+                    <p className="mb-1 text-xs uppercase tracking-[0.16em] text-[#1E1B18]/45">
+                      Email
+                    </p>
+                    <p className="truncate text-base font-medium text-[#1E1B18]">
+                      {email}
+                    </p>
+                  </div>
+                </a>
+
+                {/* WhatsApp */}
+                <a
+                  href={`https://wa.me/${whatsapp}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center gap-5 py-5"
+                >
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#92251C]/10 text-[#92251C] transition-colors group-hover:bg-[#92251C] group-hover:text-white">
+                    <MessageCircle size={20} strokeWidth={1.7} />
+                  </div>
+
+                  <div>
+                    <p className="mb-1 text-xs uppercase tracking-[0.16em] text-[#1E1B18]/45">
+                      WhatsApp
+                    </p>
+                    <p className="text-base font-medium text-[#1E1B18]">
+                      Chat with us
+                    </p>
+                  </div>
+                </a>
+
+                {/* Address */}
+                <a
+                  href={mapUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-start gap-5 py-5"
+                >
+                  <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#92251C]/10 text-[#92251C] transition-colors group-hover:bg-[#92251C] group-hover:text-white">
+                    <MapPin size={20} strokeWidth={1.7} />
+                  </div>
+
+                  <div>
+                    <p className="mb-1 text-xs uppercase tracking-[0.16em] text-[#1E1B18]/45">
+                      Address
+                    </p>
+                    <p className="max-w-sm text-base font-medium leading-6 text-[#1E1B18]">
+                      {address}
+                    </p>
+                  </div>
+                </a>
+
+              </div>
+            </div>
+
+            {/* Bottom message */}
+            <div className="mt-8 border-t border-black/10 pt-7">
+              <p className="font-serif text-xl italic text-[#92251C] sm:text-2xl">
+                Your table is waiting.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+        
+        {/* serving */}
+        <section className="relative w-full overflow-hidden bg-[#faf9f6]">
+          {/* AL-ARAFA watermark */}
+          <img
+            src={alarafa}
+            alt=""
+            aria-hidden="true"
+            className="
+      pointer-events-none
+      absolute
+      left-1/2
+      top-1/2
+      z-0
+      w-[115%]
+      max-w-none
+      -translate-x-1/2
+      -translate-y-1/2
+      opacity-[0.045]
+      select-none
+    "
+          />
+
+          {/* Main content */}
+          <div
+            className="
+      relative
+      z-10
+      mx-auto
+      flex
+      min-h-[520px]
+      w-full
+      max-w-[1500px]
+      flex-col
+      items-center
+      justify-center
+      px-6
+      py-20
+      text-center
+
+      sm:min-h-[560px]
+      sm:px-10
+      sm:py-24
+
+      lg:min-h-[650px]
+      lg:px-16
+      lg:py-28
+    "
+          >
+            {/* Serving icon */}
+            <img
+              src={serving}
+              alt="Every meal served with love"
+              className="
+        mb-8
+        h-auto
+        w-[120px]
+
+        sm:mb-9
+        sm:w-[140px]
+
+        md:w-[155px]
+
+        lg:mb-10
+        lg:w-[170px]
+      "
+            />
+
+            {/* Text */}
+            <div
+              className="
+        w-full
+        max-w-[900px]
+        text-[#252525]
+      "
+            >
+              <p
+                className="
+          font-serif
+          text-[20px]
+          font-normal
+          leading-[1.45]
+          tracking-[-0.01em]
+
+          sm:text-[23px]
+          sm:leading-[1.4]
+
+          md:text-[26px]
+
+          lg:text-[30px]
+          lg:leading-[1.38]
+
+          xl:text-[32px]
+        "
+              >
+                Inspired by the masterful strokes of Renaissance paintings,
+                where every hue carries not just aesthetic significance but also
+                cultural and symbolic depth. The deep red hues evoke passion,
+                sophistication, and a connection to the sacramental significance
+                found in Italian religious art.
+              </p>
+            </div>
+
+            {/* Bottom ornament */}
+            <div className="mt-10 flex flex-col items-center sm:mt-12 lg:mt-14">
+              <span
+                className="
+          block
+          h-12
+          w-px
+          bg-[#92251c]/20
+
+          sm:h-14
+          lg:h-16
+        "
+              />
+
+              <span
+                className="
+          mt-2
+          text-[18px]
+          text-[#92251c]/65
+
+          sm:text-[20px]
+        "
+              >
+                ✦
+              </span>
+            </div>
+          </div>
+        </section>
+        <div className="h-0" />
+      </div>
+    </>
+  );
+}
+
+/* 
+   CUSTOMER REVIEWS
+ */
+
+type CustomerReview = {
+  id: number;
+  name: string;
+  rating: number;
+  text: string;
+  date: string;
+  title?: string;
+  role?: string;
+};
+
+const customerReviews: CustomerReview[] = [
+  {
+    id: 1,
+    name: "Arun Kumar",
+    rating: 5,
+    text: "Absolutely loved the biryani. The flavour was amazing and the portion was generous.",
+    date: "2 weeks ago",
+  },
+  {
+    id: 2,
+    name: "Priya S",
+    rating: 5,
+    text: "One of the best dining experiences. Everything was fresh, hot and delicious.",
+    date: "1 month ago",
+  },
+  {
+    id: 3,
+    name: "Rahul M",
+    rating: 5,
+    text: "The biryani was excellent and the service was really quick. Will definitely order again.",
+    date: "1 month ago",
+  },
+  {
+    id: 4,
+    name: "Sneha R",
+    rating: 4,
+    text: "Great food and really good value. The chicken was perfectly cooked.",
+    date: "2 months ago",
+  },
+  {
+    id: 5,
+    name: "Vijay K",
+    rating: 5,
+    text: "Amazing taste. This has quickly become one of my favourite restaurants.",
+    date: "2 months ago",
+  },
+];
+
+function CustomerReviews() {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  const getCircularOffset = (index: number, active: number) => {
+    const length = customerReviews.length;
+    let offset = index - active;
+
+    if (offset > length / 2) offset -= length;
+    if (offset < -length / 2) offset += length;
+
+    return offset;
+  };
+
+  const animateToIndex = (nextIndex: number) => {
+    if (isAnimating) return;
+
+    setIsAnimating(true);
+    setActiveIndex(nextIndex);
+  };
+
+  const goNext = () => {
+    animateToIndex((activeIndex + 1) % customerReviews.length);
+  };
+
+  const goPrevious = () => {
+    animateToIndex(
+      (activeIndex - 1 + customerReviews.length) % customerReviews.length,
+    );
+  };
+
+  /*
+   * Intro animation
+   */
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.from(".reviews-heading", {
+        y: 24,
+        opacity: 0,
+        duration: 0.7,
+        ease: "power3.out",
+      });
+
+      gsap.from(".reviews-carousel", {
+        y: 30,
+        opacity: 0,
+        duration: 0.8,
+        delay: 0.08,
+        ease: "power3.out",
+      });
+
+      gsap.from(".google-review-card", {
+        y: 20,
+        opacity: 0,
+        duration: 0.7,
+        delay: 0.18,
+        ease: "power3.out",
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  /*
+   * Carousel positioning
+   */
+  useEffect(() => {
+    const cards = cardsRef.current.filter((card): card is HTMLDivElement =>
+      Boolean(card),
+    );
+
+    const isMobile = window.innerWidth < 768;
+
+    cards.forEach((card, index) => {
+      const offset = getCircularOffset(index, activeIndex);
+
+      const isCurrent = offset === 0;
+      const isSide = Math.abs(offset) === 1;
+
+      const moveDistance = isMobile
+        ? window.innerWidth * 0.76
+        : Math.min(window.innerWidth * 0.34, 470);
+
+      gsap.to(card, {
+        xPercent: -50,
+        x: offset * moveDistance,
+
+        scale: isCurrent ? 1 : isSide ? 0.9 : 0.78,
+
+        opacity: isCurrent ? 1 : isSide ? 0.45 : 0,
+
+        zIndex: isCurrent ? 30 : isSide ? 20 : 0,
+
+        duration: 0.6,
+        ease: "power3.inOut",
+
+        onComplete: () => {
+          if (isCurrent) {
+            setIsAnimating(false);
+          }
+        },
+      });
+    });
+  }, [activeIndex]);
+
+  /*
+   * Autoplay
+   */
+  useEffect(() => {
+    const timer = window.setInterval(() => {
+      if (!isAnimating) {
+        setActiveIndex((prev) => (prev + 1) % customerReviews.length);
+      }
+    }, 5000);
+
+    return () => window.clearInterval(timer);
+  }, [isAnimating]);
+
+  /*
+   * Responsive recalculation
+   */
+  useEffect(() => {
+    const handleResize = () => {
+      const cards = cardsRef.current.filter((card): card is HTMLDivElement =>
+        Boolean(card),
+      );
+
+      const isMobile = window.innerWidth < 768;
+
+      cards.forEach((card, index) => {
+        const offset = getCircularOffset(index, activeIndex);
+
+        const isCurrent = offset === 0;
+        const isSide = Math.abs(offset) === 1;
+
+        const moveDistance = isMobile
+          ? window.innerWidth * 0.76
+          : Math.min(window.innerWidth * 0.34, 470);
+
+        gsap.set(card, {
+          xPercent: -50,
+          x: offset * moveDistance,
+          scale: isCurrent ? 1 : isSide ? 0.9 : 0.78,
+          opacity: isCurrent ? 1 : isSide ? 0.45 : 0,
+          zIndex: isCurrent ? 30 : isSide ? 20 : 0,
+        });
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [activeIndex]);
+
+  return (
+    <section ref={sectionRef} className="w-full overflow-hidden bg-[#f5eee3]">
+      <div className="mx-auto w-full max-w-[1650px] px-4 py-14 sm:px-6 sm:py-16 md:px-8 md:py-20 lg:px-8 lg:py-24 xl:px-10">
+        {/* 
+          Heading
+       */}
+        <div className="reviews-heading mx-auto max-w-[760px] text-center">
+          <p className="text-[11px] font-medium uppercase tracking-[0.28em] text-[#92251c] sm:text-[12px]">
+            Customer Reviews
+          </p>
+
+          <h2 className="mt-4 font-serif text-[30px] leading-[1.1] tracking-[-0.02em] text-[#201d1a] sm:text-[38px] lg:text-[46px]">
+            Loved By Our Guests
+          </h2>
+
+          <p className="mx-auto mt-4 max-w-[600px] text-[14px] leading-7 text-[#6b6257] sm:text-[16px]">
+            1,000+ happy guests — your satisfaction, our priority.
+          </p>
+        </div>
+
+        {/* 
+          Carousel Wrapper
+       */}
+        <div className="reviews-carousel relative mt-10 sm:mt-12 lg:mt-14">
+          {/* Previous */}
+          <button
+            type="button"
+            onClick={goPrevious}
+            disabled={isAnimating}
+            aria-label="Previous review"
+            className="
+            absolute
+            left-0
+            top-1/2
+            z-40
+            hidden
+            h-12
+            w-12
+            -translate-y-1/2
+            items-center
+            justify-center
+            rounded-full
+            border
+            border-[#92251c]/20
+            bg-[#fffaf3]
+            text-[#92251c]
+            shadow-[0_8px_30px_rgba(70,40,20,0.08)]
+            transition-all
+            duration-300
+            hover:border-[#92251c]
+            hover:bg-[#92251c]
+            hover:text-white
+            disabled:pointer-events-none
+            disabled:opacity-40
+            md:flex
+            lg:left-2
+            xl:left-8
+          "
+          >
+            <ChevronLeft size={19} strokeWidth={1.8} />
+          </button>
+
+          {/* Next */}
+          <button
+            type="button"
+            onClick={goNext}
+            disabled={isAnimating}
+            aria-label="Next review"
+            className="
+            absolute
+            right-0
+            top-1/2
+            z-40
+            hidden
+            h-12
+            w-12
+            -translate-y-1/2
+            items-center
+            justify-center
+            rounded-full
+            border
+            border-[#92251c]/20
+            bg-[#fffaf3]
+            text-[#92251c]
+            shadow-[0_8px_30px_rgba(70,40,20,0.08)]
+            transition-all
+            duration-300
+            hover:border-[#92251c]
+            hover:bg-[#92251c]
+            hover:text-white
+            disabled:pointer-events-none
+            disabled:opacity-40
+            md:flex
+            lg:right-2
+            xl:right-8
+          "
+          >
+            <ChevronRight size={19} strokeWidth={1.8} />
+          </button>
+
+          {/* 
+            Cards
+         */}
+          <div
+            className="
+            relative
+            mx-auto
+            h-[470px]
+            w-full
+            max-w-[1200px]
+            overflow-hidden
+            sm:h-[480px]
+            md:h-[500px]
+            md:overflow-visible
+            lg:h-[510px]
+          "
+          >
+            {customerReviews.map((review, index) => {
+              const role =
+                "role" in review && review.role ? review.role : "Happy Guest";
+
+              const title =
+                "title" in review && review.title
+                  ? review.title
+                  : "A wonderful experience";
+
+              return (
+                <div
+                  key={review.id}
+                  ref={(element) => {
+                    cardsRef.current[index] = element;
+                  }}
+                  className="
+                  absolute
+                  left-1/2
+                  top-1/2
+                  w-[calc(100%-16px)]
+                  max-w-[880px]
+                  -translate-x-1/2
+                  -translate-y-1/2
+                  sm:w-[90%]
+                  md:w-[76%]
+                  lg:w-[72%]
+                  xl:w-[70%]
+                "
+                >
+                  <article
+                    className="
+                    relative
+                    min-h-[390px]
+                    overflow-hidden
+                    rounded-[24px]
+                    border
+                    border-[#92251c]/15
+                    bg-[#fffaf3]
+                    px-6
+                    py-7
+                    shadow-[0_18px_55px_rgba(70,45,25,0.08)]
+                    sm:min-h-[400px]
+                    sm:px-9
+                    sm:py-9
+                    md:min-h-[410px]
+                    md:px-11
+                    md:py-10
+                    lg:rounded-[28px]
+                    lg:px-12
+                  "
+                  >
+                    {/* Decorative glow */}
+                    <div className="pointer-events-none absolute -right-20 -top-20 h-[220px] w-[220px] rounded-full bg-[#92251c]/5 blur-3xl" />
+
+                    {/* Small decorative line */}
+                    <div className="absolute left-0 top-12 h-20 w-[3px] rounded-r-full bg-[#92251c]" />
+
+                    {/* 
+                      Review Header
+                   */}
+                    <div className="relative z-10 flex items-start justify-between gap-4 sm:gap-6">
+                      <div className="flex min-w-0 items-center gap-3 sm:gap-4">
+                        {/* Avatar */}
+                        <div
+                          className="
+                          flex
+                          h-12
+                          w-12
+                          shrink-0
+                          items-center
+                          justify-center
+                          rounded-full
+                          border
+                          border-[#92251c]/20
+                          bg-[#92251c]/5
+                          text-[15px]
+                          font-semibold
+                          text-[#92251c]
+                          sm:h-14
+                          sm:w-14
+                          sm:text-base
+                        "
+                        >
+                          {review.name.charAt(0).toUpperCase()}
+                        </div>
+
+                        {/* Customer */}
+                        <div className="min-w-0">
+                          <h3 className="truncate text-[15px] font-semibold tracking-[-0.01em] text-[#201d1a] sm:text-[17px]">
+                            {review.name}
+                          </h3>
+
+                          <p className="mt-1 text-[12px] text-[#80766b] sm:text-[13px]">
+                            {role}
+                          </p>
+                        </div>
+                      </div>
+
+                      {/* Stars */}
+                      <div className="flex shrink-0 gap-[2px] pt-1">
+                        {Array.from({ length: 5 }).map((_, starIndex) => (
+                          <Star
+                            key={starIndex}
+                            size={17}
+                            strokeWidth={0}
+                            fill="currentColor"
+                            className={
+                              starIndex < review.rating
+                                ? "text-[#92251c]"
+                                : "text-[#92251c]/15"
+                            }
+                          />
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* 
+                      Review Content
+                   */}
+                    <div className="relative z-10 mt-10 sm:mt-12">
+                      <span className="font-serif text-[44px] leading-none text-[#92251c]/15">
+                        “
+                      </span>
+
+                      <h4
+                        className="
+                        -mt-3
+                        max-w-[720px]
+                        font-serif
+                        text-[24px]
+                        font-medium
+                        leading-[1.2]
+                        tracking-[-0.02em]
+                        text-[#201d1a]
+                        sm:text-[28px]
+                        md:text-[32px]
+                      "
+                      >
+                        {title}
+                      </h4>
+
+                      <p
+                        className="
+                        mt-5
+                        max-w-[730px]
+                        text-[15px]
+                        leading-7
+                        text-[#625a51]
+                        sm:text-[16px]
+                        sm:leading-8
+                      "
+                      >
+                        {review.text}
+                      </p>
+                    </div>
+
+                    {/* Date */}
+                    <div className="relative z-10 mt-7 flex items-center gap-3">
+                      <span className="h-px w-7 bg-[#92251c]/30" />
+
+                      <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-[#887e73]">
+                        {review.date}
+                      </span>
+                    </div>
+                  </article>
+                </div>
+              );
+            })}
+          </div>
+
+          {/* 
+            Mobile Controls
+         */}
+          <div className="mt-3 flex items-center justify-center gap-5 md:hidden">
+            <button
+              type="button"
+              onClick={goPrevious}
+              disabled={isAnimating}
+              aria-label="Previous review"
+              className="
+              grid
+              h-10
+              w-10
+              place-items-center
+              rounded-full
+              border
+              border-[#92251c]/20
+              bg-[#fffaf3]
+              text-[#92251c]
+              shadow-sm
+              transition
+              active:scale-95
+              disabled:opacity-40
+            "
+            >
+              <ChevronLeft size={18} />
+            </button>
+
+            {/* Dots */}
+            <div className="flex items-center gap-1.5">
+              {customerReviews.map((review, index) => (
+                <button
+                  key={review.id}
+                  type="button"
+                  onClick={() => animateToIndex(index)}
+                  aria-label={`Go to review ${index + 1}`}
+                  className={`
+                  h-1.5
+                  rounded-full
+                  transition-all
+                  duration-300
+                  ${
+                    index === activeIndex
+                      ? "w-6 bg-[#92251c]"
+                      : "w-1.5 bg-[#92251c]/20"
+                  }
+                `}
+                />
+              ))}
+            </div>
+
+            <button
+              type="button"
+              onClick={goNext}
+              disabled={isAnimating}
+              aria-label="Next review"
+              className="
+              grid
+              h-10
+              w-10
+              place-items-center
+              rounded-full
+              border
+              border-[#92251c]/20
+              bg-[#fffaf3]
+              text-[#92251c]
+              shadow-sm
+              transition
+              active:scale-95
+              disabled:opacity-40
+            "
+            >
+              <ChevronRight size={18} />
+            </button>
+          </div>
+        </div>
+
+        {/* 
+          Restaurant Name
+       */}
+        <div className="mt-6 text-center sm:mt-8">
+          <p className="text-[13px] font-medium tracking-[0.02em] text-[#574f47]">
+            Al-Arafa Restaurant
+          </p>
+        </div>
+
+        {/* 
+          Space Before Google Review Card
+       */}
+        <div className="h-7 sm:h-9 lg:h-10" />
+
+        {/* 
+          Google Reviews
+       */}
+        <div
+          className="
+          google-review-card
+          mx-auto
+          max-w-[880px]
+          overflow-hidden
+          rounded-[22px]
+          border
+          border-[#92251c]/15
+          bg-[#fffaf3]
+          px-5
+          py-5
+          shadow-[0_12px_40px_rgba(70,45,25,0.06)]
+          sm:px-7
+          sm:py-6
+          lg:rounded-[24px]
+          lg:px-8
+        "
+        >
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+            {/* Google Details */}
+            <div className="flex items-center gap-4">
+              <div
+                className="
+                flex
+                h-12
+                w-12
+                shrink-0
+                items-center
+                justify-center
+                rounded-full
+                border
+                border-[#92251c]/15
+                bg-white
+                text-lg
+                font-bold
+                text-[#4285F4]
+              "
+              >
+                G
+              </div>
+
+              <div>
+                <h3 className="text-sm font-semibold text-[#201d1a]">
+                  Al-Arafa Restaurant
+                </h3>
+
+                <div className="mt-1.5 flex items-center gap-2">
+                  <div className="flex gap-0.5 text-[#92251c]">
+                    {Array.from({ length: 5 }).map((_, index) => (
+                      <Star
+                        key={index}
+                        size={13}
+                        strokeWidth={0}
+                        fill="currentColor"
+                      />
+                    ))}
+                  </div>
+
+                  <span className="text-xs font-semibold text-[#625a51]">
+                    4.8
+                  </span>
+                </div>
+
+                <p className="mt-1 text-[11px] text-[#8a8178] sm:text-xs">
+                  Based on 1502 reviews · powered by Google
+                </p>
+              </div>
+            </div>
+
+            {/* Google CTA */}
+            <a
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="
+              inline-flex
+              h-11
+              shrink-0
+              items-center
+              justify-center
+              gap-2
+              rounded-full
+              border
+              border-[#92251c]
+              px-5
+              text-[13px]
+              font-medium
+              text-[#92251c]
+              transition-all
+              duration-300
+              hover:bg-[#92251c]
+              hover:text-white
+              sm:w-auto
+            "
+            >
+              Review us on Google
+              <ArrowRight size={15} />
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function Feature({
+  icon,
+  title,
+  subtitle,
+  color,
+}: {
+  icon: React.ReactNode;
+  title: string;
+  subtitle: string;
+  color: string;
+}) {
+  return (
+    <div className="flex items-center gap-3">
+      <div
+        className={`grid h-14 w-14 place-items-center rounded-full bg-[#f4eee5] ${color}`}
+      >
+        {icon}
+      </div>
+
+      <div>
+        <p className="text-[16px] font-semibold text-[#383838]">{title}</p>
+        <p className="mt-0.5 text-[14px] text-[#666]">{subtitle}</p>
+      </div>
+    </div>
+  );
+}
+
+function MenuCard({
+  title,
+  description,
+  price,
+  icon: Icon,
+  image,
+  accent,
+}: {
+  title: string;
+  description: string;
+  price: string;
+  icon: React.ComponentType<{ size?: number; className?: string }>;
+  image: string;
+  accent: "green" | "orange" | "blue";
+}) {
+  const accentStyles = {
+    green: {
+      bg: "bg-[#eef0e7]",
+      icon: "text-[#607848]",
+      button: "bg-[#57763d]",
+      price: "text-[#57763d]",
+    },
+    orange: {
+      bg: "bg-[#f8eee8]",
+      icon: "text-[#e04b27]",
+      button: "bg-[#f0521c]",
+      price: "text-[#c44a24]",
+    },
+    blue: {
+      bg: "bg-[#e8f0f7]",
+      icon: "text-[#376b9d]",
+      button: "bg-[#316a9d]",
+      price: "text-[#315f8e]",
+    },
+  };
+
+  const style = accentStyles[accent];
+
+  return (
+    <article
+      className={`group flex min-h-[175px] items-center gap-5 rounded-[20px] ${style.bg} p-5 transition duration-300 hover:-translate-y-1 hover:shadow-xl`}
+    >
+      <img
+        src={image}
+        alt={title}
+        className="h-[110px] w-[110px] shrink-0 rounded-full object-cover shadow-lg"
+      />
+
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-2">
+          <Icon size={22} className={style.icon} />
+          <h3 className="truncate text-[17px] font-medium text-[#303030]">
+            {title}
+          </h3>
+        </div>
+
+        <p className="mt-2 max-w-[190px] text-[16px] leading-6 text-[#686868]">
+          {description}
+        </p>
+
+        <p className="mt-3 text-[15px] text-[#666]">
+          Starts from{" "}
+          <span className={`font-bold ${style.price}`}>{price}</span>
+        </p>
+      </div>
+
+      <button
+        className={`grid h-10 w-10 shrink-0 place-items-center rounded-full ${style.button} text-white transition group-hover:translate-x-1`}
+      >
+        <ArrowRight size={21} />
+      </button>
+    </article>
+  );
+}
+
+
+
+

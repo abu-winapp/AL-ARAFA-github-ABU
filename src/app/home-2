@@ -1,0 +1,2224 @@
+import Link from 'next/link';
+
+export default function Home() {
+  return (
+    <>
+      {/* Hero Section */}
+      <section
+        style={{
+          backgroundColor: '#9f0008',
+          height: '100vh',
+          maxHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        <div
+          style={{
+            maxWidth: '1280px',
+            margin: '0 auto',
+            padding: '40px 24px',
+            width: '100%',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              alignItems: 'center',
+              gap: '48px',
+            }}
+          >
+            {/* Left Content */}
+            <div style={{ flex: '1 1 500px', minWidth: '300px' }}>
+              {/* Badge */}
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  backgroundColor: 'rgba(255,255,255,0.1)',
+                  borderRadius: '9999px',
+                  padding: '8px 16px',
+                  marginBottom: '24px',
+                }}
+              >
+                <span style={{ color: '#FFC016', marginRight: '8px' }}>★</span>
+                <span
+                  style={{ color: 'white', fontSize: '14px', fontWeight: 500 }}
+                >
+                  4.9 Rating on Google Reviews
+                </span>
+              </div>
+
+              {/* Headline */}
+              <h1
+                style={{
+                  color: 'white',
+                  fontSize: 'clamp(2.5rem, 5vw, 3.75rem)',
+                  fontWeight: 700,
+                  lineHeight: 1.1,
+                  marginBottom: '24px',
+                }}
+              >
+                Authentic Salem-Style Biryani & South Indian Cuisine
+              </h1>
+
+              {/* Subheadline */}
+              <p
+                style={{
+                  color: 'rgba(255,255,255,0.9)',
+                  fontSize: '1.125rem',
+                  marginBottom: '32px',
+                  lineHeight: 1.6,
+                  maxWidth: '500px',
+                }}
+              >
+                Experience the rich, soulful flavors of traditional Tamil Nadu cuisine — where every dish tells a story of heritage and home.
+                <br /><br />
+                Slow-cooked to perfection with premium spices, handpicked ingredients, and time-honored recipes, each meal is crafted with patience, passion, and authenticity.
+                <br /><br />
+                From aromatic curries to comforting staples, every bite brings the warmth of South Indian hospitality to your plate.
+                <br /><br />
+                Served with love. Savored with joy
+              </p>
+
+              {/* CTA Buttons */}
+              <div
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '16px',
+                  marginBottom: '40px',
+                }}
+              >
+                <Link
+                  href="/menu"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    backgroundColor: '#FFC016',
+                    color: '#9f0008',
+                    padding: '16px 32px',
+                    borderRadius: '8px',
+                    fontWeight: 700,
+                    fontSize: '18px',
+                    textDecoration: 'none',
+                  }}
+                >
+                  <span>Order Now</span>
+                  <span>→</span>
+                </Link>
+                <a
+                  href="tel:+6589896289"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '12px',
+                    backgroundColor: 'white',
+                    color: '#9f0008',
+                    padding: '16px 32px',
+                    borderRadius: '8px',
+                    fontWeight: 700,
+                    fontSize: '18px',
+                    textDecoration: 'none',
+                  }}
+                >
+                  <span>📞</span>
+                  <span>Call to Order</span>
+                </a>
+              </div>
+
+              {/* Trust Indicators */}
+              <div
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  gap: '24px',
+                  color: 'rgba(255,255,255,0.9)',
+                  fontSize: '14px',
+                }}
+              >
+                {/* <div
+                  style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+                >
+                  <span style={{ color: '#FFC016' }}>🚚</span>
+                  <span>Free Delivery Over $30</span>
+                </div>
+                <div
+                  style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+                >
+                  <span style={{ color: '#FFC016' }}>⏱️</span>
+                  <span>30-45 Min Delivery</span>
+                </div> */}
+                {/* <div
+                  style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+                >
+                  <span style={{ color: '#FFC016' }}>✓</span>
+                  <span>100% Halal Certified</span>
+                </div> */}
+              </div>
+            </div>
+
+            {/* Right - Hero Image */}
+            <div
+              style={{
+                flex: '1 1 400px',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              <div
+                style={{
+                  width: '100%',
+                  maxWidth: '420px',
+                  aspectRatio: '1/1',
+                  position: 'relative',
+                }}
+              >
+                {/* Decorative Ring */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: 0,
+                    border: '4px solid rgba(255,192,22,0.3)',
+                    borderRadius: '50%',
+                  }}
+                ></div>
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: '16px',
+                    border: '2px solid rgba(255,255,255,0.2)',
+                    borderRadius: '50%',
+                  }}
+                ></div>
+
+                {/* Main Image */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    inset: '32px',
+                    borderRadius: '50%',
+                    overflow: 'hidden',
+                    boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)',
+                  }}
+                >
+                  <img
+                    src="/images/mutton-biryani-hero.jpg"
+                    alt="Delicious Mutton Biryani"
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                    }}
+                  />
+                </div>
+
+                {/* Floating Badge */}
+                <div
+                  style={{
+                    position: 'absolute',
+                    bottom: '-8px',
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    backgroundColor: 'white',
+                    color: '#9f0008',
+                    padding: '12px 24px',
+                    borderRadius: '9999px',
+                    boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  <p style={{ fontWeight: 700, fontSize: '14px', margin: 0 }}>
+                    🔥 Our Signature Biryani
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section style={{ padding: '64px 24px', backgroundColor: '#fff' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+              gap: '24px',
+            }}
+          >
+            {/* Happy Customers */}
+            <div
+              className="stat-card"
+              style={{
+                background: 'linear-gradient(135deg, #fff5f5 0%, #ffe8e8 100%)',
+                borderRadius: '20px',
+                padding: '36px 24px',
+                textAlign: 'center',
+                border: '1px solid rgba(159,0,8,0.1)',
+                cursor: 'pointer',
+              }}
+            >
+              <div
+                className="stat-icon"
+                style={{
+                  width: '70px',
+                  height: '70px',
+                  backgroundColor: '#9f0008',
+                  borderRadius: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 20px',
+                  fontSize: '32px',
+                  boxShadow: '0 8px 20px rgba(159,0,8,0.3)',
+                }}
+              >
+                😊
+              </div>
+              <div
+                style={{
+                  fontSize: '2.75rem',
+                  fontWeight: 800,
+                  color: '#9f0008',
+                  marginBottom: '8px',
+                  lineHeight: 1,
+                }}
+              >
+                10K+
+              </div>
+              <div
+                style={{
+                  fontSize: '13px',
+                  color: '#666',
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  letterSpacing: '1px',
+                }}
+              >
+                Happy Customers
+              </div>
+            </div>
+
+            {/* Menu Items */}
+            <div
+              className="stat-card"
+              style={{
+                background: 'linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%)',
+                borderRadius: '20px',
+                padding: '36px 24px',
+                textAlign: 'center',
+                border: '1px solid rgba(255,192,22,0.2)',
+                cursor: 'pointer',
+              }}
+            >
+              <div
+                className="stat-icon"
+                style={{
+                  width: '70px',
+                  height: '70px',
+                  backgroundColor: '#FFC016',
+                  borderRadius: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 20px',
+                  fontSize: '32px',
+                  boxShadow: '0 8px 20px rgba(255,192,22,0.4)',
+                }}
+              >
+                🍽️
+              </div>
+              <div
+                style={{
+                  fontSize: '2.75rem',
+                  fontWeight: 800,
+                  color: '#b45309',
+                  marginBottom: '8px',
+                  lineHeight: 1,
+                }}
+              >
+                50+
+              </div>
+              <div
+                style={{
+                  fontSize: '13px',
+                  color: '#666',
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  letterSpacing: '1px',
+                }}
+              >
+                Menu Items
+              </div>
+            </div>
+
+            {/* Google Rating */}
+            <div
+              className="stat-card"
+              style={{
+                background: 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)',
+                borderRadius: '20px',
+                padding: '36px 24px',
+                textAlign: 'center',
+                border: '1px solid rgba(34,197,94,0.2)',
+                cursor: 'pointer',
+              }}
+            >
+              <div
+                className="stat-icon"
+                style={{
+                  width: '70px',
+                  height: '70px',
+                  backgroundColor: '#22c55e',
+                  borderRadius: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 20px',
+                  fontSize: '32px',
+                  boxShadow: '0 8px 20px rgba(34,197,94,0.3)',
+                }}
+              >
+                ⭐
+              </div>
+              <div
+                style={{
+                  fontSize: '2.75rem',
+                  fontWeight: 800,
+                  color: '#16a34a',
+                  marginBottom: '8px',
+                  lineHeight: 1,
+                }}
+              >
+                4.9
+              </div>
+              <div
+                style={{
+                  fontSize: '13px',
+                  color: '#666',
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  letterSpacing: '1px',
+                }}
+              >
+                Google Rating
+              </div>
+            </div>
+
+            {/* Avg Delivery */}
+            <div
+              className="stat-card"
+              style={{
+                background: 'linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%)',
+                borderRadius: '20px',
+                padding: '36px 24px',
+                textAlign: 'center',
+                border: '1px solid rgba(59,130,246,0.2)',
+                cursor: 'pointer',
+              }}
+            >
+              <div
+                className="stat-icon"
+                style={{
+                  width: '70px',
+                  height: '70px',
+                  backgroundColor: '#3b82f6',
+                  borderRadius: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  margin: '0 auto 20px',
+                  fontSize: '32px',
+                  boxShadow: '0 8px 20px rgba(59,130,246,0.3)',
+                }}
+              >
+                🚀
+              </div>
+              <div
+                style={{
+                  fontSize: '2.75rem',
+                  fontWeight: 800,
+                  color: '#2563eb',
+                  marginBottom: '8px',
+                  lineHeight: 1,
+                }}
+              >
+                30min
+              </div>
+              <div
+                style={{
+                  fontSize: '13px',
+                  color: '#666',
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  letterSpacing: '1px',
+                }}
+              >
+                Avg Delivery
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Why Choose Us Section */}
+      {/* <section
+        style={{
+          padding: '100px 24px',
+          background:
+            'linear-gradient(135deg, #1a0a0a 0%, #2d0a0a 50%, #1a0a0a 100%)',
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+      
+        <div
+          style={{
+            position: 'absolute',
+            top: '10%',
+            right: '5%',
+            width: '300px',
+            height: '300px',
+            background:
+              'radial-gradient(circle, rgba(159,0,8,0.15) 0%, transparent 70%)',
+            borderRadius: '50%',
+          }}
+        ></div>
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '10%',
+            left: '5%',
+            width: '200px',
+            height: '200px',
+            background:
+              'radial-gradient(circle, rgba(255,192,22,0.1) 0%, transparent 70%)',
+            borderRadius: '50%',
+          }}
+        ></div>
+
+        <div
+          style={{
+            maxWidth: '1200px',
+            margin: '0 auto',
+            position: 'relative',
+            zIndex: 1,
+          }}
+        >
+          
+          <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+            <span
+              style={{
+                display: 'inline-block',
+                backgroundColor: 'rgba(255,192,22,0.2)',
+                color: '#FFC016',
+                padding: '8px 20px',
+                borderRadius: '50px',
+                fontSize: '12px',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '2px',
+                marginBottom: '20px',
+                border: '1px solid rgba(255,192,22,0.3)',
+              }}
+            >
+              Why Choose Us
+            </span>
+            <h2
+              style={{
+                fontSize: 'clamp(2rem, 4vw, 3rem)',
+                fontWeight: 800,
+                color: 'white',
+                marginBottom: '16px',
+                lineHeight: 1.2,
+              }}
+            >
+              The Al Arafa Restaurant Difference
+            </h2>
+            <p
+              style={{
+                fontSize: '1.1rem',
+                color: 'rgba(255,255,255,0.7)',
+                maxWidth: '600px',
+                margin: '0 auto',
+                lineHeight: 1.7,
+              }}
+            >
+              We bring the authentic taste of Salem to Singapore, using
+              time-honored recipes passed down through generations.
+            </p>
+          </div>
+
+        
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+              gap: '20px',
+              maxWidth: '900px',
+              margin: '0 auto',
+            }}
+          >
+          
+            <div
+              className="why-card"
+              style={{
+                background: 'rgba(255,255,255,0.05)',
+                backdropFilter: 'blur(10px)',
+                borderRadius: '20px',
+                padding: '32px',
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '20px',
+                border: '1px solid rgba(255,255,255,0.1)',
+                transition: 'all 0.3s ease',
+              }}
+            >
+              <div
+                style={{
+                  width: '60px',
+                  height: '60px',
+                  background: 'linear-gradient(135deg, #22c55e, #86efac)',
+                  borderRadius: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '28px',
+                  flexShrink: 0,
+                }}
+              >
+                ✨
+              </div>
+              <div>
+                <h3
+                  style={{
+                    fontSize: '1.25rem',
+                    fontWeight: 700,
+                    color: 'white',
+                    marginBottom: '8px',
+                  }}
+                >
+                  Premium Ingredients
+                </h3>
+                <p
+                  style={{
+                    fontSize: '0.95rem',
+                    color: 'rgba(255,255,255,0.6)',
+                    lineHeight: 1.6,
+                    margin: 0,
+                  }}
+                >
+                  Only the finest basmati rice, hand-picked spices, and quality
+                  meat sourced daily.
+                </p>
+              </div>
+            </div>
+
+          
+            <div
+              className="why-card"
+              style={{
+                background: 'rgba(255,255,255,0.05)',
+                backdropFilter: 'blur(10px)',
+                borderRadius: '20px',
+                padding: '32px',
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '20px',
+                border: '1px solid rgba(255,255,255,0.1)',
+                transition: 'all 0.3s ease',
+              }}
+            >
+              <div
+                style={{
+                  width: '60px',
+                  height: '60px',
+                  background: 'linear-gradient(135deg, #9f0008, #ff4444)',
+                  borderRadius: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '28px',
+                  flexShrink: 0,
+                }}
+              >
+                🚫
+              </div>
+              <div>
+                <h3
+                  style={{
+                    fontSize: '1.25rem',
+                    fontWeight: 700,
+                    color: 'white',
+                    marginBottom: '8px',
+                  }}
+                >
+                  No Instant Masalas
+                </h3>
+                <p
+                  style={{
+                    fontSize: '0.95rem',
+                    color: 'rgba(255,255,255,0.6)',
+                    lineHeight: 1.6,
+                    margin: 0,
+                  }}
+                >
+                  Every spice blend is freshly ground in-house using traditional
+                  methods.
+                </p>
+              </div>
+            </div>
+
+            <div
+              className="why-card"
+              style={{
+                background: 'rgba(255,255,255,0.05)',
+                backdropFilter: 'blur(10px)',
+                borderRadius: '20px',
+                padding: '32px',
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '20px',
+                border: '1px solid rgba(255,255,255,0.1)',
+                transition: 'all 0.3s ease',
+              }}
+            >
+              <div
+                style={{
+                  width: '60px',
+                  height: '60px',
+                  background: 'linear-gradient(135deg, #3b82f6, #93c5fd)',
+                  borderRadius: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '28px',
+                  flexShrink: 0,
+                }}
+              >
+                🥩
+              </div>
+              <div>
+                <h3
+                  style={{
+                    fontSize: '1.25rem',
+                    fontWeight: 700,
+                    color: 'white',
+                    marginBottom: '8px',
+                  }}
+                >
+                  No Stored Meats
+                </h3>
+                <p
+                  style={{
+                    fontSize: '0.95rem',
+                    color: 'rgba(255,255,255,0.6)',
+                    lineHeight: 1.6,
+                    margin: 0,
+                  }}
+                >
+                  Fresh meat procured daily. Never frozen, never stored
+                  overnight.
+                </p>
+              </div>
+            </div>
+
+          
+            <div
+              className="why-card"
+              style={{
+                background: 'rgba(255,255,255,0.05)',
+                backdropFilter: 'blur(10px)',
+                borderRadius: '20px',
+                padding: '32px',
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '20px',
+                border: '1px solid rgba(255,255,255,0.1)',
+                transition: 'all 0.3s ease',
+              }}
+            >
+              <div
+                style={{
+                  width: '60px',
+                  height: '60px',
+                  background: 'linear-gradient(135deg, #FFC016, #ffdd66)',
+                  borderRadius: '16px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '28px',
+                  flexShrink: 0,
+                }}
+              >
+                🔥
+              </div>
+              <div>
+                <h3
+                  style={{
+                    fontSize: '1.25rem',
+                    fontWeight: 700,
+                    color: 'white',
+                    marginBottom: '8px',
+                  }}
+                >
+                  Traditional Firewood Cooking
+                </h3>
+                <p
+                  style={{
+                    fontSize: '0.95rem',
+                    color: 'rgba(255,255,255,0.6)',
+                    lineHeight: 1.6,
+                    margin: 0,
+                  }}
+                >
+                  Authentic dum biryani slow-cooked over firewood for that smoky
+                  flavor.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section> */}
+
+      {/* Order Options Section */}
+      <section style={{ padding: '80px 24px', backgroundColor: '#fff' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          {/* Section Header */}
+          <div style={{ textAlign: 'center', marginBottom: '64px' }}>
+            <span
+              style={{
+                display: 'inline-block',
+                backgroundColor: 'rgba(159,0,8,0.1)',
+                color: '#9f0008',
+                padding: '8px 20px',
+                borderRadius: '50px',
+                fontSize: '12px',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '2px',
+                marginBottom: '16px',
+              }}
+            >
+              Flexible Options
+            </span>
+            <h2
+              style={{
+                fontSize: 'clamp(2rem, 4vw, 2.5rem)',
+                fontWeight: 800,
+                color: '#1a1a1a',
+                lineHeight: 1.2,
+              }}
+            >
+              How Would You Like To Order?
+            </h2>
+          </div>
+
+          {/* Order Cards Grid */}
+          <div className="order-options-grid">
+            {/* Self Collect */}
+            <Link href="/menu?type=pickup" style={{ textDecoration: 'none' }}>
+              <div
+                className="order-card"
+                style={{
+                  backgroundColor: '#f5f5f5',
+                  borderRadius: '16px',
+                  padding: '32px 24px',
+                  textAlign: 'center',
+                  border: '2px solid transparent',
+                  transition: 'all 0.3s ease',
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                <div
+                  style={{
+                    width: '64px',
+                    height: '64px',
+                    backgroundColor: 'rgba(159,0,8,0.1)',
+                    borderRadius: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: '20px',
+                  }}
+                >
+                  <i
+                    className="fa-solid fa-bag-shopping"
+                    style={{ fontSize: '28px', color: '#9f0008' }}
+                  ></i>
+                </div>
+                <h3
+                  style={{
+                    fontSize: '1.25rem',
+                    fontWeight: 700,
+                    color: '#1a1a1a',
+                    marginBottom: '12px',
+                  }}
+                >
+                  Self Collect
+                </h3>
+                <p
+                  style={{
+                    fontSize: '14px',
+                    color: '#666',
+                    lineHeight: 1.6,
+                    margin: 0,
+                  }}
+                >
+                  Order ahead and pick up at your convenience
+                </p>
+              </div>
+            </Link>
+
+            {/* Delivery - Featured */}
+            <Link
+              href="/menu?type=delivery"
+              style={{ textDecoration: 'none', position: 'relative' }}
+            >
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '-12px',
+                  left: '50%',
+                  transform: 'translateX(-50%)',
+                  zIndex: 10,
+                }}
+              >
+                <span
+                  style={{
+                    backgroundColor: '#FFC016',
+                    color: '#9f0008',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    padding: '6px 16px',
+                    borderRadius: '50px',
+                    whiteSpace: 'nowrap',
+                    boxShadow: '0 4px 12px rgba(255,192,22,0.3)',
+                  }}
+                >
+                  MOST POPULAR
+                </span>
+              </div>
+              <div
+                className="order-card-featured"
+                style={{
+                  backgroundColor: '#9f0008',
+                  borderRadius: '16px',
+                  padding: '32px 24px',
+                  textAlign: 'center',
+                  border: '2px solid #9f0008',
+                  boxShadow: '0 8px 24px rgba(159,0,8,0.2)',
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                <div
+                  style={{
+                    width: '64px',
+                    height: '64px',
+                    backgroundColor: 'rgba(255,192,22,0.2)',
+                    borderRadius: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: '20px',
+                  }}
+                >
+                  <i
+                    className="fa-solid fa-motorcycle"
+                    style={{ fontSize: '28px', color: '#FFC016' }}
+                  ></i>
+                </div>
+                <h3
+                  style={{
+                    fontSize: '1.25rem',
+                    fontWeight: 700,
+                    color: 'white',
+                    marginBottom: '12px',
+                  }}
+                >
+                  Delivery
+                </h3>
+                <p
+                  style={{
+                    fontSize: '14px',
+                    color: 'rgba(255,255,255,0.9)',
+                    lineHeight: 1.6,
+                    margin: 0,
+                  }}
+                >
+                  Fast islandwide delivery in 30-45 minutes
+                </p>
+              </div>
+            </Link>
+
+            {/* Catering */}
+            {/* <Link href="/catering" style={{ textDecoration: 'none' }}>
+              <div
+                className="order-card"
+                style={{
+                  backgroundColor: '#f5f5f5',
+                  borderRadius: '16px',
+                  padding: '32px 24px',
+                  textAlign: 'center',
+                  border: '2px solid transparent',
+                  transition: 'all 0.3s ease',
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                }}
+              >
+                <div
+                  style={{
+                    width: '64px',
+                    height: '64px',
+                    backgroundColor: 'rgba(159,0,8,0.1)',
+                    borderRadius: '12px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginBottom: '20px',
+                  }}
+                >
+                  <i
+                    className="fa-solid fa-people-group"
+                    style={{ fontSize: '28px', color: '#9f0008' }}
+                  ></i>
+                </div>
+                <h3
+                  style={{
+                    fontSize: '1.25rem',
+                    fontWeight: 700,
+                    color: '#1a1a1a',
+                    marginBottom: '12px',
+                  }}
+                >
+                  Catering
+                </h3>
+                <p
+                  style={{
+                    fontSize: '14px',
+                    color: '#666',
+                    lineHeight: 1.6,
+                    margin: 0,
+                  }}
+                >
+                  Perfect for events and corporate functions
+                </p>
+              </div>
+            </Link> */}
+          </div>
+        </div>
+      </section>
+
+      {/* Signature Dishes Section */}
+      <section style={{ padding: '80px 24px', backgroundColor: '#F5F7FA' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          {/* Section Header */}
+          <div style={{ textAlign: 'center', marginBottom: '64px' }}>
+            <span
+              style={{
+                display: 'inline-block',
+                backgroundColor: 'rgba(159,0,8,0.1)',
+                color: '#9f0008',
+                padding: '8px 20px',
+                borderRadius: '50px',
+                fontSize: '12px',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '2px',
+                marginBottom: '16px',
+              }}
+            >
+              Our Menu
+            </span>
+            <h2
+              style={{
+                fontSize: 'clamp(2rem, 4vw, 2.5rem)',
+                fontWeight: 800,
+                color: '#1a1a1a',
+                marginBottom: '16px',
+                lineHeight: 1.2,
+              }}
+            >
+              Signature Dishes
+            </h2>
+            <p
+              style={{
+                fontSize: '1.1rem',
+                color: '#4a5568',
+                maxWidth: '600px',
+                margin: '0 auto',
+                lineHeight: 1.6,
+              }}
+            >
+              Discover our most loved dishes, crafted with authentic recipes and
+              premium ingredients.
+            </p>
+          </div>
+
+          {/* Dishes Grid */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+              gap: '32px',
+              maxWidth: '1100px',
+              margin: '0 auto 48px',
+            }}
+          >
+            {/* Chicken Biryani */}
+            <div
+              style={{
+                backgroundColor: 'white',
+                borderRadius: '16px',
+                overflow: 'hidden',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                transition: 'all 0.3s ease',
+              }}
+              className="dish-card"
+            >
+              <div
+                style={{
+                  position: 'relative',
+                  height: '240px',
+                  overflow: 'hidden',
+                }}
+              >
+                <img
+                  src="/images/chicken-biryani.png"
+                  alt="Chicken Biryani"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                  }}
+                />
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '16px',
+                    right: '16px',
+                    backgroundColor: '#FFC016',
+                    color: '#9f0008',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    padding: '6px 12px',
+                    borderRadius: '50px',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                  }}
+                >
+                  BESTSELLER
+                </div>
+              </div>
+              <div style={{ padding: '24px' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    marginBottom: '12px',
+                  }}
+                >
+                  <i
+                    className="fa-solid fa-star"
+                    style={{ color: '#FFC016', fontSize: '14px' }}
+                  ></i>
+                  <span style={{ fontSize: '14px', color: '#4a5568' }}>
+                    4.9 (2.3k reviews)
+                  </span>
+                </div>
+                <h3
+                  style={{
+                    fontSize: '1.5rem',
+                    fontWeight: 700,
+                    color: '#1a1a1a',
+                    marginBottom: '12px',
+                  }}
+                >
+                  Chicken Biryani
+                </h3>
+                <p
+                  style={{
+                    fontSize: '14px',
+                    color: '#4a5568',
+                    lineHeight: 1.6,
+                    marginBottom: '20px',
+                  }}
+                >
+                  Fragrant basmati rice layered with tender chicken, saffron,
+                  and aromatic spices.
+                </p>
+                <Link
+                  href="/menu"
+                  style={{
+                    display: 'block',
+                    width: '100%',
+                    backgroundColor: '#9f0008',
+                    color: 'white',
+                    padding: '12px 24px',
+                    borderRadius: '8px',
+                    fontWeight: 700,
+                    fontSize: '14px',
+                    textDecoration: 'none',
+                    textAlign: 'center',
+                    transition: 'all 0.2s ease',
+                  }}
+                  className="order-button"
+                >
+                  Order Now
+                </Link>
+              </div>
+            </div>
+
+            {/* Mutton Biryani */}
+            <div
+              style={{
+                backgroundColor: 'white',
+                borderRadius: '16px',
+                overflow: 'hidden',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                transition: 'all 0.3s ease',
+              }}
+              className="dish-card"
+            >
+              <div
+                style={{
+                  position: 'relative',
+                  height: '240px',
+                  overflow: 'hidden',
+                }}
+              >
+                <img
+                  src="/images/mutton-biryani.png"
+                  alt="Mutton Biryani"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                  }}
+                />
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '16px',
+                    right: '16px',
+                    backgroundColor: '#9f0008',
+                    color: 'white',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    padding: '6px 12px',
+                    borderRadius: '50px',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                  }}
+                >
+                  PREMIUM
+                </div>
+              </div>
+              <div style={{ padding: '24px' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    marginBottom: '12px',
+                  }}
+                >
+                  <i
+                    className="fa-solid fa-star"
+                    style={{ color: '#FFC016', fontSize: '14px' }}
+                  ></i>
+                  <span style={{ fontSize: '14px', color: '#4a5568' }}>
+                    4.8 (1.8k reviews)
+                  </span>
+                </div>
+                <h3
+                  style={{
+                    fontSize: '1.5rem',
+                    fontWeight: 700,
+                    color: '#1a1a1a',
+                    marginBottom: '12px',
+                  }}
+                >
+                  Mutton Biryani
+                </h3>
+                <p
+                  style={{
+                    fontSize: '14px',
+                    color: '#4a5568',
+                    lineHeight: 1.6,
+                    marginBottom: '20px',
+                  }}
+                >
+                  Slow-cooked mutton with aromatic spices and long-grain basmati
+                  rice.
+                </p>
+                <Link
+                  href="/menu"
+                  style={{
+                    display: 'block',
+                    width: '100%',
+                    backgroundColor: '#9f0008',
+                    color: 'white',
+                    padding: '12px 24px',
+                    borderRadius: '8px',
+                    fontWeight: 700,
+                    fontSize: '14px',
+                    textDecoration: 'none',
+                    textAlign: 'center',
+                    transition: 'all 0.2s ease',
+                  }}
+                  className="order-button"
+                >
+                  Order Now
+                </Link>
+              </div>
+            </div>
+
+            {/* Chicken 65 */}
+            <div
+              style={{
+                backgroundColor: 'white',
+                borderRadius: '16px',
+                overflow: 'hidden',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                transition: 'all 0.3s ease',
+              }}
+              className="dish-card"
+            >
+              <div
+                style={{
+                  position: 'relative',
+                  height: '240px',
+                  overflow: 'hidden',
+                }}
+              >
+                <img
+                  src="/images/chicken-65.jpg"
+                  alt="Chicken 65"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                  }}
+                />
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: '16px',
+                    right: '16px',
+                    backgroundColor: '#ef4444',
+                    color: 'white',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    padding: '6px 12px',
+                    borderRadius: '50px',
+                    boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+                  }}
+                >
+                  SPICY
+                </div>
+              </div>
+              <div style={{ padding: '24px' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    marginBottom: '12px',
+                  }}
+                >
+                  <i
+                    className="fa-solid fa-star"
+                    style={{ color: '#FFC016', fontSize: '14px' }}
+                  ></i>
+                  <span style={{ fontSize: '14px', color: '#4a5568' }}>
+                    4.8 (1.5k reviews)
+                  </span>
+                </div>
+                <h3
+                  style={{
+                    fontSize: '1.5rem',
+                    fontWeight: 700,
+                    color: '#1a1a1a',
+                    marginBottom: '12px',
+                  }}
+                >
+                  Chicken 65
+                </h3>
+                <p
+                  style={{
+                    fontSize: '14px',
+                    color: '#4a5568',
+                    lineHeight: 1.6,
+                    marginBottom: '20px',
+                  }}
+                >
+                  Crispy deep-fried chicken tossed in a spicy, tangy sauce with
+                  curry leaves.
+                </p>
+                <Link
+                  href="/menu"
+                  style={{
+                    display: 'block',
+                    width: '100%',
+                    backgroundColor: '#9f0008',
+                    color: 'white',
+                    padding: '12px 24px',
+                    borderRadius: '8px',
+                    fontWeight: 700,
+                    fontSize: '14px',
+                    textDecoration: 'none',
+                    textAlign: 'center',
+                    transition: 'all 0.2s ease',
+                  }}
+                  className="order-button"
+                >
+                  Order Now
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* View Full Menu Button */}
+          <div style={{ textAlign: 'center' }}>
+            <Link
+              href="/menu"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '12px',
+                backgroundColor: '#9f0008',
+                color: 'white',
+                padding: '16px 32px',
+                borderRadius: '12px',
+                fontWeight: 700,
+                fontSize: '18px',
+                textDecoration: 'none',
+                transition: 'all 0.3s ease',
+                boxShadow: '0 4px 16px rgba(159,0,8,0.2)',
+              }}
+              className="view-menu-button"
+            >
+              <i className="fa-solid fa-utensils"></i>
+              View Full Menu
+              <i className="fa-solid fa-arrow-right"></i>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Customer Reviews Section */}
+      <section style={{ padding: '80px 24px', backgroundColor: '#FFF8F5' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          {/* Section Header */}
+          <div style={{ textAlign: 'center', marginBottom: '64px' }}>
+            <span
+              style={{
+                display: 'inline-block',
+                backgroundColor: 'rgba(159,0,8,0.1)',
+                color: '#9f0008',
+                padding: '8px 20px',
+                borderRadius: '50px',
+                fontSize: '12px',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '2px',
+                marginBottom: '16px',
+              }}
+            >
+              Testimonials
+            </span>
+            <h2
+              style={{
+                fontSize: 'clamp(2rem, 4vw, 2.5rem)',
+                fontWeight: 800,
+                color: '#1a1a1a',
+                marginBottom: '16px',
+                lineHeight: 1.2,
+              }}
+            >
+              What Our Customers Say
+            </h2>
+            <p
+              style={{
+                fontSize: '1.1rem',
+                color: '#4a5568',
+                maxWidth: '600px',
+                margin: '0 auto',
+                lineHeight: 1.6,
+              }}
+            >
+              Hear from our satisfied customers about their experience with authentic Salem-style biryani.
+            </p>
+          </div>
+
+          {/* Reviews Grid */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+              gap: '32px',
+              maxWidth: '1100px',
+              margin: '0 auto 48px',
+            }}
+          >
+            {/* Review 1 */}
+            <div
+              style={{
+                backgroundColor: '#F5F7FA',
+                borderRadius: '16px',
+                padding: '32px',
+                display: 'flex',
+                flexDirection: 'column',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                transition: 'all 0.3s ease',
+              }}
+              className="review-card"
+            >
+              {/* Stars */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  marginBottom: '20px',
+                }}
+              >
+                <i
+                  className="fa-solid fa-star"
+                  style={{ color: '#FFC016', fontSize: '16px' }}
+                ></i>
+                <i
+                  className="fa-solid fa-star"
+                  style={{ color: '#FFC016', fontSize: '16px' }}
+                ></i>
+                <i
+                  className="fa-solid fa-star"
+                  style={{ color: '#FFC016', fontSize: '16px' }}
+                ></i>
+                <i
+                  className="fa-solid fa-star"
+                  style={{ color: '#FFC016', fontSize: '16px' }}
+                ></i>
+                <i
+                  className="fa-solid fa-star"
+                  style={{ color: '#FFC016', fontSize: '16px' }}
+                ></i>
+              </div>
+
+              {/* Review Text */}
+              <p
+                style={{
+                  fontSize: '15px',
+                  color: '#4a5568',
+                  lineHeight: 1.7,
+                  fontStyle: 'italic',
+                  marginBottom: '24px',
+                  flex: 1,
+                }}
+              >
+                &ldquo;Best biryani I&apos;ve had in Singapore! The chicken was
+                so tender and the rice was perfectly flavored. Reminds me of
+                home-cooked biryani from Tamil Nadu.&rdquo;
+              </p>
+
+              {/* Customer Info */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div
+                  style={{
+                    width: '48px',
+                    height: '48px',
+                    backgroundColor: 'rgba(159,0,8,0.1)',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <i
+                    className="fa-solid fa-user"
+                    style={{ color: '#9f0008', fontSize: '18px' }}
+                  ></i>
+                </div>
+                <div>
+                  <p
+                    style={{
+                      fontWeight: 700,
+                      color: '#1a1a1a',
+                      fontSize: '15px',
+                      marginBottom: '4px',
+                    }}
+                  >
+                    Priya Sharma
+                  </p>
+                  <p style={{ fontSize: '13px', color: '#718096', margin: 0 }}>
+                    Verified Customer
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Review 2 */}
+            <div
+              style={{
+                backgroundColor: '#F5F7FA',
+                borderRadius: '16px',
+                padding: '32px',
+                display: 'flex',
+                flexDirection: 'column',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                transition: 'all 0.3s ease',
+              }}
+              className="review-card"
+            >
+              {/* Stars */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  marginBottom: '20px',
+                }}
+              >
+                <i
+                  className="fa-solid fa-star"
+                  style={{ color: '#FFC016', fontSize: '16px' }}
+                ></i>
+                <i
+                  className="fa-solid fa-star"
+                  style={{ color: '#FFC016', fontSize: '16px' }}
+                ></i>
+                <i
+                  className="fa-solid fa-star"
+                  style={{ color: '#FFC016', fontSize: '16px' }}
+                ></i>
+                <i
+                  className="fa-solid fa-star"
+                  style={{ color: '#FFC016', fontSize: '16px' }}
+                ></i>
+                <i
+                  className="fa-solid fa-star"
+                  style={{ color: '#FFC016', fontSize: '16px' }}
+                ></i>
+              </div>
+
+              {/* Review Text */}
+              <p
+                style={{
+                  fontSize: '15px',
+                  color: '#4a5568',
+                  lineHeight: 1.7,
+                  fontStyle: 'italic',
+                  marginBottom: '24px',
+                  flex: 1,
+                }}
+              >
+                &ldquo;We ordered catering for our office event and everyone was
+                impressed! The food arrived hot and fresh. The mutton biryani
+                was the star of the show.&rdquo;
+              </p>
+
+              {/* Customer Info */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div
+                  style={{
+                    width: '48px',
+                    height: '48px',
+                    backgroundColor: 'rgba(159,0,8,0.1)',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <i
+                    className="fa-solid fa-user"
+                    style={{ color: '#9f0008', fontSize: '18px' }}
+                  ></i>
+                </div>
+                <div>
+                  <p
+                    style={{
+                      fontWeight: 700,
+                      color: '#1a1a1a',
+                      fontSize: '15px',
+                      marginBottom: '4px',
+                    }}
+                  >
+                    Ahmad Hassan
+                  </p>
+                  <p style={{ fontSize: '13px', color: '#718096', margin: 0 }}>
+                    Corporate Customer
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Review 3 */}
+            <div
+              style={{
+                backgroundColor: '#F5F7FA',
+                borderRadius: '16px',
+                padding: '32px',
+                display: 'flex',
+                flexDirection: 'column',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
+                transition: 'all 0.3s ease',
+              }}
+              className="review-card"
+            >
+              {/* Stars */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  marginBottom: '20px',
+                }}
+              >
+                <i
+                  className="fa-solid fa-star"
+                  style={{ color: '#FFC016', fontSize: '16px' }}
+                ></i>
+                <i
+                  className="fa-solid fa-star"
+                  style={{ color: '#FFC016', fontSize: '16px' }}
+                ></i>
+                <i
+                  className="fa-solid fa-star"
+                  style={{ color: '#FFC016', fontSize: '16px' }}
+                ></i>
+                <i
+                  className="fa-solid fa-star"
+                  style={{ color: '#FFC016', fontSize: '16px' }}
+                ></i>
+                <i
+                  className="fa-solid fa-star"
+                  style={{ color: '#FFC016', fontSize: '16px' }}
+                ></i>
+              </div>
+
+              {/* Review Text */}
+              <p
+                style={{
+                  fontSize: '15px',
+                  color: '#4a5568',
+                  lineHeight: 1.7,
+                  fontStyle: 'italic',
+                  marginBottom: '24px',
+                  flex: 1,
+                }}
+              >
+                &ldquo;Fast delivery and the portion sizes are generous. The
+                masala dosa is crispy and the sambar is authentic. Will
+                definitely order again!&rdquo;
+              </p>
+
+              {/* Customer Info */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                <div
+                  style={{
+                    width: '48px',
+                    height: '48px',
+                    backgroundColor: 'rgba(159,0,8,0.1)',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <i
+                    className="fa-solid fa-user"
+                    style={{ color: '#9f0008', fontSize: '18px' }}
+                  ></i>
+                </div>
+                <div>
+                  <p
+                    style={{
+                      fontWeight: 700,
+                      color: '#1a1a1a',
+                      fontSize: '15px',
+                      marginBottom: '4px',
+                    }}
+                  >
+                    Jennifer Tan
+                  </p>
+                  <p style={{ fontSize: '13px', color: '#718096', margin: 0 }}>
+                    Regular Customer
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Google Reviews Badge */}
+          <div style={{ textAlign: 'center' }}>
+            <a
+              href="https://g.page/r/salemrrbriyani/review"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '16px',
+                backgroundColor: '#F5F7FA',
+                padding: '16px 32px',
+                borderRadius: '12px',
+                textDecoration: 'none',
+                transition: 'all 0.3s ease',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.08)',
+              }}
+              className="google-badge"
+            >
+              <i
+                className="fa-brands fa-google"
+                style={{ fontSize: '32px', color: '#4285F4' }}
+              ></i>
+              <div style={{ textAlign: 'left' }}>
+                <p
+                  style={{
+                    fontWeight: 700,
+                    color: '#1a1a1a',
+                    fontSize: '16px',
+                    marginBottom: '4px',
+                  }}
+                >
+                  4.9 out of 5
+                </p>
+                <p style={{ fontSize: '13px', color: '#718096', margin: 0 }}>
+                  Based on 500+ Google Reviews
+                </p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Location & Hours Section */}
+      <section style={{ padding: '80px 24px', backgroundColor: '#fff' }}>
+        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          {/* Section Header */}
+          <div style={{ textAlign: 'center', marginBottom: '64px' }}>
+            <span
+              style={{
+                display: 'inline-block',
+                backgroundColor: 'rgba(159,0,8,0.1)',
+                color: '#9f0008',
+                padding: '8px 20px',
+                borderRadius: '50px',
+                fontSize: '12px',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '2px',
+                marginBottom: '16px',
+              }}
+            >
+              Visit Us
+            </span>
+            <h2
+              style={{
+                fontSize: 'clamp(2rem, 4vw, 2.5rem)',
+                fontWeight: 800,
+                color: '#1a1a1a',
+                marginBottom: '16px',
+                lineHeight: 1.2,
+              }}
+            >
+              Location & Hours
+            </h2>
+            <p
+              style={{
+                fontSize: '1.1rem',
+                color: '#4a5568',
+                maxWidth: '600px',
+                margin: '0 auto',
+                lineHeight: 1.6,
+              }}
+            >
+              Visit our restaurant or order for delivery islandwide.
+            </p>
+          </div>
+
+          {/* Content Grid */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+              gap: '48px',
+              alignItems: 'stretch',
+            }}
+          >
+            {/* Left Column - Map/Location Visual */}
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <div
+                style={{
+                  borderRadius: '20px',
+                  overflow: 'hidden',
+                  boxShadow: '0 8px 24px rgba(0,0,0,0.12)',
+                  position: 'relative',
+                  flex: 1,
+                  minHeight: '500px',
+                }}
+              >
+                <div
+                  style={{
+                    background:
+                      'linear-gradient(135deg, #9f0008 0%, #c41e1e 50%, #e67e22 100%)',
+                    height: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'relative',
+                  }}
+                >
+                  {/* Decorative Elements */}
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '-50px',
+                      right: '-50px',
+                      width: '200px',
+                      height: '200px',
+                      background: 'rgba(255,255,255,0.1)',
+                      borderRadius: '50%',
+                    }}
+                  ></div>
+                  <div
+                    style={{
+                      position: 'absolute',
+                      bottom: '-30px',
+                      left: '-30px',
+                      width: '150px',
+                      height: '150px',
+                      background: 'rgba(255,255,255,0.08)',
+                      borderRadius: '50%',
+                    }}
+                  ></div>
+
+                  {/* Content */}
+                  <div
+                    style={{
+                      textAlign: 'center',
+                      color: 'white',
+                      position: 'relative',
+                      zIndex: 1,
+                    }}
+                  >
+                    <div
+                      style={{
+                        width: '120px',
+                        height: '120px',
+                        backgroundColor: 'rgba(255,255,255,0.15)',
+                        borderRadius: '50%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        margin: '0 auto 24px',
+                        backdropFilter: 'blur(10px)',
+                      }}
+                    >
+                      <i
+                        className="fa-solid fa-store"
+                        style={{ fontSize: '48px', color: 'white' }}
+                      ></i>
+                    </div>
+                    <h3
+                      style={{
+                        fontSize: '24px',
+                        fontWeight: 700,
+                        marginBottom: '8px',
+                      }}
+                    >
+                      Al Arafa Restaurant
+                    </h3>
+                    <p
+                      style={{
+                        fontSize: '16px',
+                        color: 'rgba(255,255,255,0.9)',
+                        marginBottom: '24px',
+                      }}
+                    >
+                      Singapore
+                    </p>
+                    <a
+                      href="https://www.google.com/maps/search/?api=1&query=35+Chander+Road,+Singapore+219540"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                        backgroundColor: 'white',
+                        color: '#9f0008',
+                        padding: '12px 24px',
+                        borderRadius: '10px',
+                        fontWeight: 700,
+                        fontSize: '14px',
+                        textDecoration: 'none',
+                        transition: 'all 0.3s ease',
+                        boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                      }}
+                      className="get-directions-btn"
+                    >
+                      <i className="fa-solid fa-location-dot"></i>
+                      Get Directions
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Right Column - Contact Information */}
+            <div>
+              {/* Contact Cards */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+                {/* Address Card */}
+                <div
+                  style={{
+                    backgroundColor: '#F5F7FA',
+                    borderRadius: '16px',
+                    padding: '24px',
+                    display: 'flex',
+                    gap: '16px',
+                    transition: 'all 0.3s ease',
+                  }}
+                  className="info-card"
+                >
+                  <div
+                    style={{
+                      width: '56px',
+                      height: '56px',
+                      backgroundColor: 'rgba(159,0,8,0.1)',
+                      borderRadius: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                    }}
+                  >
+                    <i
+                      className="fa-solid fa-location-dot"
+                      style={{ fontSize: '24px', color: '#9f0008' }}
+                    ></i>
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <h3
+                      style={{
+                        fontSize: '16px',
+                        fontWeight: 700,
+                        color: '#1a1a1a',
+                        marginBottom: '8px',
+                      }}
+                    >
+                      Address
+                    </h3>
+                    <p
+                      style={{
+                        fontSize: '14px',
+                        color: '#4a5568',
+                        lineHeight: 1.6,
+                        margin: 0,
+                      }}
+                    >
+                      218B Changi Rd,
+Singapore 419737
+                    </p>
+                  </div>
+                </div>
+
+                {/* Operating Hours Card */}
+                <div
+                  style={{
+                    backgroundColor: '#F5F7FA',
+                    borderRadius: '16px',
+                    padding: '24px',
+                    display: 'flex',
+                    gap: '16px',
+                    transition: 'all 0.3s ease',
+                  }}
+                  className="info-card"
+                >
+                  <div
+                    style={{
+                      width: '56px',
+                      height: '56px',
+                      backgroundColor: 'rgba(255,192,22,0.15)',
+                      borderRadius: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                    }}
+                  >
+                    <i
+                      className="fa-solid fa-clock"
+                      style={{ fontSize: '24px', color: '#FFC016' }}
+                    ></i>
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <h3
+                      style={{
+                        fontSize: '16px',
+                        fontWeight: 700,
+                        color: '#1a1a1a',
+                        marginBottom: '8px',
+                      }}
+                    >
+                      Operating Hours
+                    </h3>
+                    <p
+                      style={{
+                        fontSize: '14px',
+                        color: '#4a5568',
+                        lineHeight: 1.6,
+                        marginBottom: '8px',
+                      }}
+                    >
+                      Monday - Sunday: 11:00 AM - 10:00 PM
+                    </p>
+                    <span
+                      style={{
+                        display: 'inline-block',
+                        backgroundColor: '#22c55e',
+                        color: 'white',
+                        fontSize: '12px',
+                        fontWeight: 700,
+                        padding: '4px 12px',
+                        borderRadius: '6px',
+                      }}
+                    >
+                      ● Open Now
+                    </span>
+                  </div>
+                </div>
+
+                {/* Phone Card */}
+                <div
+                  style={{
+                    backgroundColor: '#F5F7FA',
+                    borderRadius: '16px',
+                    padding: '24px',
+                    display: 'flex',
+                    gap: '16px',
+                    transition: 'all 0.3s ease',
+                  }}
+                  className="info-card"
+                >
+                  <div
+                    style={{
+                      width: '56px',
+                      height: '56px',
+                      backgroundColor: 'rgba(34,197,94,0.15)',
+                      borderRadius: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                    }}
+                  >
+                    <i
+                      className="fa-solid fa-phone"
+                      style={{ fontSize: '24px', color: '#22c55e' }}
+                    ></i>
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <h3
+                      style={{
+                        fontSize: '16px',
+                        fontWeight: 700,
+                        color: '#1a1a1a',
+                        marginBottom: '8px',
+                      }}
+                    >
+                      Phone
+                    </h3>
+                    <a
+                      href="tel:+6589896289"
+                      style={{
+                        fontSize: '15px',
+                        color: '#9f0008',
+                        fontWeight: 600,
+                        textDecoration: 'none',
+                      }}
+                      className="contact-link"
+                    >
+                      +65 8989 8088
+                    </a>
+                  </div>
+                </div>
+
+                {/* Email Card */}
+                <div
+                  style={{
+                    backgroundColor: '#F5F7FA',
+                    borderRadius: '16px',
+                    padding: '24px',
+                    display: 'flex',
+                    gap: '16px',
+                    transition: 'all 0.3s ease',
+                  }}
+                  className="info-card"
+                >
+                  <div
+                    style={{
+                      width: '56px',
+                      height: '56px',
+                      backgroundColor: 'rgba(59,130,246,0.15)',
+                      borderRadius: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexShrink: 0,
+                    }}
+                  >
+                    <i
+                      className="fa-solid fa-envelope"
+                      style={{ fontSize: '24px', color: '#3b82f6' }}
+                    ></i>
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <h3
+                      style={{
+                        fontSize: '16px',
+                        fontWeight: 700,
+                        color: '#1a1a1a',
+                        marginBottom: '8px',
+                      }}
+                    >
+                      Email
+                    </h3>
+                    <a
+                      href="mailto:info@salemrrbriyani.sg"
+                      style={{
+                        fontSize: '15px',
+                        color: '#9f0008',
+                        fontWeight: 600,
+                        textDecoration: 'none',
+                      }}
+                      className="contact-link"
+                    >
+                      info@salemrrbriyani.sg
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </>
+  );
+}
