@@ -4,13 +4,9 @@
  */
 
 import type { Metadata } from "next";
-import {
-  ArrowUpRight,
-  ChefHat,
-  Leaf,
-  Heart,
-  MapPin,
-} from "lucide-react";
+import Link from "next/link";
+import { ArrowUpRight, ChefHat, Leaf, Heart, MapPin } from "lucide-react";
+import { restaurantClosedToast } from "../checkout/page";
 
 export const metadata: Metadata = {
   title: "About Us - Al Arafa Cuisine",
@@ -28,6 +24,10 @@ const IMAGES = {
   ingredients: "/images/Chicken-Biryani.jpg",
   experience: "/images/restaurant-1.png",
 };
+
+const food = "./images/mandi-1.webp";
+const food2 = "./images/mandi-2.webp";
+const restaurant = "./images/restaurant.webp";
 
 const RESTAURANT = {
   name: "Al Arafa Cuisine",
@@ -91,13 +91,11 @@ const VALUES = [
 export default function AboutPage() {
   return (
     <main className="min-h-screen bg-[#faf7f2] text-[#211716]">
-
       {/* 
           HERO
        */}
 
       <section className="relative overflow-hidden bg-[#4d0907] text-white">
-
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
@@ -110,9 +108,7 @@ export default function AboutPage() {
         <div className="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-[#4d0907]/80 to-transparent" />
 
         <div className="relative z-10 mx-auto flex min-h-[500px] w-full max-w-[1650px] items-center px-5 sm:px-6 lg:px-8">
-
           <div className="max-w-[720px] py-20">
-
             <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#f4d27a] sm:text-sm">
               The Story Behind Al Arafa
             </p>
@@ -123,22 +119,16 @@ export default function AboutPage() {
               Just Food.
             </h1>
 
-
-
             <p className="mt-8 max-w-[600px] text-justify text-base leading-8 text-white/85 sm:text-lg">
-              A celebration of Arabian, North Indian and South Indian
-              flavours, prepared with care and served with genuine
-              hospitality.
+              A celebration of Arabian, North Indian and South Indian flavours,
+              prepared with care and served with genuine hospitality.
             </p>
-
           </div>
-
         </div>
 
         {/* Curved bottom */}
 
         <div className="absolute -bottom-1 left-0 right-0 z-20">
-
           <svg
             viewBox="0 0 1440 120"
             preserveAspectRatio="none"
@@ -158,44 +148,32 @@ export default function AboutPage() {
               fill="#faf7f2"
             />
           </svg>
-
         </div>
-
       </section>
-
 
       {/* 
           INTRO / STORY
        */}
 
       <section className="mx-auto max-w-[1400px] px-5 py-20 sm:px-6 lg:px-8 lg:py-28">
-
         <div className="grid items-center gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-24">
-
           {/* Image */}
 
           <div className="relative">
-
             <div className="aspect-[4/5] overflow-hidden bg-[#e8dfd4]">
-
               <img
                 src={IMAGES.story}
                 alt="Al Arafa Cuisine"
                 className="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
               />
-
             </div>
 
             {/* Decorative gold frame */}
-
-
           </div>
-
 
           {/* Content */}
 
           <div className="max-w-2xl">
-
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#8c1712]">
               Our Story
             </p>
@@ -214,34 +192,22 @@ export default function AboutPage() {
               {RESTAURANT.storyExtended}
             </p>
 
-            
-
             <p className="mt-6 text-sm font-medium uppercase tracking-[0.16em] text-[#8c1712]">
               Always We Provide Quality & Tasty Food
             </p>
-
           </div>
-
         </div>
-
       </section>
-
-
-
-
 
       {/* 
           THE KITCHEN
        */}
 
       <section className="mx-auto max-w-[1400px] px-5 py-20 sm:px-6 lg:px-8 lg:py-28">
-
         <div className="grid items-center gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:gap-20">
-
           {/* Content */}
 
           <div className="order-2 lg:order-1">
-
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#8c1712]">
               The Kitchen
             </p>
@@ -258,29 +224,22 @@ export default function AboutPage() {
             </p>
 
             <p className="mt-5 text-justify text-base leading-8 text-gray-600">
-              Our chefs bring years of experience and a genuine passion for
-              the cuisines they prepare. From the selection of ingredients to
-              the final touch, every step is handled with care.
+              Our chefs bring years of experience and a genuine passion for the
+              cuisines they prepare. From the selection of ingredients to the
+              final touch, every step is handled with care.
             </p>
 
             <div className="mt-10 space-y-7">
-
               {VALUES.slice(0, 2).map((value) => {
-
                 const Icon = value.icon;
 
                 return (
-                  <div
-                    key={value.title}
-                    className="flex gap-5"
-                  >
-
+                  <div key={value.title} className="flex gap-5">
                     <div className="flex h-12 w-12 shrink-0 items-center justify-center border border-[#d9c7aa] bg-white">
                       <Icon className="h-5 w-5 text-[#8c1712]" />
                     </div>
 
                     <div>
-
                       <h3 className="font-semibold text-[#3f0806]">
                         {value.title}
                       </h3>
@@ -288,48 +247,34 @@ export default function AboutPage() {
                       <p className="mt-1 text-sm leading-6 text-gray-600">
                         {value.description}
                       </p>
-
                     </div>
-
                   </div>
                 );
               })}
-
             </div>
-
           </div>
-
 
           {/* Image */}
 
           <div className="relative order-1 lg:order-2">
-
             <div className="aspect-[4/5] overflow-hidden bg-[#e8dfd4]">
-
               <img
-                src={IMAGES.chef}
+                src={food}
                 alt="Chef preparing food at Al Arafa Cuisine"
                 className="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
               />
-
             </div>
-
-
           </div>
-
         </div>
-
       </section>
-
 
       {/* 
           INGREDIENTS / FULL WIDTH IMAGE
        */}
 
       <section className="relative min-h-[520px] overflow-hidden">
-
         <img
-          src={IMAGES.ingredients}
+          src={food2}
           alt="Fresh ingredients used at Al Arafa Cuisine"
           className="absolute inset-0 h-full w-full object-cover"
         />
@@ -337,9 +282,7 @@ export default function AboutPage() {
         <div className="absolute inset-0 bg-[#3b0705]/75" />
 
         <div className="relative z-10 mx-auto flex min-h-[520px] max-w-[1400px] items-center px-5 py-20 sm:px-6 lg:px-8">
-
           <div className="max-w-2xl text-white">
-
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#f4d27a]">
               Quality Begins Here
             </p>
@@ -357,47 +300,31 @@ export default function AboutPage() {
             </p>
 
             <div className="mt-8 flex items-center gap-3">
-
-              
-
               <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#f4d27a]">
                 Fresh · Authentic · Delicious
               </span>
-
             </div>
-
           </div>
-
         </div>
-
       </section>
-
 
       {/* 
           DINING EXPERIENCE
        */}
 
       <section className="mx-auto max-w-[1400px] px-5 py-20 sm:px-6 lg:px-8 lg:py-28">
-
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-24">
-
           <div className="relative">
-
             <div className="aspect-[5/4] overflow-hidden">
-
               <img
                 src={IMAGES.experience}
                 alt="Dining experience at Al Arafa Cuisine"
                 className="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
               />
-
             </div>
-
           </div>
 
-
           <div>
-
             <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#8c1712]">
               The Experience
             </p>
@@ -413,44 +340,33 @@ export default function AboutPage() {
             </p>
 
             <p className="mt-5 text-justify text-base leading-8 text-gray-600">
-              Because dining is not simply about the food. It is about
-              gathering around the table, sharing stories, discovering new
-              flavours and enjoying time together.
+              Because dining is not simply about the food. It is about gathering
+              around the table, sharing stories, discovering new flavours and
+              enjoying time together.
             </p>
 
             <div className="mt-9">
-
               <a
                 href="/contact"
                 className="group inline-flex items-center gap-3 border-b border-[#8c1712] pb-2 text-sm font-semibold uppercase tracking-[0.16em] text-[#8c1712]"
               >
                 Plan Your Visit
-
                 <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
               </a>
-
             </div>
-
           </div>
-
         </div>
-
       </section>
-
 
       {/* 
           PHILOSOPHY
        */}
 
       <section className="bg-[#f0e9df] px-5 py-20 sm:py-24 lg:py-28">
-
         <div className="mx-auto max-w-[900px] text-center">
-
           <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#8c1712]">
             Our Philosophy
           </p>
-
-          <div className="mx-auto mt-7 h-px w-16 bg-[#c49a43]" />
 
           <blockquote className="mt-8 text-3xl font-medium leading-[1.35] tracking-tight text-[#3f0806] sm:text-4xl lg:text-5xl">
             “Great food brings people together, creates memories and turns
@@ -460,35 +376,25 @@ export default function AboutPage() {
           <p className="mt-8 text-xs font-semibold uppercase tracking-[0.25em] text-gray-500">
             The Al Arafa Way
           </p>
-
         </div>
-
       </section>
-
 
       {/* 
           VISIT US
        */}
 
       <section className="mx-auto max-w-[1400px] px-5 py-20 sm:px-6 lg:px-8 lg:py-28">
-
         <div className="grid overflow-hidden bg-white lg:grid-cols-2">
-
           <div className="relative min-h-[400px] bg-[#ddd7ce]">
-
             <img
-              src={ABOUT_HERO}
+              src={restaurant}
               alt="Al Arafa Cuisine"
               className="absolute inset-0 h-full w-full object-cover"
             />
-
           </div>
 
-
           <div className="flex items-center px-7 py-14 sm:px-10 lg:px-16">
-
             <div>
-
               <p className="text-sm font-semibold uppercase tracking-[0.24em] text-[#8c1712]">
                 Visit Us
               </p>
@@ -503,7 +409,6 @@ export default function AboutPage() {
               </p>
 
               <div className="mt-8 flex gap-4">
-
                 <MapPin className="mt-1 h-5 w-5 shrink-0 text-[#8c1712]" />
 
                 <p className="font-medium leading-7 text-gray-900">
@@ -511,32 +416,24 @@ export default function AboutPage() {
                   <br />
                   {RESTAURANT.address}
                 </p>
-
               </div>
 
-              <a
+              <Link
                 href="/contact"
-className="group mt-9 inline-flex items-center gap-3 bg-[#4d0907] px-7 py-4 text-sm font-semibold uppercase tracking-[0.15em] !text-white transition hover:bg-[#650b08] hover:!text-white"              >
-                Contact & Reservations
-
-                <ArrowUpRight className="h-4 w-4 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-              </a>
-
+                className="hidden items-center gap-2 rounded-full bg-[#d8b86a] px-5 py-2.5 text-sm font-semibold text-[#3d1c12] transition hover:bg-[#d8b86a] lg:inline-flex"
+              >
+                Contct & booking
+              </Link>
             </div>
-
           </div>
-
         </div>
-
       </section>
-
 
       {/* 
           FINAL CTA
        */}
 
       <section className="bg-[#3b0705] px-5 py-20 text-center text-white sm:py-24">
-
         <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[#f4d27a]">
           Al-Arafa Cuisine
         </p>
@@ -550,17 +447,15 @@ className="group mt-9 inline-flex items-center gap-3 bg-[#4d0907] px-7 py-4 text
           remembering.
         </p>
 
-        <a
-          href="/contact"
-          className="mt-9 inline-flex items-center gap-3 border border-[#e9bd5b] px-8 py-4 text-sm font-semibold uppercase tracking-[0.16em] text-[#f4d27a] transition hover:bg-[#e9bd5b] hover:text-[#3b0705]"
+        <Link
+          href="https://maps.app.goo.gl/FmXXSkauk1bhM2J9A"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="hidden items-center gap-2 rounded-full bg-[#d8b86a] px-5 py-2.5 text-sm font-semibold text-[#3d1c12] transition hover:bg-[#d8b86a] lg:inline-flex"
         >
-          Reserve Your Table
-
-          <ArrowUpRight className="h-4 w-4" />
-        </a>
-
+          Get Location
+        </Link>
       </section>
-
     </main>
   );
 }

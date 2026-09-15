@@ -225,7 +225,7 @@ export function LoginSheet({
           <SheetHeader className="mb-6">
             <div className="w-20 h-20 mx-auto mb-4 relative">
               <img
-                src="/logo.png"
+                src="/logo.webp"
                 alt="Al Arafa Restaurant"
                 width={80}
                 height={80}
@@ -375,7 +375,7 @@ export function LoginSheet({
                 href="tel:+6589896289"
                 className="text-primary hover:text-primary/80 font-semibold"
               >
-                Call +65 8989 6289
+                Call +65 84544567
               </a>
             </p>
           </div>

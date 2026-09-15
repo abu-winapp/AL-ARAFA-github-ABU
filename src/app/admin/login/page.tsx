@@ -56,7 +56,7 @@ export default function AdminLoginPage() {
         <div className="text-center mb-8">
           <div className="w-24 h-24 mx-auto mb-4">
             <Image
-              src="/logo.png"
+              src="/logo.webp"
               alt="Al Arafa Restaurant"
               width={96}
               height={96}

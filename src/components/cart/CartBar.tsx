@@ -1,11 +1,13 @@
 /**
- * Al-Arafa Restaurant - Sticky Bottom Cart Bar Component
+ * Al-Arafa Restaurant - Sticky Cart Bar Component
  */
 
 "use client";
 
 import { FC, useEffect } from "react";
 import Link from "next/link";
+import { ShoppingCart, ArrowRight } from "lucide-react";
+
 import { useCartStore } from "@/lib/store/useCartStore";
 import {
   useAuthStore,
@@ -18,101 +20,331 @@ export const CartBar: FC = () => {
   const { user, isAuthenticated } = useAuthStore();
   const { fetchAllSettings, isGSTEnabled } = useSettingsStore();
 
-  // Fetch settings on mount
+  // Fetch settings
   useEffect(() => {
     if (isAuthenticated) {
       fetchAllSettings();
     }
   }, [isAuthenticated, fetchAllSettings]);
 
-  // Only show cart bar for authenticated customer users (not admin)
+  // Only customers
   const isCustomerAuthenticated = isCustomerAuth(user, isAuthenticated);
 
   const itemCount = getItemCount();
   const gstEnabled = isGSTEnabled();
 
-  // Calculate total: use API total if provided, otherwise calculate from subtotal + fees
+  // Cart totals
   const subtotal = cart?.subtotal || 0;
   const deliveryFee = cart?.deliveryFee || 0;
   const platformFee = cart?.platformFee || 0;
   const gstAmount = gstEnabled ? cart?.gstAmount || 0 : 0;
+
   const total = cart?.total || subtotal + deliveryFee + platformFee + gstAmount;
 
-  // Debug: Log cart values to console
-  if (cart && process.env.NODE_ENV === "development") {
-    console.log("CartBar - Cart values:", {
-      subtotal: cart.subtotal,
-      deliveryFee: cart.deliveryFee,
-      platformFee: cart.platformFee,
-      gstAmount: cart.gstAmount,
-      total: cart.total,
-      calculatedTotal: total,
-      locationId: cart.locationId,
-      fulfillmentType: cart.fulfillmentType,
-    });
-  }
-
-  // Don't show cart bar if user is not a customer or not authenticated
+  // Don't show when empty / logged out
   if (!isCustomerAuthenticated || itemCount === 0) {
     return null;
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-primary shadow-2xl z-50 animate-slide-up">
-      <div className="container mx-auto px-4 py-4">
-        <div className="flex items-center justify-between">
-          {/* Cart Summary */}
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center">
-              <svg
-                className="w-6 h-6 text-white"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                />
-              </svg>
-              <span className="absolute -top-1 -right-1 bg-secondary text-background-dark text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                {itemCount}
-              </span>
-            </div>
-            <div>
-              <div className="text-sm text-text-secondary">
-                {itemCount} {itemCount === 1 ? "item" : "items"}
-              </div>
-              <div className="text-xl font-bold text-primary">
-                S$ {total.toFixed(2)}
-              </div>
-            </div>
-          </div>
+    <>
+      {/* 
+          MOBILE CART BAR
+          Floating at TOP
+       */}
 
-          {/* View Cart Button */}
+      <div
+        className="
+    fixed
+    left-3
+    right-3
+    top-[calc(env(safe-area-inset-top)+10px)]
+    z-[60]
+    sm:hidden
+  "
+      >
+        <div
+          className="
+            flex
+            h-[58px]
+            items-center
+            gap-2
+            rounded-[18px]
+            border
+            border-[#0b3b27]
+            bg-[#063b25]
+            px-2
+            shadow-[0_8px_28px_rgba(0,0,0,0.22)]
+          "
+        >
+          {/* 
+              CART ICON
+          = */}
+
           <Link
             href="/cart"
-            className="bg-primary text-white hover:text-white visited:text-white px-8 py-3 rounded-xl font-bold hover:bg-primary-dark transition-all transform hover:scale-105 shadow-lg inline-flex items-center gap-2 group"
+            aria-label="View cart"
+            className="
+              relative
+              flex
+              h-10
+              w-10
+              shrink-0
+              items-center
+              justify-center
+              rounded-full
+              text-white
+              transition
+              active:scale-95
+            "
           >
-            <span>View Cart</span>
-            <svg
-              className="w-5 h-5 group-hover:translate-x-1 transition-transform"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+            <ShoppingCart className="h-[22px] w-[22px]" strokeWidth={2} />
+
+            {/* Item badge */}
+            <span
+              className="
+                absolute
+                -right-0.5
+                -top-0.5
+                flex
+                h-[18px]
+                min-w-[18px]
+                items-center
+                justify-center
+                rounded-full
+                bg-[#f4b400]
+                px-1
+                text-[10px]
+                font-extrabold
+                leading-none
+                text-[#17351f]
+                shadow-sm
+              "
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M13 7l5 5m0 0l-5 5m5-5H6"
-              />
-            </svg>
+              {itemCount}
+            </span>
+          </Link>
+
+          {/* 
+              CART INFORMATION
+          = */}
+
+          <Link
+            href="/cart"
+            className="
+              min-w-0
+              flex-1
+              leading-none
+            "
+          >
+            <div
+              className="
+                text-[12px]
+                font-bold
+                leading-4
+                text-white
+              "
+            >
+              View Cart
+            </div>
+
+            <div
+              className="
+                mt-0.5
+                truncate
+                text-[9px]
+                font-medium
+                tracking-wide
+                text-white/65
+              "
+            >
+              {itemCount} {itemCount === 1 ? "item" : "items"}
+              <span className="mx-1">•</span>
+              S$ {total.toFixed(2)}
+            </div>
+          </Link>
+
+          {/* 
+              PROCEED BUTTON
+          = */}
+
+          <Link
+            href="/cart"
+            className="
+              flex
+              h-9
+              shrink-0
+              items-center
+              gap-1
+              rounded-full
+              bg-[#f4b400]
+              px-4
+              text-[11px]
+              font-extrabold
+              text-[#17351f]
+              shadow-sm
+              transition-all
+              duration-200
+              hover:bg-[#ffc21a]
+              active:scale-[0.96]
+            "
+          >
+            <span>Proceed</span>
+
+            <ArrowRight className="h-3.5 w-3.5" strokeWidth={2.8} />
           </Link>
         </div>
       </div>
-    </div>
+
+      {/* 
+          DESKTOP CART BAR
+          Bottom sticky
+       */}
+
+      <div
+        className="
+          fixed
+          bottom-0
+          left-0
+          right-0
+          z-[50]
+          hidden
+          border-t
+          border-[#e7ddd2]
+          bg-[#fffaf2]/95
+          shadow-[0_-8px_30px_rgba(40,25,15,0.10)]
+          backdrop-blur-xl
+
+          sm:block
+        "
+      >
+        <div
+          className="
+            mx-auto
+            flex
+            max-w-[1400px]
+            items-center
+            justify-between
+            px-6
+            py-4
+            lg:px-10
+          "
+        >
+          {/* Cart summary */}
+
+          <Link
+            href="/cart"
+            className="
+              flex
+              items-center
+              gap-4
+              transition-opacity
+              hover:opacity-80
+            "
+          >
+            {/* Icon */}
+
+            <div
+              className="
+                relative
+                flex
+                h-12
+                w-12
+                items-center
+                justify-center
+                rounded-full
+                bg-[#063b25]
+                text-white
+              "
+            >
+              <ShoppingCart className="h-6 w-6" strokeWidth={2} />
+
+              <span
+                className="
+                  absolute
+                  -right-1
+                  -top-1
+                  flex
+                  h-5
+                  min-w-5
+                  items-center
+                  justify-center
+                  rounded-full
+                  bg-[#f4b400]
+                  px-1
+                  text-[10px]
+                  font-bold
+                  text-[#17351f]
+                "
+              >
+                {itemCount}
+              </span>
+            </div>
+
+            {/* Text */}
+
+            <div>
+              <div
+                className="
+                  text-sm
+                  font-semibold
+                  text-[#211a16]
+                "
+              >
+                {itemCount} {itemCount === 1 ? "item" : "items"}
+              </div>
+
+              <div
+                className="
+                  mt-0.5
+                  text-xl
+                  font-extrabold
+                  tracking-tight
+                  text-[#92251C]
+                "
+              >
+                S$ {total.toFixed(2)}
+              </div>
+            </div>
+          </Link>
+
+          {/* Desktop button */}
+
+          <Link
+            href="/cart"
+            className="
+              inline-flex
+              items-center
+              gap-2
+              rounded-xl
+              bg-[#063b25]
+              px-8
+              py-3
+              font-bold
+              text-white
+              shadow-lg
+              transition-all
+              duration-200
+              hover:bg-[#07502f]
+              hover:shadow-xl
+              active:scale-[0.98]
+            "
+          >
+            <span>View Cart</span>
+
+            <ArrowRight
+              className="
+                h-5
+                w-5
+                transition-transform
+                duration-200
+                group-hover:translate-x-1
+              "
+              strokeWidth={2.3}
+            />
+          </Link>
+        </div>
+      </div>
+    </>
   );
 };

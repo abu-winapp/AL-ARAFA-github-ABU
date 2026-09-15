@@ -33,7 +33,7 @@ The web app follows the same design system as the mobile app:
 ## 📁 Project Structure
 
 ```
-salem-rr-briyani-web/
+Al-Arafa-Cuisine-Web/
 ├── src/
 │   ├── app/                    # Next.js App Router pages
 │   │   ├── layout.tsx         # Root layout
@@ -75,7 +75,7 @@ salem-rr-briyani-web/
 1. **Clone the repository**
 ```bash
 git clone <repository-url>
-cd salem-rr-briyani-web
+cd Al-Arafa-Cuisine-Web
 ```
 
 2. **Install dependencies**

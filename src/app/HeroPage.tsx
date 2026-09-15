@@ -1,332 +1,342 @@
 "use client";
 
-import Link from "next/link";
 import { useEffect, useState } from "react";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/ui-2/button";
 
-function HeroPage() {
-  const menuicon = "./images/food.svg";
-  const heroimage = "./images/restaurant-hero.png";
+import { useSettingsStore } from "@/lib/store/useSettingsStore";
 
-const heroTexts = [
-  {
-    first: "Savor authentic",
-    second: "royal flavors",
-  },
-  {
-    first: "Taste timeless",
-    second: "tradition",
-  },
-  {
-    first: "Feast like",
-    second: "royalty",
-  },
-  {
-    first: "Discover refined",
-    second: "taste",
-  },
-  {
-    first: "Experience true",
-    second: "culinary artistry",
-  },
-];
+/**
+ for navigation bar <SiteHeader />.
+ */
+export default function Hero() {
+  const heroImages = [
+    "/images/mandi-1.webp",
+    "/images/mandi-2.webp",
+    "/images/mandi-3.webp",
+  ];
 
-  const [activeText, setActiveText] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [currentImage, setCurrentImage] = useState(0);
+
+  const getOrderWindows = useSettingsStore((state) => state.getOrderWindows);
+
+  const fetchAllSettings = useSettingsStore((state) => state.fetchAllSettings);
+
+  useEffect(() => {
+    fetchAllSettings();
+  }, [fetchAllSettings]);
+
+  const orderWindows = getOrderWindows();
+
+  const formatTime = (time: string) => {
+    const [hours, minutes] = time.split(":").map(Number);
+
+    const date = new Date();
+    date.setHours(hours, minutes, 0, 0);
+
+    return date.toLocaleTimeString("en-SG", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setIsAnimating(true);
-
-      setTimeout(() => {
-        setActiveText((prev) => (prev + 1) % heroTexts.length);
-        setIsAnimating(false);
-      }, 500);
-    }, 5000);
+      setCurrentImage((prev) => (prev + 1) % heroImages.length);
+    }, 3000);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [heroImages.length]);
 
   return (
-    <section
-      className="
-        w-full
-        min-h-[70vh]
-        px-4
-        sm:px-6
-        lg:px-8
-        xl:px-10
-        flex
-        items-center
-        bg-[#f5eee3]
-      "
-    >
-      {/* MAIN HERO GRID */}
+<section
+  className="
+    relative isolate
+    h-[300px]
+    overflow-hidden
+    rounded-b-[22px]
+    bg-[#221a16]
+    text-white
+
+    sm:h-[340px]
+    sm:rounded-b-[28px]
+
+    md:h-[370px]
+
+    lg:h-[500px]
+    lg:rounded-b-[34px]
+
+    xl:h-[540px]
+  "
+>
+      {/*  BACKGROUND SLIDES  */}
+      {heroImages.map((image, index) => (
+        <img
+          key={image}
+          src={image}
+          alt="Authentic Al Arafa cuisine"
+          width={1600}
+          height={1100}
+          fetchPriority={index === 0 ? "high" : "auto"}
+          className={`
+            absolute inset-0 -z-20
+            h-full w-full
+            object-cover
+            object-[62%_center]
+            transition-opacity duration-1000 ease-in-out
+            ${currentImage === index ? "opacity-100" : "opacity-0"}
+          `}
+        />
+      ))}
+
+      {/*  DARK OVERLAY  */}
       <div
         className="
+          absolute inset-0 -z-10
+          bg-gradient-to-r
+          from-black/85
+          via-black/55
+          to-black/10
+        "
+      />
+
+      {/*  BOTTOM GRADIENT  */}
+      <div
+        className="
+          absolute inset-x-0 bottom-0 -z-10
+          h-1/2
+          bg-gradient-to-t
+          from-black/65
+          to-transparent
+        "
+      />
+
+      {/*  HERO CONTAINER  */}
+      <div
+        className="
+          relative z-10
+          mx-auto
+          flex h-full
           w-full
           max-w-[1500px]
-          mx-auto
-          grid
-          grid-cols-1
-          lg:grid-cols-[55%_45%]
-          items-center
-          gap-4
-          sm:gap-8
-          lg:gap-10
         "
       >
-        {/* LEFT CONTENT */}
+        {/* HERO CONTENT */}
         <div
           className="
-            w-full
-            flex
-            flex-col
-            justify-center
-            items-center
-            text-center
+    flex flex-1
+    items-center
+    px-5
+    pt-3
 
-            lg:items-start
-            lg:text-left
-            lg:pr-8
-            xl:pr-12
+    sm:px-8
+    sm:pt-0
 
-            lg:row-start-1
-            lg:col-start-1
-          "
+    lg:px-12
+    xl:px-16
+  "
         >
-          {/* Small Heading */}
-          <h2
-            className="
-              !text-[13px]
-              sm:!text-sm
-              lg:!text-lg
-              uppercase
-              tracking-[0.14em]
-              sm:tracking-[0.25em]
-              whitespace-nowrap
-              text-gray-500
-              font-medium
-              !mt-6
-              sm:!mt-1
-              !mb-3
-              sm:!mb-5
-              font-manrope
-            "
-          >
-            Fine Dining Experiences
-          </h2>
+          <div className="max-w-[680px] w-full">
+            {/* EYEBROW */}
+            <div className="mb-3 flex items-center gap-3 sm:mb-4">
+              <span
+                className="
+                  text-[9px]
+                  font-semibold
+                  tracking-[0.28em]
+                  text-white/75
 
-          {/* Main Heading */}
-<h1
-  className={`
-    text-[2.5rem]
-    sm:text-5xl
-    md:text-7xl
-    lg:text-7xl
-    xl:text-8xl
-    font-normal
-    leading-[0.9]
-    tracking-[-0.025em]
-    font-cormorant
-    max-w-[950px]
-    transition-all
-    duration-500
-    ease-out
-    ${isAnimating
-      ? "-translate-y-8 opacity-0"
-      : "translate-y-0 opacity-100"
-    }
-  `}
->
-  <span
-    className="
-      block
-      bg-gradient-to-r
-      from-[#6f1d16]
-      via-[#b33a2b]
-      to-[#3a0d09]
-      bg-clip-text
-      text-transparent
-    "
-  >
-    {heroTexts[activeText].first}
-  </span>
+                  sm:text-[10px]
 
-  <span
-    className="
-      block
-      bg-gradient-to-r
-      from-[#3a0d09]
-      via-[#92251c]
-      to-[#c04a38]
-      bg-clip-text
-      text-transparent
-      italic
-    "
-  >
-    {heroTexts[activeText].second}
-  </span>
-</h1>
+                  lg:text-xs
+                "
+              >
+                Al Arafa Cuisine
+              </span>
+            </div>
 
-          {/* Luxury Decoration */}
-          <div className="aniconofluxury my-1 sm:my-6">
-            {/* Design this next */}
-          </div>
-
-          {/* Description */}
-          <p
-            className="
-              max-w-[340px]
-              sm:max-w-xl
-              text-[14px]
-              sm:text-base
-              lg:text-xl
-              leading-[1.55]
-              text-gray-500
-              font-manrope
-              mt-1
-              mb-4
-              sm:mb-7
-            "
-          >
-            Discover a world of culinary delights and create unforgettable
-            memories with every bite.
-          </p>
-        </div>
-
-        {/* RIGHT IMAGE */}
-        <div
-          className="
-            relative
-            w-full
-            min-h-[240px]
-            sm:min-h-[380px]
-            lg:min-h-[600px]
-            flex
-            items-start
-            justify-center
-            z-20
-
-            -mt-8
-            sm:mt-0
-
-            lg:row-start-1
-            lg:col-start-2
-          "
-        >
-          <div
-            className="
-              relative
-              w-[110%]
-              sm:w-[110%]
-              md:w-[115%]
-              lg:w-[130%]
-              xl:w-[125%]
-
-              h-[250px]
-              sm:h-[400px]
-              md:h-[470px]
-              lg:h-[570px]
-              xl:h-[630px]
-
-              overflow-visible
-              rounded-2xl
-              sm:rounded-3xl
-            "
-          >
-            <img
-              src={heroimage}
-              alt="Luxury dining"
+            {/* MAIN HEADING */}
+            <h1
               className="
-                w-full
-                h-full
-                object-contain
+                font-serif
+                text-[34px]
+                font-semibold
+                leading-[0.98]
+                tracking-[-0.025em]
+                text-[white]
+                sm:text-[46px]
+
+                md:text-[52px]
+
+                lg:text-[62px]
+
+                xl:text-[70px]
               "
-            />
+            >
+              Good Food.
+              <br />
+              <span className="text-[#d8b86a]">Great Mood.</span>
+            </h1>
+
+            {/* SUB HEADING */}
+            <p
+              className="
+    mt-3
+    max-w-[540px]
+    text-[12px]
+    leading-5
+    text-white/75
+
+    sm:mt-4
+    sm:text-[13px]
+    sm:leading-6
+
+    lg:mt-4
+    lg:text-[15px]
+    lg:leading-7
+  "
+            >
+              Experience authentic flavours with Al Arafa Cuisine
+              {orderWindows.length > 0 && (
+                <>
+                  <br />
+
+                  <span className="font-medium text-white">
+                    Opening Hours:{" "}
+                    {orderWindows.map((window, index) => (
+                      <span key={window.name}>
+                        {index > 0 && " • "}
+                        {formatTime(window.start)} – {formatTime(window.end)}
+                      </span>
+                    ))}
+                  </span>
+                </>
+              )}
+            </p>
+            {/* CTA */}
+            <div
+              className="
+    mt-4
+    flex
+    flex-wrap
+    items-center
+    gap-3
+
+    sm:mt-5
+    sm:gap-4
+  "
+            >
+              {/* ORDER NOW */}
+              <Link
+                href="/menu"
+                className="
+      inline-flex
+      items-center
+      gap-2
+      rounded-full
+      bg-[#d8b86a]
+      px-5
+      py-2.5
+      text-sm
+      font-semibold
+      text-[#3d1c12]
+      transition
+      hover:bg-white
+
+      lg:inline-flex
+    "
+              >
+                Order Now
+              </Link>
+
+              {/* CONTACT US */}
+              <Link
+                href="/contact"
+                className="
+      hidden
+      items-center
+      gap-2
+      rounded-full
+      bg-white
+      px-5
+      py-2.5
+      text-sm
+      font-semibold
+      text-black
+      transition
+      hover:bg-[#d8b86a]
+
+      lg:inline-flex
+    "
+              >
+                Contact Us
+              </Link>
+            </div>
           </div>
         </div>
 
-        {/* MENU BUTTON */}
-        <Link
-          href="/menu"
+        {/*  SLIDER INDICATORS  */}
+        <div
           className="
-            group
-            inline-flex
-            w-fit
+            absolute
+            bottom-5
+            right-5
+            z-20
+            flex
             items-center
-            justify-center
-            cursor-pointer
-            rounded-[15px]
-            bg-[#92251c]
-            px-[1em]
-            py-[0.65em]
-            pl-[0.9em]
-            text-[17px]
-            sm:text-[20px]
-            font-black
-            text-white
-            transition-all
-            duration-200
-            active:scale-[0.95]
-            hover:bg-[#92251c]
+            gap-2
 
-            /* MOBILE */
-            mx-auto
-            mt-2
-            mb-6
+            sm:bottom-6
+            sm:right-8
 
-            /* DESKTOP */
-            lg:mx-0
-            lg:mt-0
-            lg:mb-10
-            lg:row-start-1
-            lg:col-start-1
-            lg:self-end
+            lg:right-12
+
+            xl:right-16
           "
         >
-          <div
-            className="
-              transition-transform
-              duration-500
-              ease-linear
-              group-hover:scale-[1.25]
-            "
-          >
-            <img
-              src={menuicon}
-              alt=""
-              className="
-                block
-                h-[28px]
-                w-[28px]
-                sm:h-[30px]
-                sm:w-[30px]
-                origin-center
+          {heroImages.map((_, index) => (
+            <button
+              key={index}
+              type="button"
+              aria-label={`Show slide ${index + 1}`}
+              onClick={() => setCurrentImage(index)}
+              className={`
+                h-1.5
+                rounded-full
                 transition-all
                 duration-500
-                ease-in-out
-                group-hover:translate-x-[1.2em]
-                group-hover:scale-[1.1]
-              "
-            />
-          </div>
 
-          <span
-            className="
-              ml-[0.3em]
-              block
-              transition-all
-              duration-500
-              ease-linear
-              group-hover:opacity-0
-            "
-          >
-            MENU
-          </span>
-        </Link>
+                ${currentImage === index ? "w-8 bg-white" : "w-1.5 bg-white/40"}
+              `}
+            />
+          ))}
+        </div>
+
+        {/*  SCROLL INDICATOR  */}
+        <div
+          className="
+            absolute
+            bottom-5
+            left-5
+            hidden
+            items-center
+            gap-3
+            text-[8px]
+            uppercase
+            tracking-[0.3em]
+            text-white/50
+
+            sm:flex
+            sm:left-8
+
+            lg:left-12
+
+            xl:left-16
+          "
+        ></div>
       </div>
     </section>
   );
 }
-
-export default HeroPage;

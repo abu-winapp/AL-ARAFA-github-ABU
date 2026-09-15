@@ -399,9 +399,7 @@ return (
 {/* 
     MENU HERO
  */}
-{/* 
-    MENU HERO 
-*/}
+
 <section className="relative overflow-hidden bg-[#4d0907] text-white">
   {/* Background */}
   <div
@@ -625,7 +623,7 @@ return (
                   </div>
 
                   {/* Food grid */}
-                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4">
+                  <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 xl:grid-cols-4">
                     {group.items.map((item) => (
                       <MenuCard
                         key={item.id}

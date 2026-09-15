@@ -54,7 +54,7 @@ export function AdminHeader() {
             <Link href="/admin/dashboard" className="flex items-center space-x-3">
               <div className="w-10 h-10 relative">
                 <Image
-                  src="/logo.png"
+                  src="/logo.webp"
                   alt="Al Arafa Restaurant"
                   width={40}
                   height={40}

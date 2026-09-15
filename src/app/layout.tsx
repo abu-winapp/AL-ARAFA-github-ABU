@@ -1,10 +1,19 @@
 import type { Metadata } from "next";
+import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { HeaderWrapper } from "@/components/layout/HeaderWrapper";
+import { MainWrapper } from "@/components/layout/MainWrapper";
 import { FooterWrapper } from "@/components/layout/FooterWrapper";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { AppProviders } from "@/components/providers/AppProviders";
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  variable: "--font-sans",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title:
@@ -31,6 +40,10 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  icons: {
+    icon: "/images/logo.webp",
+    apple: "/images/logo.webp",
+  },
 };
 
 export default function RootLayout({
@@ -49,10 +62,12 @@ export default function RootLayout({
           referrerPolicy="no-referrer"
         />
       </head>
-      <body className="antialiased">
+      <body
+        className={`${plusJakartaSans.variable} antialiased`}
+      >
         <AppProviders>
           <HeaderWrapper />
-          <main className="min-h-screen">{children}</main>
+          <MainWrapper>{children}</MainWrapper>
           <FooterWrapper />
           <Toaster />
           <Sonner />

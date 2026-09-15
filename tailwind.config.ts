@@ -9,18 +9,37 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        serif: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        display: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+      },
       colors: {
-        // Brand colors (legacy)
+        // Brand colors (unified restaurant palette)
         primary: {
-          DEFAULT: '#9f0008',
-          dark: '#A40301',
-          light: '#c4000a',
+          DEFAULT: '#7A231D',
+          dark: '#5C1B16',
+          light: '#92342C',
           foreground: 'hsl(var(--primary-foreground))',
         },
         secondary: {
-          DEFAULT: '#FFC016',
-          light: '#FFD666',
+          DEFAULT: '#C9A24B',
+          dark: '#A9812F',
+          light: '#EFDFB8',
           foreground: 'hsl(var(--secondary-foreground))',
+        },
+        brand: {
+          maroon: '#7A231D',
+          'maroon-dark': '#5C1B16',
+          gold: '#C9A24B',
+          'gold-dark': '#A9812F',
+          'gold-tint': '#EFDFB8',
+          cream: '#F7F1E6',
+          'cream-soft': '#FFFBF3',
+          ink: '#221A16',
+          muted: '#6B6058',
+          border: '#E7DCC9',
+          forest: '#241B16',
         },
         background: {
           DEFAULT: '#ffffff',

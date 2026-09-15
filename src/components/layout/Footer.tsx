@@ -26,7 +26,7 @@ export const Footer: FC = () => {
 
                 <div className="w-12 h-12 flex-shrink-0">
                   <img
-                    src="/logo.png"
+                    src="/logo.webp"
                     alt="Al Arafa Restaurant"
                     width={48}
                     height={48}
@@ -126,7 +126,7 @@ export const Footer: FC = () => {
                   className={`flex items-center gap-3 ${linkClass}`}
                 >
                   <i className="fa-solid fa-phone flex-shrink-0 text-white" />
-                  <span>+65 8989 6289</span>
+                  <span>+65 84544567</span>
                 </a>
 
 
