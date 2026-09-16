@@ -1,0 +1,15 @@
+const CHECKOUT_SESSION_KEY = "checkout_in_progress";
+
+export function startCheckoutSession() {
+  sessionStorage.setItem(CHECKOUT_SESSION_KEY, "true");
+}
+
+export function hasCheckoutSession() {
+  return sessionStorage.getItem(CHECKOUT_SESSION_KEY) === "true";
+}
+
+export function endCheckoutSession() {
+  sessionStorage.removeItem(CHECKOUT_SESSION_KEY);
+}
+
+

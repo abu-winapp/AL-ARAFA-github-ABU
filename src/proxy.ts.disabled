@@ -1,0 +1,45 @@
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
+
+export function proxy(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
+  // protected routes
+  const protectedRoutes = ["/addresses", "/checkout", "/orders", "/profile"];
+
+  const isProtectedRoute = protectedRoutes.some((route) =>
+    pathname.startsWith(route),
+  );
+
+  if (!isProtectedRoute) {
+    return NextResponse.next();
+  }
+
+  /*
+    Temporary check
+
+    Later this becomes:
+    request.cookies.get("access_token")
+  */
+
+  const token = request.cookies.get("salem_access_token");
+
+  if (!token) {
+    const loginUrl = new URL("/login", request.url);
+
+    loginUrl.searchParams.set("redirect", pathname);
+
+    return NextResponse.redirect(loginUrl);
+  }
+
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: [
+    "/addresses/:path*",
+    "/checkout/:path*",
+    "/orders/:path*",
+    "/profile/:path*",
+  ],
+};
