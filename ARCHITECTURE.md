@@ -1,4 +1,4 @@
-# Al Arafa Restaurant - Architecture Summary
+# Al Arafa Cuisine - Architecture Summary
 
 The app is built on **Next.js 16 App Router** with TypeScript, using file-based routing across both customer-facing pages (menu, cart, checkout, orders, loyalty) and a full **admin section** (`/admin/*`) — making this a unified monolith rather than a separate admin app.
 

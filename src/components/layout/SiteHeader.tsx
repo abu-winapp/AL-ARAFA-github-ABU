@@ -495,6 +495,7 @@ export const SiteHeader: FC = () => {
       >
         <div
           className="
+      relative
       mx-auto
       flex
       h-[66px]
@@ -712,7 +713,7 @@ export const SiteHeader: FC = () => {
           {/* PROFILE / SIGN IN */}
 
           {isCustomerAuthenticated && user ? (
-            <div className="relative flex flex-1">
+            <div className="flex flex-1">
               <button
                 type="button"
                 aria-label="Open profile menu"
@@ -816,11 +817,11 @@ export const SiteHeader: FC = () => {
                   <div
                     className="
                 absolute
-                bottom-[62px]
-                right-0
+                bottom-[calc(100%+12px)]
+                right-1.5
                 z-50
                 w-52
-                overflow-hidden
+                overflow-visible
                 rounded-2xl
                 border
                 border-black/10
@@ -829,6 +830,23 @@ export const SiteHeader: FC = () => {
                 shadow-[0_10px_40px_rgba(0,0,0,0.18)]
               "
                   >
+                    {/* TAIL — connects the menu back down to the profile icon */}
+
+                    <div
+                      className="
+                  absolute
+                  -bottom-[5px]
+                  right-6
+                  h-3
+                  w-3
+                  rotate-45
+                  rounded-[2px]
+                  border-b
+                  border-r
+                  border-black/10
+                  bg-white
+                "
+                    />
                     {/* USER INFO */}
 
                     <div className="border-b border-black/10 px-3 py-2.5">

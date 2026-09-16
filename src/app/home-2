@@ -1767,7 +1767,7 @@ export default function Home() {
           {/* Google Reviews Badge */}
           <div style={{ textAlign: 'center' }}>
             <a
-              href="https://g.page/r/salemrrbriyani/review"
+              href="https://g.page/r/alarafacuisine/review"
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -2201,7 +2201,7 @@ Singapore 419737
                       Email
                     </h3>
                     <a
-                      href="mailto:info@salemrrbriyani.sg"
+                      href="mailto:info@alarafacuisine.com"
                       style={{
                         fontSize: '15px',
                         color: '#9f0008',
@@ -2210,7 +2210,7 @@ Singapore 419737
                       }}
                       className="contact-link"
                     >
-                      info@salemrrbriyani.sg
+                      info@alarafacuisine.com
                     </a>
                   </div>
                 </div>

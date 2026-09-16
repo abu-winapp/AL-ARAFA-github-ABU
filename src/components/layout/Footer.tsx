@@ -27,7 +27,7 @@ export const Footer: FC = () => {
                 <div className="w-12 h-12 flex-shrink-0">
                   <img
                     src="/logo.webp"
-                    alt="Al Arafa Restaurant"
+                    alt="Al Arafa Cuisine"
                     width={48}
                     height={48}
                     className="w-full h-full rounded-full object-cover"
@@ -35,7 +35,7 @@ export const Footer: FC = () => {
                 </div>
 
                 <h3 className="text-xl font-bold text-white">
-                  Al Arafa Restaurant
+                  Al Arafa Cuisine
                 </h3>
 
               </div>
@@ -122,7 +122,7 @@ export const Footer: FC = () => {
 
                 {/* Phone */}
                 <a
-                  href="tel:+6589896289"
+                  href="tel:+6584544567"
                   className={`flex items-center gap-3 ${linkClass}`}
                 >
                   <i className="fa-solid fa-phone flex-shrink-0 text-white" />
@@ -132,7 +132,7 @@ export const Footer: FC = () => {
 
                 {/* Email */}
                 <a
-                  href="mailto:salemrrbiryanisg@gmail.com"
+                  href="mailto:info@alarafacuisine.com"
                   className={`flex items-center gap-3 ${linkClass}`}
                 >
                   <i className="fa-solid fa-envelope flex-shrink-0 text-white" />
@@ -155,7 +155,7 @@ export const Footer: FC = () => {
 
                 {/* Instagram */}
                 <a
-                  href="https://instagram.com/salemrrbiryanisg"
+                  href="https://instagram.com/alarafacuisine"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Instagram"
@@ -181,7 +181,7 @@ export const Footer: FC = () => {
 
                 {/* WhatsApp */}
                 <a
-                  href="https://wa.me/6589896289"
+                  href="https://wa.me/6584544567"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="WhatsApp"
@@ -256,7 +256,7 @@ export const Footer: FC = () => {
         <div className="py-6 flex flex-col md:flex-row justify-between items-center gap-4 text-sm">
 
           <p className="text-white/65">
-            © {currentYear} Al Arafa Restaurant. All rights reserved.
+            © {currentYear} Al Arafa Cuisine. All rights reserved.
           </p>
 
 

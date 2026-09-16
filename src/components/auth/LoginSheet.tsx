@@ -137,7 +137,7 @@ export function LoginSheet({
       // Notify other components that login succeeded so they can retry pending actions
       if (typeof window !== 'undefined') {
         try {
-          window.dispatchEvent(new CustomEvent('salem:loginSuccess'));
+          window.dispatchEvent(new CustomEvent('alarafa:loginSuccess'));
         } catch (e) {
           // ignore
         }
@@ -226,7 +226,7 @@ export function LoginSheet({
             <div className="w-20 h-20 mx-auto mb-4 relative">
               <img
                 src="/logo.webp"
-                alt="Al Arafa Restaurant"
+                alt="Al Arafa Cuisine"
                 width={80}
                 height={80}
                 className="rounded-full object-cover"
@@ -372,7 +372,7 @@ export function LoginSheet({
             <p className="text-sm text-muted-foreground">
               Need help?{" "}
               <a
-                href="tel:+6589896289"
+                href="tel:+6584544567"
                 className="text-primary hover:text-primary/80 font-semibold"
               >
                 Call +65 84544567

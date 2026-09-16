@@ -65,11 +65,11 @@ const goodfoodbg = "/images/goodfoodbg.png";
 
 export default function Home() {
 
-  const phone = "+65 1234 5678";
-  const email = "hello@alarafa.com";
-  const whatsapp = "6512345678";
+  const phone = "+65 8454 4567";
+  const email = "info@alarafacuisine.com";
+  const whatsapp = "6584544567";
   const address =
-    "123 Restaurant Street, Singapore";
+    "218B Changi Rd, Singapore 419737";
 
   const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
     address

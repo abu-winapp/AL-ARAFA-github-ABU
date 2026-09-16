@@ -1,5 +1,5 @@
 /**
- * Al Arafa Restaurant - Admin Login Page
+ * Al Arafa Cuisine - Admin Login Page
  */
 
 'use client';
@@ -57,7 +57,7 @@ export default function AdminLoginPage() {
           <div className="w-24 h-24 mx-auto mb-4">
             <Image
               src="/logo.webp"
-              alt="Al Arafa Restaurant"
+              alt="Al Arafa Cuisine"
               width={96}
               height={96}
               className="w-full h-full object-contain"
@@ -65,7 +65,7 @@ export default function AdminLoginPage() {
             />
           </div>
           <h1 className="text-3xl font-bold text-text-primary mb-2">Admin Portal</h1>
-          <p className="text-text-secondary">Al Arafa Restaurant Management</p>
+          <p className="text-text-secondary">Al Arafa Cuisine Management</p>
         </div>
 
         {/* Login Card */}

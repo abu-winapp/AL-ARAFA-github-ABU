@@ -260,7 +260,7 @@ npm start
 1. Build the app: `npm run build`
 2. Copy `.next`, `public`, `package.json` to server
 3. Run `npm install --production`
-4. Start with PM2: `pm2 start npm --name "salem-web" -- start`
+4. Start with PM2: `pm2 start npm --name "alarafa-web" -- start`
 
 ## 📊 SEO Optimization
 
@@ -307,8 +307,8 @@ Future testing setup:
 ## 📞 Support
 
 For issues or questions:
-- Backend API: Check `salemrrbriyani-backend` repository
-- Mobile App: Check `salem-rr-briyani-mobile` repository
+- Backend API: Check `alarafacuisine-backend` repository
+- Mobile App: Check `alarafa-cuisine-mobile` repository
 
 ## 📚 Additional Resources
 

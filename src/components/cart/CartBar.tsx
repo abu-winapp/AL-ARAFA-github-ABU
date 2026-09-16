@@ -50,7 +50,9 @@ export const CartBar: FC = () => {
     <>
       {/* 
           MOBILE CART BAR
-          Floating at TOP
+          Floating just above the bottom tab bar
+          (tab bar = 66px tall, sits bottom-[calc(0.75rem+safe-area)],
+          so this bar's bottom clears that plus a small gap)
        */}
 
       <div
@@ -58,7 +60,7 @@ export const CartBar: FC = () => {
     fixed
     left-3
     right-3
-    top-[calc(env(safe-area-inset-top)+10px)]
+    bottom-[calc(1.5rem+66px+env(safe-area-inset-bottom))]
     z-[60]
     sm:hidden
   "

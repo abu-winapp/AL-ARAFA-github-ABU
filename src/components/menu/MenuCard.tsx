@@ -97,7 +97,7 @@ export const MenuCard: FC<MenuCardProps> = ({
           const listener = async () => {
             try {
               window.removeEventListener(
-                "salem:loginSuccess",
+                "alarafa:loginSuccess",
                 listener as EventListener,
               );
             } catch (e) {}
@@ -113,14 +113,14 @@ export const MenuCard: FC<MenuCardProps> = ({
 
           try {
             window.addEventListener(
-              "salem:loginSuccess",
+              "alarafa:loginSuccess",
               listener as EventListener,
             );
 
             setTimeout(() => {
               try {
                 window.removeEventListener(
-                  "salem:loginSuccess",
+                  "alarafa:loginSuccess",
                   listener as EventListener,
                 );
               } catch (e) {}
@@ -206,7 +206,7 @@ export const MenuCard: FC<MenuCardProps> = ({
           const listener = async () => {
             try {
               window.removeEventListener(
-                "salem:loginSuccess",
+                "alarafa:loginSuccess",
                 listener as EventListener,
               );
             } catch (e) {}
@@ -218,14 +218,14 @@ export const MenuCard: FC<MenuCardProps> = ({
 
           try {
             window.addEventListener(
-              "salem:loginSuccess",
+              "alarafa:loginSuccess",
               listener as EventListener,
             );
 
             setTimeout(() => {
               try {
                 window.removeEventListener(
-                  "salem:loginSuccess",
+                  "alarafa:loginSuccess",
                   listener as EventListener,
                 );
               } catch (e) {}
@@ -269,7 +269,7 @@ export const MenuCard: FC<MenuCardProps> = ({
           const listener = async () => {
             try {
               window.removeEventListener(
-                "salem:loginSuccess",
+                "alarafa:loginSuccess",
                 listener as EventListener,
               );
             } catch (e) {}
@@ -281,14 +281,14 @@ export const MenuCard: FC<MenuCardProps> = ({
 
           try {
             window.addEventListener(
-              "salem:loginSuccess",
+              "alarafa:loginSuccess",
               listener as EventListener,
             );
 
             setTimeout(() => {
               try {
                 window.removeEventListener(
-                  "salem:loginSuccess",
+                  "alarafa:loginSuccess",
                   listener as EventListener,
                 );
               } catch (e) {}
@@ -496,7 +496,11 @@ export const MenuCard: FC<MenuCardProps> = ({
                   sm:text-6xl
                 "
                 >
-                  𓌉◯𓇋
+                <img
+                  src="/images/food-icon.svg"
+                  alt="Food Icon"
+                  className="h-10 w-10 sm:h-16 sm:w-16"
+                />
                 </span>
               </div>
             )}
