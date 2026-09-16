@@ -19,7 +19,7 @@ export function WelcomeScreen({ onNext }: WelcomeScreenProps) {
             Welcome{user?.email ? `, ${user.email.split('@')[0]}` : ''}!
           </h1>
           <p className="text-lg text-gray-600">
-            Thank you for choosing Al Arafa Restaurant
+            Thank you for choosing Al Arafa Cuisine
           </p>
         </div>
 

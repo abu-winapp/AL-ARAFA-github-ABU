@@ -481,163 +481,198 @@ export const SiteHeader: FC = () => {
       {/* 
   MOBILE FLOATING TAB BAR
 */}
+  
 
       <nav
         className="
-    fixed
-    inset-x-0
-    bottom-[calc(0.75rem+env(safe-area-inset-bottom))]
-    z-50
-    block
-    md:hidden
-    px-3
-  "
+          fixed
+          inset-x-0
+          bottom-[calc(0.75rem+env(safe-area-inset-bottom))]
+          z-50
+          block
+          px-3
+          md:hidden
+        "
       >
         <div
           className="
-      mx-auto
-      flex
-      h-[66px]
-      w-full
-      max-w-[420px]
-      items-center
-      justify-between
-      rounded-[34px]
-      border
-      border-black/[0.06]
-      bg-white
-      px-1.5
-      shadow-[0_8px_30px_rgba(0,0,0,0.16)]
-    "
+            relative
+            mx-auto
+            flex
+            h-[66px]
+            w-full
+            max-w-[420px]
+            items-center
+            justify-between
+            rounded-[34px]
+            border
+            border-black/[0.06]
+            bg-white
+            px-1.5
+            shadow-[0_8px_30px_rgba(0,0,0,0.16)]
+          "
         >
-          {/* HOME */}
+          {/* 
+              HOME
+               */}
 
           <Link
             href="/"
             aria-label="Home"
             className={`
-        flex
-        h-[56px]
-        min-w-[62px]
-        flex-1
-        flex-col
-        items-center
-        justify-center
-        rounded-full
-        transition-all
-        duration-200
-        active:scale-95
-        ${
-          pathname === "/"
-            ? "bg-[#063B25] text-white shadow-[0_4px_12px_rgba(6,59,37,0.25)]"
-            : "text-[#6f7378] hover:text-[#222]"
-        }
-      `}
+              flex
+              h-[56px]
+              min-w-[62px]
+              flex-1
+              flex-col
+              items-center
+              justify-center
+              rounded-full
+              transition-all
+              duration-200
+              active:scale-95
+              ${
+                pathname === "/"
+                  ? "bg-[#063B25] text-white shadow-[0_4px_12px_rgba(6,59,37,0.25)]"
+                  : "text-[#6f7378] hover:text-[#222]"
+              }
+            `}
           >
             <Home
-              className={`size-[21px] ${
-                pathname === "/" ? "text-white" : "text-[#6f7378]"
-              }`}
+              className={`
+                size-[21px]
+                ${
+                  pathname === "/"
+                    ? "text-white"
+                    : "text-[#6f7378]"
+                }
+              `}
               strokeWidth={pathname === "/" ? 2.2 : 1.8}
             />
 
             <span
               className={`
-          mt-0.5
-          text-[10px]
-          font-semibold
-          leading-none
-          ${pathname === "/" ? "text-white" : "text-[#6f7378]"}
-        `}
+                mt-0.5
+                text-[10px]
+                font-semibold
+                leading-none
+                ${
+                  pathname === "/"
+                    ? "text-white"
+                    : "text-[#6f7378]"
+                }
+              `}
             >
               Home
             </span>
           </Link>
 
-          {/* MENU */}
+          {/* 
+              MENU
+               */}
 
           <Link
             href="/menu"
             aria-label="Menu"
             className={`
-        flex
-        h-[56px]
-        min-w-[62px]
-        flex-1
-        flex-col
-        items-center
-        justify-center
-        rounded-full
-        transition-all
-        duration-200
-        active:scale-95
-        ${
-          pathname === "/menu"
-            ? "bg-[#063B25] text-white shadow-[0_4px_12px_rgba(6,59,37,0.25)]"
-            : "text-[#6f7378] hover:text-[#222]"
-        }
-      `}
+              flex
+              h-[56px]
+              min-w-[62px]
+              flex-1
+              flex-col
+              items-center
+              justify-center
+              rounded-full
+              transition-all
+              duration-200
+              active:scale-95
+              ${
+                pathname === "/menu"
+                  ? "bg-[#063B25] text-white shadow-[0_4px_12px_rgba(6,59,37,0.25)]"
+                  : "text-[#6f7378] hover:text-[#222]"
+              }
+            `}
           >
             <Utensils
-              className={`size-[21px] ${
-                pathname === "/menu" ? "text-white" : "text-[#6f7378]"
-              }`}
+              className={`
+                size-[21px]
+                ${
+                  pathname === "/menu"
+                    ? "text-white"
+                    : "text-[#6f7378]"
+                }
+              `}
               strokeWidth={pathname === "/menu" ? 2.2 : 1.8}
             />
 
             <span
               className={`
-          mt-0.5
-          text-[10px]
-          font-semibold
-          leading-none
-          ${pathname === "/menu" ? "text-white" : "text-[#6f7378]"}
-        `}
+                mt-0.5
+                text-[10px]
+                font-semibold
+                leading-none
+                ${
+                  pathname === "/menu"
+                    ? "text-white"
+                    : "text-[#6f7378]"
+                }
+              `}
             >
               Menu
             </span>
           </Link>
 
-          {/* CART */}
+          {/* 
+              CART
+               */}
 
           <Link
             href="/cart"
             aria-label="Cart"
             className={`
-        relative
-        flex
-        h-[56px]
-        min-w-[62px]
-        flex-1
-        flex-col
-        items-center
-        justify-center
-        rounded-full
-        transition-all
-        duration-200
-        active:scale-95
-        ${
-          pathname === "/cart"
-            ? "bg-[#063B25] text-white shadow-[0_4px_12px_rgba(6,59,37,0.25)]"
-            : "text-[#6f7378] hover:text-[#222]"
-        }
-      `}
+              relative
+              flex
+              h-[56px]
+              min-w-[62px]
+              flex-1
+              flex-col
+              items-center
+              justify-center
+              rounded-full
+              transition-all
+              duration-200
+              active:scale-95
+              ${
+                pathname === "/cart"
+                  ? "bg-[#063B25] text-white shadow-[0_4px_12px_rgba(6,59,37,0.25)]"
+                  : "text-[#6f7378] hover:text-[#222]"
+              }
+            `}
           >
             <ShoppingCart
-              className={`size-[21px] ${
-                pathname === "/cart" ? "text-white" : "text-[#6f7378]"
-              }`}
+              className={`
+                size-[21px]
+                ${
+                  pathname === "/cart"
+                    ? "text-white"
+                    : "text-[#6f7378]"
+                }
+              `}
               strokeWidth={pathname === "/cart" ? 2.2 : 1.8}
             />
 
             <span
               className={`
-          mt-0.5
-          text-[10px]
-          font-semibold
-          leading-none
-          ${pathname === "/cart" ? "text-white" : "text-[#6f7378]"}
-        `}
+                mt-0.5
+                text-[10px]
+                font-semibold
+                leading-none
+                ${
+                  pathname === "/cart"
+                    ? "text-white"
+                    : "text-[#6f7378]"
+                }
+              `}
             >
               Cart
             </span>
@@ -645,74 +680,87 @@ export const SiteHeader: FC = () => {
             {isCustomerAuthenticated && cartCount > 0 && (
               <span
                 className="
-            absolute
-            right-[8px]
-            top-[5px]
-            flex
-            size-[18px]
-            items-center
-            justify-center
-            rounded-full
-            bg-[#92251c]
-            text-[9px]
-            font-bold
-            text-white
-            shadow-sm
-          "
+                  absolute
+                  right-[8px]
+                  top-[5px]
+                  flex
+                  size-[18px]
+                  items-center
+                  justify-center
+                  rounded-full
+                  bg-[#92251c]
+                  text-[9px]
+                  font-bold
+                  text-white
+                  shadow-sm
+                "
               >
                 {cartCount}
               </span>
             )}
           </Link>
 
-          {/* ORDERS */}
+          {/* 
+              ORDERS
+               */}
 
           <Link
             href="/orders"
             aria-label="Orders"
             className={`
-        flex
-        h-[56px]
-        min-w-[62px]
-        flex-1
-        flex-col
-        items-center
-        justify-center
-        rounded-full
-        transition-all
-        duration-200
-        active:scale-95
-        ${
-          pathname === "/orders"
-            ? "bg-[#063B25] text-white shadow-[0_4px_12px_rgba(6,59,37,0.25)]"
-            : "text-[#6f7378] hover:text-[#222]"
-        }
-      `}
+              flex
+              h-[56px]
+              min-w-[62px]
+              flex-1
+              flex-col
+              items-center
+              justify-center
+              rounded-full
+              transition-all
+              duration-200
+              active:scale-95
+              ${
+                pathname === "/orders"
+                  ? "bg-[#063B25] text-white shadow-[0_4px_12px_rgba(6,59,37,0.25)]"
+                  : "text-[#6f7378] hover:text-[#222]"
+              }
+            `}
           >
             <ClipboardList
-              className={`size-[21px] ${
-                pathname === "/orders" ? "text-white" : "text-[#6f7378]"
-              }`}
+              className={`
+                size-[21px]
+                ${
+                  pathname === "/orders"
+                    ? "text-white"
+                    : "text-[#6f7378]"
+                }
+              `}
               strokeWidth={pathname === "/orders" ? 2.2 : 1.8}
             />
 
             <span
               className={`
-          mt-0.5
-          text-[10px]
-          font-semibold
-          leading-none
-          ${pathname === "/orders" ? "text-white" : "text-[#6f7378]"}
-        `}
+                mt-0.5
+                text-[10px]
+                font-semibold
+                leading-none
+                ${
+                  pathname === "/orders"
+                    ? "text-white"
+                    : "text-[#6f7378]"
+                }
+              `}
             >
               Orders
             </span>
           </Link>
 
-          {/* PROFILE / SIGN IN */}
+          {/* 
+              PROFILE / SIGN IN
+               */}
 
           {isCustomerAuthenticated && user ? (
-            <div className="relative flex flex-1">
+            <div className="flex flex-1">
               <button
                 type="button"
                 aria-label="Open profile menu"
@@ -722,37 +770,43 @@ export const SiteHeader: FC = () => {
                   setMobileMenuOpen(false);
                 }}
                 className={`
-            flex
-            h-[56px]
-            min-w-[62px]
-            w-full
-            flex-col
-            items-center
-            justify-center
-            rounded-full
-            transition-all
-            duration-200
-            active:scale-95
-            ${
-              pathname === "/profile"
-                ? "bg-[#063B25] text-white shadow-[0_4px_12px_rgba(6,59,37,0.25)]"
-                : "text-[#6f7378] hover:text-[#222]"
-            }
-          `}
+                  flex
+                  h-[56px]
+                  w-full
+                  min-w-[62px]
+                  flex-col
+                  items-center
+                  justify-center
+                  rounded-full
+                  transition-all
+                  duration-200
+                  active:scale-95
+                  ${
+                    pathname === "/profile"
+                      ? "bg-[#063B25] text-white shadow-[0_4px_12px_rgba(6,59,37,0.25)]"
+                      : mobileUserMenuOpen
+                        ? "bg-[#063B25]/[0.08] text-[#063B25]"
+                        : "text-[#6f7378] hover:text-[#222]"
+                  }
+                `}
               >
                 {/* USER AVATAR */}
 
                 <div
                   className={`
-              relative
-              flex
-              size-[21px]
-              items-center
-              justify-center
-              overflow-hidden
-              rounded-full
-              ${pathname === "/profile" ? "bg-white/20" : "bg-[#92251c]"}
-            `}
+                    relative
+                    flex
+                    size-[21px]
+                    items-center
+                    justify-center
+                    overflow-hidden
+                    rounded-full
+                    ${
+                      pathname === "/profile"
+                        ? "bg-white/20"
+                        : "bg-[#92251c]"
+                    }
+                  `}
                 >
                   {user.profileImageUrl ? (
                     <img
@@ -782,248 +836,44 @@ export const SiteHeader: FC = () => {
 
                 <span
                   className={`
-              mt-0.5
-              text-[10px]
-              font-semibold
-              leading-none
-              ${pathname === "/profile" ? "text-white" : "text-[#6f7378]"}
-            `}
+                    mt-0.5
+                    text-[10px]
+                    font-semibold
+                    leading-none
+                    ${
+                      pathname === "/profile"
+                        ? "text-white"
+                        : "text-[#6f7378]"
+                    }
+                  `}
                 >
                   Profile
                 </span>
               </button>
-
-              {/* MOBILE USER MENU */}
-
-              {mobileUserMenuOpen && (
-                <>
-                  {/* BACKDROP */}
-
-                  <button
-                    type="button"
-                    aria-label="Close profile menu"
-                    onClick={() => setMobileUserMenuOpen(false)}
-                    className="
-                fixed
-                inset-0
-                z-40
-                cursor-default
-              "
-                  />
-
-                  {/* USER MENU */}
-
-                  <div
-                    className="
-                absolute
-                bottom-[62px]
-                right-0
-                z-50
-                w-52
-                overflow-hidden
-                rounded-2xl
-                border
-                border-black/10
-                bg-white
-                p-1.5
-                shadow-[0_10px_40px_rgba(0,0,0,0.18)]
-              "
-                  >
-                    {/* USER INFO */}
-
-                    <div className="border-b border-black/10 px-3 py-2.5">
-                      <p className="truncate text-xs font-semibold text-[#222]">
-                        {user.preferredName ||
-                          user.fullName ||
-                          user.name ||
-                          "User"}
-                      </p>
-
-                      {user.email && (
-                        <p className="mt-0.5 truncate text-[10px] text-black/45">
-                          {user.email}
-                        </p>
-                      )}
-                    </div>
-
-                    {/* PROFILE */}
-
-                    <Link
-                      href="/profile"
-                      onClick={() => setMobileUserMenuOpen(false)}
-                      className="
-                  flex
-                  items-center
-                  gap-2.5
-                  rounded-xl
-                  px-3
-                  py-2.5
-                  text-xs
-                  font-medium
-                  text-[#333]
-                  transition
-                  hover:bg-black/5
-                  active:scale-[0.98]
-                "
-                    >
-                      <User className="h-4 w-4 shrink-0 text-black/55" />
-                      <span>Profile</span>
-                    </Link>
-
-                    {/* ABOUT US */}
-
-                    <Link
-                      href="/about"
-                      onClick={() => setMobileUserMenuOpen(false)}
-                      className="
-                  flex
-                  items-center
-                  gap-2.5
-                  rounded-xl
-                  px-3
-                  py-2.5
-                  text-xs
-                  font-medium
-                  text-[#333]
-                  transition
-                  hover:bg-black/5
-                  active:scale-[0.98]
-                "
-                    >
-                      <Info className="h-4 w-4 shrink-0 text-black/55" />
-                      <span>About Us</span>
-                    </Link>
-
-                    {/* CONTACT US */}
-
-                    <Link
-                      href="/contact"
-                      onClick={() => setMobileUserMenuOpen(false)}
-                      className="
-                  flex
-                  items-center
-                  gap-2.5
-                  rounded-xl
-                  px-3
-                  py-2.5
-                  text-xs
-                  font-medium
-                  text-[#333]
-                  transition
-                  hover:bg-black/5
-                  active:scale-[0.98]
-                "
-                    >
-                      <Phone className="h-4 w-4 shrink-0 text-black/55" />
-                      <span>Contact Us</span>
-                    </Link>
-
-                    {/* CUSTOMER CARE */}
-
-                    <Link
-                      href="/contact"
-                      onClick={() => setMobileUserMenuOpen(false)}
-                      className="
-                  flex
-                  items-center
-                  gap-2.5
-                  rounded-xl
-                  px-3
-                  py-2.5
-                  text-xs
-                  font-medium
-                  text-[#333]
-                  transition
-                  hover:bg-black/5
-                  active:scale-[0.98]
-                "
-                    >
-                      <Headset className="h-4 w-4 shrink-0 text-black/55" />
-                      <span>Customer Care</span>
-                    </Link>
-
-                    {/* ADDRESSES */}
-
-                    <Link
-                      href="/addresses"
-                      onClick={() => setMobileUserMenuOpen(false)}
-                      className="
-                  flex
-                  items-center
-                  gap-2.5
-                  rounded-xl
-                  px-3
-                  py-2.5
-                  text-xs
-                  font-medium
-                  text-[#333]
-                  transition
-                  hover:bg-black/5
-                  active:scale-[0.98]
-                "
-                    >
-                      <MapPin className="h-4 w-4 shrink-0 text-black/55" />
-                      <span>Addresses</span>
-                    </Link>
-
-                    <div className="my-1 h-px bg-black/10" />
-
-                    {/* LOGOUT */}
-
-                    <button
-                      type="button"
-                      onClick={async () => {
-                        closeMobileMenus();
-
-                        await useAuthStore.getState().logout();
-
-                        window.location.href = "/";
-                      }}
-                      className="
-                  flex
-                  w-full
-                  items-center
-                  gap-2.5
-                  rounded-xl
-                  px-3
-                  py-2.5
-                  text-left
-                  text-xs
-                  font-medium
-                  text-[#92251c]
-                  transition
-                  hover:bg-black/5
-                  active:scale-[0.98]
-                "
-                    >
-                      <LogOut className="h-4 w-4 shrink-0" />
-                      <span>Logout</span>
-                    </button>
-                  </div>
-                </>
-              )}
             </div>
           ) : (
-            /* MOBILE SIGN IN */
+            /* 
+               MOBILE SIGN IN
+                */
 
             <button
               type="button"
               onClick={() => setLoginSheetOpen(true)}
               className="
-          flex
-          h-[56px]
-          min-w-[62px]
-          flex-1
-          flex-col
-          items-center
-          justify-center
-          rounded-full
-          text-[#6f7378]
-          transition-all
-          duration-200
-          active:scale-95
-          hover:text-[#222]
-        "
+                flex
+                h-[56px]
+                min-w-[62px]
+                flex-1
+                flex-col
+                items-center
+                justify-center
+                rounded-full
+                text-[#6f7378]
+                transition-all
+                duration-200
+                active:scale-95
+                hover:text-[#222]
+              "
             >
               <UserRound
                 className="size-[21px] text-[#6f7378]"
@@ -1037,6 +887,445 @@ export const SiteHeader: FC = () => {
           )}
         </div>
       </nav>
+
+      {/* 
+          MOBILE PROFILE TOP DRAWER
+           */}
+
+      {mobileUserMenuOpen && isCustomerAuthenticated && user && (
+        <>
+          {/* BACKDROP */}
+
+          <button
+            type="button"
+            aria-label="Close profile menu"
+            onClick={() => setMobileUserMenuOpen(false)}
+            className="
+              fixed
+              inset-0
+              z-[60]
+              bg-black/40
+              backdrop-blur-[2px]
+              md:hidden
+            "
+          />
+
+          {/* 
+              TOP DRAWER
+               */}
+
+          <section
+            role="dialog"
+            aria-modal="true"
+            aria-label="Profile menu"
+            className="
+              fixed
+              inset-x-0
+              top-0
+              z-[70]
+              max-h-[75vh]
+              overflow-y-auto
+              rounded-b-[28px]
+              border-b
+              border-black/[0.06]
+              bg-white
+              px-4
+              pb-5
+              pt-[calc(0.75rem+env(safe-area-inset-top))]
+              shadow-[0_12px_45px_rgba(0,0,0,0.20)]
+              md:hidden
+            "
+          >
+            <div className="mx-auto w-full max-w-[520px]">
+
+              {/* 
+                  HEADER / CLOSE
+                   */}
+
+              <div className="mb-3 flex items-center justify-between">
+                <div className="flex items-center gap-2">
+
+
+
+                </div>
+
+                <button
+                  type="button"
+                  aria-label="Close profile menu"
+                  onClick={() => setMobileUserMenuOpen(false)}
+                  className="
+                    flex
+                    size-9
+                    items-center
+                    justify-center
+                    rounded-full
+                    bg-black/[0.045]
+                    text-[#555]
+                    transition
+                    active:scale-95
+                    active:bg-black/[0.08]
+                  "
+                >
+                  <CloseIcon className="size-[17px]" />
+                </button>
+              </div>
+
+              {/* 
+                  USER HEADER
+                   */}
+
+              <div
+                className="
+                  mb-3
+                  flex
+                  items-center
+                  gap-3
+                  rounded-2xl
+                  bg-[#faf8f4]
+                  px-4
+                  py-3
+                "
+              >
+                {/* AVATAR */}
+
+                <div
+                  className="
+                    flex
+                    size-11
+                    shrink-0
+                    items-center
+                    justify-center
+                    overflow-hidden
+                    rounded-full
+                    bg-[#92251c]
+                  "
+                >
+                  {user.profileImageUrl ? (
+                    <img
+                      src={user.profileImageUrl}
+                      alt={
+                        user.preferredName ||
+                        user.fullName ||
+                        user.name ||
+                        "Profile"
+                      }
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-sm font-bold text-white">
+                      {(
+                        user.preferredName ||
+                        user.fullName ||
+                        user.name ||
+                        user.email ||
+                        "U"
+                      )
+                        .charAt(0)
+                        .toUpperCase()}
+                    </span>
+                  )}
+                </div>
+
+                {/* USER DETAILS */}
+
+<div className="min-w-0 flex-1">
+  <p className="m-0 truncate text-sm mb-3 font-bold leading-none text-[#222]">
+    {user.preferredName ||
+      user.fullName ||
+      user.name ||
+      "User"}
+  </p>
+
+  {user.email && (
+    <p className="m-0 truncate text-[11px] font-normal leading-none text-black/45">
+      {user.email}
+    </p>
+  )}
+</div>
+              </div>
+
+              {/* 
+                  ACCOUNT
+                   */}
+
+              <div className="mb-2">
+
+
+                {/* PROFILE */}
+
+                <Link
+                  href="/profile"
+                  onClick={() => setMobileUserMenuOpen(false)}
+                  className="
+                    flex
+                    min-h-[52px]
+                    items-center
+                    gap-3
+                    rounded-2xl
+                    px-3
+                    py-2.5
+                    text-sm
+                    font-medium
+                    text-[#292929]
+                    transition
+                    active:scale-[0.98]
+                    active:bg-black/[0.04]
+                  "
+                >
+                  <span
+                    className="
+                      flex
+                      size-9
+                      shrink-0
+                      items-center
+                      justify-center
+                      rounded-xl
+                      bg-[#f5eee9]
+                    "
+                  >
+                    <User className="size-[18px] text-[#92251c]" />
+                  </span>
+
+                  <span className="flex-1">Profile</span>
+
+                  <span className="text-lg leading-none text-black/25">
+                    ›
+                  </span>
+                </Link>
+
+                {/* ADDRESSES */}
+
+                <Link
+                  href="/addresses"
+                  onClick={() => setMobileUserMenuOpen(false)}
+                  className="
+                    flex
+                    min-h-[52px]
+                    items-center
+                    gap-3
+                    rounded-2xl
+                    px-3
+                    py-2.5
+                    text-sm
+                    font-medium
+                    text-[#292929]
+                    transition
+                    active:scale-[0.98]
+                    active:bg-black/[0.04]
+                  "
+                >
+                  <span
+                    className="
+                      flex
+                      size-9
+                      shrink-0
+                      items-center
+                      justify-center
+                      rounded-xl
+                      bg-[#f5eee9]
+                    "
+                  >
+                    <MapPin className="size-[18px] text-[#92251c]" />
+                  </span>
+
+                  <span className="flex-1">Addresses</span>
+
+                  <span className="text-lg leading-none text-black/25">
+                    ›
+                  </span>
+                </Link>
+              </div>
+
+              {/* 
+                  SUPPORT
+                   */}
+
+              <div className="mb-2 border-t border-black/[0.07] pt-2">
+
+
+                {/* CUSTOMER CARE */}
+
+                <Link
+                  // href="/customer-care"
+                  href="/contact"
+                  onClick={() => setMobileUserMenuOpen(false)}
+                  className="
+                    flex
+                    min-h-[52px]
+                    items-center
+                    gap-3
+                    rounded-2xl
+                    px-3
+                    py-2.5
+                    text-sm
+                    font-medium
+                    text-[#292929]
+                    transition
+                    active:scale-[0.98]
+                    active:bg-black/[0.04]
+                  "
+                >
+                  <span
+                    className="
+                      flex
+                      size-9
+                      shrink-0
+                      items-center
+                      justify-center
+                      rounded-xl
+                      bg-[#f5eee9]
+                    "
+                  >
+                    <Headset className="size-[18px] text-[#92251c]" />
+                  </span>
+
+                  <span className="flex-1">Customer Care</span>
+
+                  <span className="text-lg leading-none text-black/25">
+                    ›
+                  </span>
+                </Link>
+
+                {/* CONTACT */}
+
+                <Link
+                  href="/contact"
+                  onClick={() => setMobileUserMenuOpen(false)}
+                  className="
+                    flex
+                    min-h-[52px]
+                    items-center
+                    gap-3
+                    rounded-2xl
+                    px-3
+                    py-2.5
+                    text-sm
+                    font-medium
+                    text-[#292929]
+                    transition
+                    active:scale-[0.98]
+                    active:bg-black/[0.04]
+                  "
+                >
+                  <span
+                    className="
+                      flex
+                      size-9
+                      shrink-0
+                      items-center
+                      justify-center
+                      rounded-xl
+                      bg-[#f5eee9]
+                    "
+                  >
+                    <Phone className="size-[18px] text-[#92251c]" />
+                  </span>
+
+                  <span className="flex-1">Contact Us</span>
+
+                  <span className="text-lg leading-none text-black/25">
+                    ›
+                  </span>
+                </Link>
+              </div>
+
+              {/* 
+                  ABOUT + LOGOUT
+                   */}
+
+              <div className="border-t border-black/[0.07] pt-2">
+                {/* ABOUT */}
+
+                <Link
+                  href="/about"
+                  onClick={() => setMobileUserMenuOpen(false)}
+                  className="
+                    flex
+                    min-h-[52px]
+                    items-center
+                    gap-3
+                    rounded-2xl
+                    px-3
+                    py-2.5
+                    text-sm
+                    font-medium
+                    text-[#292929]
+                    transition
+                    active:scale-[0.98]
+                    active:bg-black/[0.04]
+                  "
+                >
+                  <span
+                    className="
+                      flex
+                      size-9
+                      shrink-0
+                      items-center
+                      justify-center
+                      rounded-xl
+                      bg-[#f5eee9]
+                    "
+                  >
+                    <Info className="size-[18px] text-[#92251c]" />
+                  </span>
+
+                  <span className="flex-1">About Us</span>
+
+                  <span className="text-lg leading-none text-black/25">
+                    ›
+                  </span>
+                </Link>
+
+                {/* LOGOUT */}
+
+                <button
+                  type="button"
+                  onClick={async () => {
+                    closeMobileMenus();
+
+                    await useAuthStore.getState().logout();
+
+                    window.location.href = "/";
+                  }}
+                  className="
+                    flex
+                    min-h-[52px]
+                    w-full
+                    items-center
+                    gap-3
+                    rounded-2xl
+                    px-3
+                    py-2.5
+                    text-left
+                    text-sm
+                    font-medium
+                    text-[#92251c]
+                    transition
+                    active:scale-[0.98]
+                    active:bg-[#92251c]/[0.05]
+                  "
+                >
+                  <span
+                    className="
+                      flex
+                      size-9
+                      shrink-0
+                      items-center
+                      justify-center
+                      rounded-xl
+                      bg-[#92251c]/[0.08]
+                    "
+                  >
+                    <LogOut className="size-[18px]" />
+                  </span>
+
+                  <span className="flex-1">Logout</span>
+                </button>
+              </div>
+            </div>
+          </section>
+        </>
+      )}
 
       {/* 
           LOGIN SHEET

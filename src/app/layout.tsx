@@ -17,24 +17,24 @@ const plusJakartaSans = Plus_Jakarta_Sans({
 
 export const metadata: Metadata = {
   title:
-    "Al Arafa Restaurant - Best Biryani in Singapore | Authentic South Indian Cuisine",
+    "Al Arafa Cuisine - Best Biryani in Singapore | Authentic South Indian Cuisine",
   description:
-    "Award-winning biryani restaurant in Singapore. Authentic Salem-style chicken & mutton biryani, dosa, curry. Islandwide delivery, dine-in & catering.",
+    "Award-winning biryani restaurant in Singapore. Authentic chicken & mutton biryani, dosa, curry. Islandwide delivery, dine-in & catering.",
   keywords:
-    "biryani Singapore, best biryani, Salem biryani, South Indian food Singapore, halal biryani, Indian restaurant Singapore, biryani delivery, mutton biryani, chicken biryani, dosa Singapore, catering Singapore",
+    "biryani Singapore, best biryani, South Indian food Singapore, halal biryani, Indian restaurant Singapore, biryani delivery, mutton biryani, chicken biryani, dosa Singapore, catering Singapore",
   openGraph: {
-    title: "Al Arafa Restaurant - Best Biryani in Singapore",
+    title: "Al Arafa Cuisine - Best Biryani in Singapore",
     description:
-      "Award-winning authentic Salem-style biryani. Order online for islandwide delivery or dine-in at our restaurant.",
+      "Award-winning authentic biryani. Order online for islandwide delivery or dine-in at our restaurant.",
     type: "website",
     locale: "en_SG",
-    siteName: "Al Arafa Restaurant",
+    siteName: "Al Arafa Cuisine",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Al Arafa Restaurant - Best Biryani in Singapore",
+    title: "Al Arafa Cuisine - Best Biryani in Singapore",
     description:
-      "Award-winning authentic Salem-style biryani. Order online for islandwide delivery.",
+      "Award-winning authentic biryani. Order online for islandwide delivery.",
   },
   robots: {
     index: true,

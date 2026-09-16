@@ -16,7 +16,7 @@ import type {
   User
 } from "@/types";
 
-const USER_STORAGE_KEY = "salem_user";
+const USER_STORAGE_KEY = "alarafa_user";
 
 /**
  * Store user data in localStorage

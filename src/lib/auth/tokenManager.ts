@@ -1,5 +1,5 @@
-const ACCESS_TOKEN_KEY = "salem_access_token";
-const REFRESH_TOKEN_KEY = "salem_refresh_token";
+const ACCESS_TOKEN_KEY = "alarafa_access_token";
+const REFRESH_TOKEN_KEY = "alarafa_refresh_token";
 
 export function getAccessToken(): string | null {
   if (typeof window === "undefined") return null;

@@ -55,7 +55,7 @@ export function AdminHeader() {
               <div className="w-10 h-10 relative">
                 <Image
                   src="/logo.webp"
-                  alt="Al Arafa Restaurant"
+                  alt="Al Arafa Cuisine"
                   width={40}
                   height={40}
                   className="rounded-full object-cover"
@@ -63,7 +63,7 @@ export function AdminHeader() {
               </div>
               <div>
                 <div className="text-lg font-bold text-text-primary">
-                  Al Arafa Restaurant
+                  Al Arafa Cuisine
                 </div>
                 <div className="text-xs text-text-secondary">Admin Portal</div>
               </div>
@@ -112,7 +112,7 @@ export function AdminHeader() {
                       {user?.name || 'Admin'}
                     </div>
                     <div className="text-xs text-text-secondary">
-                      {user?.email || 'admin@salemrr.com'}
+                      {user?.email || 'admin@alarafacuisine.com'}
                     </div>
                   </div>
                   <ChevronDown className="w-4 h-4 text-text-secondary" />
@@ -125,7 +125,7 @@ export function AdminHeader() {
                       {user?.name || 'Admin'}
                     </p>
                     <p className="text-xs text-text-secondary">
-                      {user?.email || 'admin@salemrr.com'}
+                      {user?.email || 'admin@alarafacuisine.com'}
                     </p>
                   </div>
                 </DropdownMenuLabel>

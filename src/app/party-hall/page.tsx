@@ -8,8 +8,8 @@ import { PartyHallForm } from "@/components/party-hall/PartyHallForm";
 
 // Contact information
 const CONTACT_INFO = {
-  phone: "+65 8989 8088",
-  whatsapp: "+65 8989 8088",
+  phone: "+65 8454 4567",
+  whatsapp: "+65 8454 4567",
 };
 
 export default function PartyHallPage() {
@@ -54,7 +54,7 @@ export default function PartyHallPage() {
                   Make a Reservation for Your Special Event
                 </h2>
                 <p className="text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                  Al Arafa Restaurant is proud to offer a beautiful party hall for
+                  Al Arafa Cuisine is proud to offer a beautiful party hall for
                   your special occasions.{" "}
                 </p>
               </div>
@@ -80,7 +80,7 @@ export default function PartyHallPage() {
                   Coming Soon!
                 </h2>
                 <p className="text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                  We're excited to announce that Al Arafa Restaurant will soon be
+                  We're excited to announce that Al Arafa Cuisine will soon be
                   offering a beautiful party hall for your special occasions.
                   Perfect for celebrations, gatherings, and memorable events
                   with authentic South Indian cuisine.

@@ -88,10 +88,10 @@ const orderWays = [
 ];
 
 export default function Home() {
-  const phone = "+65 1234 5678";
-  const email = "hello@alarafa.com";
-  const whatsapp = "6512345678";
-  const address = "123 Restaurant Street, Singapore";
+  const phone = "+65 8454 4567";
+  const email = "info@alarafacuisine.com";
+  const whatsapp = "6584544567";
+  const address = "218B Changi Rd, Singapore 419737";
 
   const mapUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
     address,
@@ -967,11 +967,9 @@ export default function Home() {
           <div className="mt-6 flex w-full flex-col items-center text-center sm:mt-8 lg:mt-10">
             {/* Eyebrow */}
             <div className="mb-2.5 flex items-center justify-center gap-2.5 text-[9px] font-semibold tracking-[0.18em] text-[#a9812f] sm:mb-3 sm:gap-3 sm:text-[10px] sm:tracking-[0.2em] lg:text-[11px] lg:tracking-[0.22em]">
-              <span className="h-px w-5 bg-[#C9A24B] sm:w-6 lg:w-7" />
 
               <span>OUR STORY</span>
 
-              <span className="h-px w-5 bg-[#C9A24B] sm:w-6 lg:w-7" />
             </div>
 
             {/* Heading */}
@@ -1140,11 +1138,11 @@ export default function Home() {
           xl:text-[32px]
         "
                 >
-                  Inspired by the masterful strokes of Renaissance paintings,
-                  where every hue carries not just aesthetic significance but
-                  also cultural and symbolic depth. The deep red hues evoke
-                  passion, sophistication, and a connection to the sacramental
-                  significance found in Italian religious art.
+Every meal we serve is made with love and care.
+From our kitchen to your table, every bite tells a story.
+We use fresh ingredients, authentic flavors, and a whole lot of heart.
+Because good food fills the stomach, but food made with love fills the soul.
+
                 </p>
               </div>
 

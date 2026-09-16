@@ -21,6 +21,8 @@ import { useAuthStore } from "@/lib/store/useAuthStore";
 
 import * as menuService from "@/lib/api/menu.service";
 import * as locationService from "@/lib/api/location.service";
+const ContactHero = "/images/contactushero.png";
+
 
 import {
   Select,
@@ -378,7 +380,7 @@ function MenuPageContent() {
       );
 
     if (element) {
-      const yOffset = -100;
+      const yOffset = -80;
 
       const y =
         element.getBoundingClientRect().top +
@@ -413,7 +415,7 @@ return (
   <div className="absolute inset-0 bg-[#4d0907]/65" />
 
   {/* Hero content */}
-  <div className="relative z-10 mx-auto flex min-h-[260px] w-full max-w-[1500px] items-center justify-center px-5 py-8 sm:min-h-[280px] sm:px-6 sm:py-10 lg:px-8">
+  {/* <div className="relative z-10 mx-auto flex min-h-[260px] w-full max-w-[1500px] items-center justify-center px-5 py-8 sm:min-h-[280px] sm:px-6 sm:py-10 lg:px-8">
     {isAuthenticated ? (
       <div className="w-full max-w-[720px]">
         <FulfillmentSelector
@@ -482,7 +484,34 @@ return (
         </div>
       )
     )}
+  </div> */}
+
+<section className="relative h-[10vh] min-h-[100px] overflow-hidden bg-[#4d0907] text-white">
+  <div
+    className="absolute inset-0 bg-cover bg-center"
+    style={{
+      backgroundImage: `url(${ContactHero})`,
+    }}
+  />
+
+  <div className="absolute inset-0 bg-gradient-to-r from-[#430705]/95 via-[#650b08]/80 to-[#74100c]/25" />
+
+  <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#4d0907]/80 to-transparent" />
+
+  <div className="relative z-10 mx-auto flex h-full w-full max-w-[1650px] items-center px-5 sm:px-6 lg:px-8">
+    <div className="max-w-[680px]">
+      <p className="mb-2 text-xs font-semibold uppercase tracking-[0.3em] text-[#f4d27a] sm:mb-3 sm:text-sm">
+        Al Arafa Cuisine Menu
+      </p>
+
+
+    </div>
   </div>
+
+  {/* Curved transition */}
+
+</section>
+
 </section>
 
 
@@ -490,7 +519,7 @@ return (
         CATEGORY NAVIGATION
      */}
     {!isMenuLoading && Object.keys(groupedItems).length > 0 && (
-      <div className="sticky top-16 z-40 border-b border-black/5 bg-white/95 shadow-sm backdrop-blur-md lg:top-20">
+      <div className="sticky top-0 z-40 border-b border-black/5 bg-white/95 shadow-sm backdrop-blur-md md:top-16 lg:top-20">
         <div className="relative mx-auto w-full max-w-[1500px] px-3 sm:px-6 lg:px-8">
           {/* Desktop left arrow */}
           <button
@@ -508,7 +537,7 @@ return (
           {/* Categories */}
           <div
             ref={categoryScrollRef}
-            className="scrollbar-hide flex items-center gap-2 overflow-x-auto py-3 px-1 sm:gap-3 md:px-12"
+            className="scrollbar-hide flex items-center gap-2 overflow-x-auto py-2 px-1 sm:gap-3 md:px-12"
           >
             {/* All */}
             <button
@@ -565,7 +594,7 @@ return (
     {/* 
         MENU
      */}
-    <section className="min-h-screen bg-[#faf7f2] px-0 py-10 pb-32 sm:py-14 lg:py-16">
+    <section className="min-h-screen bg-[#faf7f2] px-0 pt-5 pb-32 sm:pt-7 lg:pt-8">
       <div className="mx-auto w-full max-w-[1500px] px-5 sm:px-6 lg:px-8">
         {isMenuLoading ? (
           /* Loading */
@@ -601,7 +630,7 @@ return (
                 <section
                   key={category.id}
                   id={`category-${category.id}`}
-                  className="scroll-mt-28"
+                  className="scroll-mt-20"
                 >
                   {/* Category heading */}
                   <div className="mb-6 sm:mb-7">

@@ -24,7 +24,7 @@ const ContactHero = "/images/contactushero.png";
 const RESTAURANT = {
   name: "Al Arafa Cuisine",
   address: "218B Changi Rd, Singapore 419737",
-  phone: "+65 XXXX XXXX",
+  phone: "+65 8454 4567",
   email: "info@alarafacuisine.com",
 
   hours: [
