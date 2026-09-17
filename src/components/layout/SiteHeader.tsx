@@ -127,139 +127,291 @@ export const SiteHeader: FC = () => {
   return (
     <>
       {/* 
-          DESKTOP / TABLET HEADER
-           */}
+        DESKTOP / TABLET HEADER
+     */}
 
       <header
-        className={`
-          fixed inset-x-0 top-0 z-50 hidden w-full
-          transition-colors duration-300 md:block
-          ${
-            showTransparent
-              ? "bg-transparent"
-              : "border-b border-white/10 bg-[#171717]/95 shadow-lg backdrop-blur-md"
-          }
-        `}
+        className="
+    fixed
+    inset-x-4
+    top-4
+    z-50
+    hidden
+    overflow-visible
+    rounded-full
+    border
+    border-[#221a16]/10
+    bg-[#F6F2E6]/95
+    shadow-[0_10px_35px_rgba(34,26,22,0.10)]
+    backdrop-blur-xl
+    md:block
+    lg:inset-x-6
+    xl:inset-x-10
+  "
       >
-        <div className="flex w-full items-center justify-between px-6 py-4 lg:px-10 lg:py-4 xl:px-16">
+        <div
+          className="
+    flex
+    min-h-[72px]
+    w-full
+    items-center
+    justify-between
+    px-5
+    sm:px-6
+    lg:px-8
+    xl:px-10
+  "
+        >
           {/* 
-              LOGO
-               */}
+        LOGO
+     */}
 
           <Link
             href="/"
-            className="flex min-w-fit items-center outline-none"
+            className="
+        flex
+        min-w-fit
+        items-center
+        outline-none
+      "
             onClick={closeMobileMenus}
           >
             <img
               src={logo}
               alt="Al-Arafa Mandi Logo"
-              className="h-12 w-auto lg:h-14"
+              className="
+          h-12
+          w-auto
+          object-contain
+          lg:h-14
+        "
             />
           </Link>
 
           {/* 
-              DESKTOP NAVIGATION
-               */}
+        DESKTOP NAVIGATION
+     */}
 
-          <nav className="hidden items-center gap-7 lg:flex xl:gap-10">
-            <Link href="/" className={navLinkClass}>
+          <nav
+            className="
+        hidden
+        items-center
+        gap-8
+        lg:flex
+        xl:gap-11
+      "
+          >
+            <Link
+              href="/"
+              className="
+          text-[20px]
+          font-semibold
+          tracking-[-0.01em]
+          text-[#221a16]
+          transition-colors
+          duration-200
+          hover:text-[#92251c]
+          hover:underline
+          hover:decoration-[#95221C]
+          hover:decoration-2
+          hover:underline-offset-8
+        "
+            >
               Home
             </Link>
 
-            <Link href="/about" className={navLinkClass}>
+            <Link
+              href="/about"
+              className="
+          text-[20px]
+          font-semibold
+          tracking-[-0.01em]
+          text-[#221a16]
+          transition-colors
+          duration-200
+          hover:text-[#92251c]
+          hover:underline
+          hover:decoration-[#95221C]
+          hover:decoration-2
+          hover:underline-offset-8
+        "
+            >
               About
             </Link>
 
-            <Link href="/menu" className={navLinkClass}>
+            <Link
+              href="/menu"
+              className="
+          text-[20px]
+          font-semibold
+          tracking-[-0.01em]
+          text-[#221a16]
+          transition-colors
+          duration-200
+          hover:text-[#92251c]
+          hover:underline
+          hover:decoration-[#95221C]
+          hover:decoration-2
+          hover:underline-offset-8
+        "
+            >
               Menu
             </Link>
 
-            <Link href="/contact" className={navLinkClass}>
+            <Link
+              href="/contact"
+              className="
+          text-[20px]
+          font-semibold
+          tracking-[-0.01em]
+          text-[#221a16]
+          transition-colors
+          duration-200
+          hover:text-[#92251c]
+          hover:underline
+          hover:decoration-[#95221C]
+          hover:decoration-2
+          hover:underline-offset-8
+        "
+            >
               Contact
             </Link>
           </nav>
 
           {/* 
-              RIGHT ACTIONS
-               */}
+        RIGHT ACTIONS
+     */}
 
           <div className="flex items-center gap-2 lg:gap-3">
-            {/* CART */}
+            {/* ==
+          CART
+      == */}
 
             <Link
               href="/cart"
               aria-label="Shopping cart"
               className="
-                relative flex size-10 items-center justify-center
-                rounded-full border border-white/20
-                bg-black/10 text-white
-                backdrop-blur-md
-                transition hover:bg-white/15
-                lg:size-11
-              "
+          group
+          relative
+          flex
+          size-10
+          items-center
+          justify-center
+          rounded-full
+          border
+          border-[#221a16]/10
+          bg-white
+          text-[#221a16]
+          transition-all
+          duration-200
+          hover:border-[#95221C]/30
+          hover:text-[#95221C]
+          hover:shadow-[0_5px_15px_rgba(15,15,15,0.08)]
+          lg:size-11
+        "
             >
-              <ShoppingCart className="size-[17px] lg:size-[18px]" />
+              <ShoppingCart
+                className="
+            size-[17px]
+            transition-transform
+            duration-200
+            group-hover:scale-105
+            lg:size-[20px]
+          "
+              />
 
               {isCustomerAuthenticated && cartCount > 0 && (
                 <span
                   className="
-                    absolute -right-0.5 -top-0.5
-                    flex size-4 items-center justify-center
-                    rounded-full bg-[#92251c]
-                    text-[9px] font-bold text-white
-                  "
+              absolute
+              -right-1
+              -top-1
+              flex
+              size-[18px]
+              items-center
+              justify-center
+              rounded-full
+              border-2
+              border-[#95221C]
+              bg-white
+              text-[9px]
+              font-extrabold
+              leading-none
+              text-[#95221C]
+              shadow-[0_2px_8px_rgba(15,15,15,0.12)]
+            "
                 >
                   {cartCount}
                 </span>
               )}
             </Link>
 
-            {/* 
-                DESKTOP SIGN IN / USER MENU
-                 */}
-
+            {/* ==
+          DESKTOP SIGN IN / USER MENU
+      == */}
             {isCustomerAuthenticated && user ? (
-              <UserMenu user={user} />
+              <div>
+                <UserMenu user={user} />
+              </div>
             ) : (
               <button
                 type="button"
                 onClick={() => setLoginSheetOpen(true)}
                 className="
-                  hidden items-center gap-2
-                  rounded-full border border-white/25
-                  px-5 py-2.5
-                  text-sm font-medium text-white
-                  backdrop-blur-md
-                  transition hover:bg-white/10
-                  md:inline-flex
-                "
+            hidden
+            items-center
+            justify-center
+            rounded-full
+            border
+            border-[#95221C]/20
+            bg-white
+            px-5
+            py-2.5
+            text-sm
+            font-semibold
+            text-[#95221C]
+            transition-all
+            duration-200
+            hover:border-[#95221C]
+            hover:bg-[#95221C]
+            hover:text-white
+            md:inline-flex
+          "
               >
                 Sign In
               </button>
             )}
 
-            {/* 
-                DESKTOP CTA
-                 */}
+            {/* ==
+          DESKTOP CTA
+      == */}
 
             <Link
               href="/contact"
               className="
-                hidden items-center gap-2
-                rounded-full bg-[#d9a14a]
-                px-5 py-2.5
-                text-sm font-semibold text-[#3d1c12]
-                transition hover:bg-[#e6b45e]
-                lg:inline-flex
-              "
+          hidden
+          items-center
+          justify-center
+          rounded-full
+          bg-[#95221C]
+          px-5
+          py-2.5
+          text-sm
+          font-bold
+          text-white
+          transition-all
+          duration-200
+          hover:bg-[#7a1c17]
+          hover:shadow-[0_6px_18px_rgba(149,34,28,0.18)]
+          lg:inline-flex
+        "
             >
               Book a Table
             </Link>
 
-            {/* 
-                TABLET HAMBURGER
-                 */}
+            {/* ==
+          TABLET HAMBURGER
+      == */}
 
             <button
               type="button"
@@ -270,13 +422,21 @@ export const SiteHeader: FC = () => {
                 setMobileUserMenuOpen(false);
               }}
               className="
-                flex size-10 items-center justify-center
-                rounded-full border border-white/20
-                bg-black/10 text-white
-                backdrop-blur-md
-                transition hover:bg-white/15
-                lg:hidden
-              "
+          flex
+          size-10
+          items-center
+          justify-center
+          rounded-full
+          border
+          border-[#221a16]/10
+          bg-white
+          text-[#221a16]
+          transition-all
+          duration-200
+          hover:border-[#95221C]
+          hover:text-[#95221C]
+          lg:hidden
+        "
             >
               {mobileMenuOpen ? (
                 <CloseIcon className="size-[18px]" />
@@ -287,83 +447,125 @@ export const SiteHeader: FC = () => {
           </div>
         </div>
 
-        {/* 
-            TABLET DROPDOWN
-             */}
+        {/* ==
+      TABLET DROPDOWN
+  == */}
 
         {mobileMenuOpen && (
           <div
             className="
-              border-b border-white/10
-              bg-[#171717]/98
-              px-6 py-4
-              backdrop-blur-md
-              lg:hidden
-            "
+        border-t
+        border-[#221a16]/10
+        bg-[#F6F2E6]
+        px-6
+        py-4
+        shadow-[0_10px_30px_rgba(15,15,15,0.08)]
+        lg:hidden
+      "
           >
             <nav className="flex flex-col gap-1">
+              {/* HOME */}
+
               <Link
                 href="/"
                 onClick={closeMobileMenus}
                 className="
-                  rounded-xl px-3 py-2.5
-                  text-sm font-medium text-white/90
-                  transition hover:bg-white/10 hover:text-white
-                "
+            rounded-xl
+            px-3
+            py-3
+            text-[15px]
+            font-semibold
+            text-[#221a16]
+            transition
+            hover:bg-[#95221C]/[0.06]
+            hover:text-[#95221C]
+          "
               >
                 Home
               </Link>
+
+              {/* ABOUT */}
 
               <Link
                 href="/about"
                 onClick={closeMobileMenus}
                 className="
-                  rounded-xl px-3 py-2.5
-                  text-sm font-medium text-white/90
-                  transition hover:bg-white/10 hover:text-white
-                "
+            rounded-xl
+            px-3
+            py-3
+            text-[15px]
+            font-semibold
+            text-[#221a16]
+            transition
+            hover:bg-[#95221C]/[0.06]
+            hover:text-[#95221C]
+          "
               >
                 About
               </Link>
+
+              {/* MENU */}
 
               <Link
                 href="/menu"
                 onClick={closeMobileMenus}
                 className="
-                  rounded-xl px-3 py-2.5
-                  text-sm font-medium text-white/90
-                  transition hover:bg-white/10 hover:text-white
-                "
+            rounded-xl
+            px-3
+            py-3
+            text-[15px]
+            font-semibold
+            text-[#221a16]
+            transition
+            hover:bg-[#95221C]/[0.06]
+            hover:text-[#95221C]
+          "
               >
                 Menu
               </Link>
+
+              {/* CONTACT */}
 
               <Link
                 href="/contact"
                 onClick={closeMobileMenus}
                 className="
-                  rounded-xl px-3 py-2.5
-                  text-sm font-medium text-white/90
-                  transition hover:bg-white/10 hover:text-white
-                "
+            rounded-xl
+            px-3
+            py-3
+            text-[15px]
+            font-semibold
+            text-[#221a16]
+            transition
+            hover:bg-[#95221C]/[0.06]
+            hover:text-[#95221C]
+          "
               >
                 Contact
               </Link>
 
-              {/* AUTHENTICATED TABLET OPTIONS */}
+              {/* 
+            AUTHENTICATED TABLET OPTIONS
+         */}
 
               {isCustomerAuthenticated && (
                 <>
-                  <div className="my-1 h-px bg-white/10" />
+                  <div className="my-2 h-px bg-[#221a16]/10" />
 
                   <Link
                     href="/profile"
                     onClick={closeMobileMenus}
                     className="
-                      rounded-xl px-3 py-2.5
-                      text-sm font-medium text-white/90
-                      transition hover:bg-white/10 hover:text-white
-                    "
+                rounded-xl
+                px-3
+                py-3
+                text-[15px]
+                font-semibold
+                text-[#221a16]
+                transition
+                hover:bg-[#95221C]/[0.06]
+                hover:text-[#95221C]
+              "
                   >
                     Profile
                   </Link>
@@ -372,33 +574,34 @@ export const SiteHeader: FC = () => {
                     href="/orders"
                     onClick={closeMobileMenus}
                     className="
-                      rounded-xl px-3 py-2.5
-                      text-sm font-medium text-white/90
-                      transition hover:bg-white/10 hover:text-white
-                    "
+                rounded-xl
+                px-3
+                py-3
+                text-[15px]
+                font-semibold
+                text-[#221a16]
+                transition
+                hover:bg-[#95221C]/[0.06]
+                hover:text-[#95221C]
+              "
                   >
                     Orders
                   </Link>
 
-                  {/* <Link
-                    href="/loyalty"
-                    onClick={closeMobileMenus}
-                    className="
-                      rounded-xl px-3 py-2.5
-                      text-sm font-medium text-white/90
-                      transition hover:bg-white/10 hover:text-white
-                    "
-                  >
-                    Rewards
-                  </Link> */}
                   <Link
                     href="/contact"
                     onClick={closeMobileMenus}
                     className="
-                      rounded-xl px-3 py-2.5
-                      text-sm font-medium text-white/90
-                      transition hover:bg-white/10 hover:text-white
-                    "
+                rounded-xl
+                px-3
+                py-3
+                text-[15px]
+                font-semibold
+                text-[#221a16]
+                transition
+                hover:bg-[#95221C]/[0.06]
+                hover:text-[#95221C]
+              "
                   >
                     Contact Us
                   </Link>
@@ -407,10 +610,16 @@ export const SiteHeader: FC = () => {
                     href="/addresses"
                     onClick={closeMobileMenus}
                     className="
-                      rounded-xl px-3 py-2.5
-                      text-sm font-medium text-white/90
-                      transition hover:bg-white/10 hover:text-white
-                    "
+                rounded-xl
+                px-3
+                py-3
+                text-[15px]
+                font-semibold
+                text-[#221a16]
+                transition
+                hover:bg-[#95221C]/[0.06]
+                hover:text-[#95221C]
+              "
                   >
                     Addresses
                   </Link>
@@ -425,18 +634,25 @@ export const SiteHeader: FC = () => {
                       window.location.href = "/";
                     }}
                     className="
-                      rounded-xl px-3 py-2.5
-                      text-left text-sm font-medium
-                      text-[#d9a14a]
-                      transition hover:bg-white/10
-                    "
+                rounded-xl
+                px-3
+                py-3
+                text-left
+                text-[15px]
+                font-semibold
+                text-[#95221C]
+                transition
+                hover:bg-[#95221C]/[0.06]
+              "
                   >
                     Logout
                   </button>
                 </>
               )}
 
-              {/* NOT AUTHENTICATED */}
+              {/* 
+            NOT AUTHENTICATED
+         */}
 
               {!isCustomerAuthenticated && (
                 <button
@@ -446,30 +662,49 @@ export const SiteHeader: FC = () => {
                     setLoginSheetOpen(true);
                   }}
                   className="
-                    mt-2 rounded-full
-                    bg-[#d9a14a]
-                    px-5 py-2.5
-                    text-sm font-semibold
-                    text-[#3d1c12]
-                    transition hover:bg-[#e6b45e]
-                  "
+              mt-3
+              rounded-full
+              border
+              border-[#95221C]
+              bg-white
+              px-5
+              py-3
+              text-sm
+              font-bold
+              text-[#95221C]
+              transition
+              hover:bg-[#95221C]
+              hover:text-white
+            "
                 >
                   Sign In
                 </button>
               )}
 
-              {/* EVENT CTA */}
+              {/* 
+            EVENT CTA
+         */}
 
               <Link
                 href="/contact"
                 onClick={closeMobileMenus}
                 className="
-                  mt-3 flex items-center justify-center gap-2
-                  rounded-full bg-[#d9a14a]
-                  px-5 py-3
-                  text-sm font-semibold text-[#3d1c12]
-                  transition hover:bg-[#e6b45e]
-                "
+            mt-3
+            flex
+            items-center
+            justify-center
+            gap-2
+            rounded-full
+            bg-[#95221C]
+            px-5
+            py-3
+            text-sm
+            font-bold
+            text-white
+            transition-all
+            duration-200
+            hover:bg-[#0F0F0F]
+          "
               >
                 Book Your Event
               </Link>
@@ -479,200 +714,199 @@ export const SiteHeader: FC = () => {
       </header>
 
       {/* 
-  MOBILE FLOATING TAB BAR
-*/}
-  
+        MOBILE FLOATING TAB BAR
+     */}
 
       <nav
         className="
-          fixed
-          inset-x-0
-          bottom-[calc(0.75rem+env(safe-area-inset-bottom))]
-          z-50
-          block
-          px-3
-          md:hidden
-        "
+        fixed
+        inset-x-0
+        bottom-[calc(0.75rem+env(safe-area-inset-bottom))]
+        z-50
+        block
+        px-3
+        md:hidden
+      "
       >
         <div
           className="
-            relative
-            mx-auto
-            flex
-            h-[66px]
-            w-full
-            max-w-[420px]
-            items-center
-            justify-between
-            rounded-[34px]
-            border
-            border-black/[0.06]
-            bg-white
-            px-1.5
-            shadow-[0_8px_30px_rgba(0,0,0,0.16)]
-          "
+          relative
+          mx-auto
+          flex
+          h-[66px]
+          w-full
+          max-w-[420px]
+          items-center
+          justify-between
+          rounded-[34px]
+          border
+          border-[#0F0F0F]/10
+          bg-[#FFFFFF]
+          px-1.5
+          shadow-[0_8px_30px_rgba(15,15,15,0.16)]
+        "
         >
           {/* 
-              HOME
-               */}
+            HOME
+         */}
 
           <Link
             href="/"
             aria-label="Home"
             className={`
-              flex
-              h-[56px]
-              min-w-[62px]
-              flex-1
-              flex-col
-              items-center
-              justify-center
-              rounded-full
-              transition-all
-              duration-200
-              active:scale-95
-              ${
-                pathname === "/"
-                  ? "bg-[#063B25] text-white shadow-[0_4px_12px_rgba(6,59,37,0.25)]"
-                  : "text-[#6f7378] hover:text-[#222]"
-              }
-            `}
+            flex
+            h-[56px]
+            min-w-[62px]
+            flex-1
+            flex-col
+            items-center
+            justify-center
+            rounded-full
+            transition-all
+            duration-200
+            active:scale-95
+
+            ${
+              pathname === "/"
+                ? `
+                  bg-[#95221C]
+                  text-[#FFFFFF]
+                  shadow-[0_4px_12px_rgba(185,9,11,0.25)]
+                `
+                : `
+                  text-[#0F0F0F]/50
+                  hover:text-[#95221C]
+                `
+            }
+          `}
           >
             <Home
               className={`
-                size-[21px]
-                ${
-                  pathname === "/"
-                    ? "text-white"
-                    : "text-[#6f7378]"
-                }
-              `}
+              size-[21px]
+              ${pathname === "/" ? "text-[#FFFFFF]" : "text-[#0F0F0F]/50"}
+            `}
               strokeWidth={pathname === "/" ? 2.2 : 1.8}
             />
 
             <span
               className={`
-                mt-0.5
-                text-[10px]
-                font-semibold
-                leading-none
-                ${
-                  pathname === "/"
-                    ? "text-white"
-                    : "text-[#6f7378]"
-                }
-              `}
+              mt-0.5
+              text-[10px]
+              font-semibold
+              leading-none
+              ${pathname === "/" ? "text-[#FFFFFF]" : "text-[#0F0F0F]/50"}
+            `}
             >
               Home
             </span>
           </Link>
 
           {/* 
-              MENU
-               */}
+            MENU
+         */}
 
           <Link
             href="/menu"
             aria-label="Menu"
             className={`
-              flex
-              h-[56px]
-              min-w-[62px]
-              flex-1
-              flex-col
-              items-center
-              justify-center
-              rounded-full
-              transition-all
-              duration-200
-              active:scale-95
-              ${
-                pathname === "/menu"
-                  ? "bg-[#063B25] text-white shadow-[0_4px_12px_rgba(6,59,37,0.25)]"
-                  : "text-[#6f7378] hover:text-[#222]"
-              }
-            `}
+            flex
+            h-[56px]
+            min-w-[62px]
+            flex-1
+            flex-col
+            items-center
+            justify-center
+            rounded-full
+            transition-all
+            duration-200
+            active:scale-95
+
+            ${
+              pathname === "/menu"
+                ? `
+                  bg-[#95221C]
+                  text-[#FFFFFF]
+                  shadow-[0_4px_12px_rgba(185,9,11,0.25)]
+                `
+                : `
+                  text-[#0F0F0F]/50
+                  hover:text-[#95221C]
+                `
+            }
+          `}
           >
             <Utensils
               className={`
-                size-[21px]
-                ${
-                  pathname === "/menu"
-                    ? "text-white"
-                    : "text-[#6f7378]"
-                }
-              `}
+              size-[21px]
+              ${pathname === "/menu" ? "text-[#FFFFFF]" : "text-[#0F0F0F]/50"}
+            `}
               strokeWidth={pathname === "/menu" ? 2.2 : 1.8}
             />
 
             <span
               className={`
-                mt-0.5
-                text-[10px]
-                font-semibold
-                leading-none
-                ${
-                  pathname === "/menu"
-                    ? "text-white"
-                    : "text-[#6f7378]"
-                }
-              `}
+              mt-0.5
+              text-[10px]
+              font-semibold
+              leading-none
+              ${pathname === "/menu" ? "text-[#FFFFFF]" : "text-[#0F0F0F]/50"}
+            `}
             >
               Menu
             </span>
           </Link>
 
           {/* 
-              CART
-               */}
+            CART
+         */}
 
           <Link
             href="/cart"
             aria-label="Cart"
             className={`
-              relative
-              flex
-              h-[56px]
-              min-w-[62px]
-              flex-1
-              flex-col
-              items-center
-              justify-center
-              rounded-full
-              transition-all
-              duration-200
-              active:scale-95
-              ${
-                pathname === "/cart"
-                  ? "bg-[#063B25] text-white shadow-[0_4px_12px_rgba(6,59,37,0.25)]"
-                  : "text-[#6f7378] hover:text-[#222]"
-              }
-            `}
+            relative
+            flex
+            h-[56px]
+            min-w-[62px]
+            flex-1
+            flex-col
+            items-center
+            justify-center
+            rounded-full
+            transition-all
+            duration-200
+            active:scale-95
+
+            ${
+              pathname === "/cart"
+                ? `
+                  bg-[#95221C]
+                  text-[#FFFFFF]
+                  shadow-[0_4px_12px_rgba(185,9,11,0.25)]
+                `
+                : `
+                  text-[#0F0F0F]/50
+                  hover:text-[#95221C]
+                `
+            }
+          `}
           >
             <ShoppingCart
               className={`
-                size-[21px]
-                ${
-                  pathname === "/cart"
-                    ? "text-white"
-                    : "text-[#6f7378]"
-                }
-              `}
+              size-[21px]
+              ${pathname === "/cart" ? "text-[#FFFFFF]" : "text-[#0F0F0F]/50"}
+            `}
               strokeWidth={pathname === "/cart" ? 2.2 : 1.8}
             />
 
             <span
               className={`
-                mt-0.5
-                text-[10px]
-                font-semibold
-                leading-none
-                ${
-                  pathname === "/cart"
-                    ? "text-white"
-                    : "text-[#6f7378]"
-                }
-              `}
+              mt-0.5
+              text-[10px]
+              font-semibold
+              leading-none
+              ${pathname === "/cart" ? "text-[#FFFFFF]" : "text-[#0F0F0F]/50"}
+            `}
             >
               Cart
             </span>
@@ -680,20 +914,23 @@ export const SiteHeader: FC = () => {
             {isCustomerAuthenticated && cartCount > 0 && (
               <span
                 className="
-                  absolute
-                  right-[8px]
-                  top-[5px]
-                  flex
-                  size-[18px]
-                  items-center
-                  justify-center
-                  rounded-full
-                  bg-[#92251c]
-                  text-[9px]
-                  font-bold
-                  text-white
-                  shadow-sm
-                "
+                absolute
+                right-[7px]
+                top-[4px]
+                flex
+                size-[18px]
+                items-center
+                justify-center
+                rounded-full
+                border-2
+                border-[#95221C]
+                bg-[#FFFFFF]
+                text-[9px]
+                font-extrabold
+                leading-none
+                text-[#95221C]
+                shadow-[0_2px_6px_rgba(15,15,15,0.12)]
+              "
               >
                 {cartCount}
               </span>
@@ -701,63 +938,63 @@ export const SiteHeader: FC = () => {
           </Link>
 
           {/* 
-              ORDERS
-               */}
+            ORDERS
+         */}
 
           <Link
             href="/orders"
             aria-label="Orders"
             className={`
-              flex
-              h-[56px]
-              min-w-[62px]
-              flex-1
-              flex-col
-              items-center
-              justify-center
-              rounded-full
-              transition-all
-              duration-200
-              active:scale-95
-              ${
-                pathname === "/orders"
-                  ? "bg-[#063B25] text-white shadow-[0_4px_12px_rgba(6,59,37,0.25)]"
-                  : "text-[#6f7378] hover:text-[#222]"
-              }
-            `}
+            flex
+            h-[56px]
+            min-w-[62px]
+            flex-1
+            flex-col
+            items-center
+            justify-center
+            rounded-full
+            transition-all
+            duration-200
+            active:scale-95
+
+            ${
+              pathname === "/orders"
+                ? `
+                  bg-[#95221C]
+                  text-[#FFFFFF]
+                  shadow-[0_4px_12px_rgba(185,9,11,0.25)]
+                `
+                : `
+                  text-[#0F0F0F]/50
+                  hover:text-[#95221C]
+                `
+            }
+          `}
           >
             <ClipboardList
               className={`
-                size-[21px]
-                ${
-                  pathname === "/orders"
-                    ? "text-white"
-                    : "text-[#6f7378]"
-                }
-              `}
+              size-[21px]
+              ${pathname === "/orders" ? "text-[#FFFFFF]" : "text-[#0F0F0F]/50"}
+            `}
               strokeWidth={pathname === "/orders" ? 2.2 : 1.8}
             />
 
             <span
               className={`
-                mt-0.5
-                text-[10px]
-                font-semibold
-                leading-none
-                ${
-                  pathname === "/orders"
-                    ? "text-white"
-                    : "text-[#6f7378]"
-                }
-              `}
+              mt-0.5
+              text-[10px]
+              font-semibold
+              leading-none
+              ${pathname === "/orders" ? "text-[#FFFFFF]" : "text-[#0F0F0F]/50"}
+            `}
             >
               Orders
             </span>
           </Link>
 
           {/* 
-              PROFILE / SIGN IN
-               */}
+            PROFILE / SIGN IN
+         */}
 
           {isCustomerAuthenticated && user ? (
             <div className="flex flex-1">
@@ -770,43 +1007,50 @@ export const SiteHeader: FC = () => {
                   setMobileMenuOpen(false);
                 }}
                 className={`
-                  flex
-                  h-[56px]
-                  w-full
-                  min-w-[62px]
-                  flex-col
-                  items-center
-                  justify-center
-                  rounded-full
-                  transition-all
-                  duration-200
-                  active:scale-95
-                  ${
-                    pathname === "/profile"
-                      ? "bg-[#063B25] text-white shadow-[0_4px_12px_rgba(6,59,37,0.25)]"
-                      : mobileUserMenuOpen
-                        ? "bg-[#063B25]/[0.08] text-[#063B25]"
-                        : "text-[#6f7378] hover:text-[#222]"
-                  }
-                `}
+                flex
+                h-[56px]
+                w-full
+                min-w-[62px]
+                flex-col
+                items-center
+                justify-center
+                rounded-full
+                transition-all
+                duration-200
+                active:scale-95
+
+                ${
+                  pathname === "/profile"
+                    ? `
+                      bg-[#95221C]
+                      text-[#FFFFFF]
+                      shadow-[0_4px_12px_rgba(185,9,11,0.25)]
+                    `
+                    : mobileUserMenuOpen
+                      ? `
+                        bg-[#95221C]/[0.06]
+                        text-[#95221C]
+                      `
+                      : `
+                        text-[#0F0F0F]/50
+                        hover:text-[#95221C]
+                      `
+                }
+              `}
               >
                 {/* USER AVATAR */}
-
                 <div
-                  className={`
-                    relative
-                    flex
-                    size-[21px]
-                    items-center
-                    justify-center
-                    overflow-hidden
-                    rounded-full
-                    ${
-                      pathname === "/profile"
-                        ? "bg-white/20"
-                        : "bg-[#92251c]"
-                    }
-                  `}
+                  className="
+    relative
+    flex
+    size-[26px]
+    items-center
+    justify-center
+    overflow-hidden
+    rounded-full
+    bg-[#FFFFFF]
+    text-[#95221C]
+  "
                 >
                   {user.profileImageUrl ? (
                     <img
@@ -820,7 +1064,7 @@ export const SiteHeader: FC = () => {
                       className="h-full w-full object-cover"
                     />
                   ) : (
-                    <span className="text-[9px] font-bold text-white">
+                    <span className="text-sm font-extrabold leading-none text-[#95221C]">
                       {(
                         user.preferredName ||
                         user.fullName ||
@@ -836,51 +1080,62 @@ export const SiteHeader: FC = () => {
 
                 <span
                   className={`
-                    mt-0.5
-                    text-[10px]
-                    font-semibold
-                    leading-none
-                    ${
-                      pathname === "/profile"
-                        ? "text-white"
-                        : "text-[#6f7378]"
-                    }
-                  `}
+                  mt-0.5
+                  text-[10px]
+                  font-semibold
+                  leading-none
+
+                  ${
+                    pathname === "/profile"
+                      ? "text-[#FFFFFF]"
+                      : "text-[#0F0F0F]/50"
+                  }
+                `}
                 >
                   Profile
                 </span>
               </button>
             </div>
           ) : (
-            /* 
-               MOBILE SIGN IN
-                */
+            /* =================================================
+             MOBILE SIGN IN
+          ================================================= */
 
             <button
               type="button"
               onClick={() => setLoginSheetOpen(true)}
               className="
-                flex
-                h-[56px]
-                min-w-[62px]
-                flex-1
-                flex-col
-                items-center
-                justify-center
-                rounded-full
-                text-[#6f7378]
-                transition-all
-                duration-200
-                active:scale-95
-                hover:text-[#222]
-              "
+              flex
+              h-[56px]
+              min-w-[62px]
+              flex-1
+              flex-col
+              items-center
+              justify-center
+              rounded-full
+              text-[#0F0F0F]/50
+              transition-all
+              duration-200
+              active:scale-95
+              hover:text-[#95221C]
+            "
             >
               <UserRound
-                className="size-[21px] text-[#6f7378]"
+                className="
+                size-[21px]
+                text-[#0F0F0F]/50
+              "
                 strokeWidth={1.8}
               />
 
-              <span className="mt-0.5 text-[10px] font-semibold leading-none">
+              <span
+                className="
+                mt-0.5
+                text-[10px]
+                font-semibold
+                leading-none
+              "
+              >
                 Sign In
               </span>
             </button>
@@ -889,8 +1144,8 @@ export const SiteHeader: FC = () => {
       </nav>
 
       {/* 
-          MOBILE PROFILE TOP DRAWER
-           */}
+        MOBILE PROFILE TOP DRAWER
+     */}
 
       {mobileUserMenuOpen && isCustomerAuthenticated && user && (
         <>
@@ -904,15 +1159,12 @@ export const SiteHeader: FC = () => {
               fixed
               inset-0
               z-[60]
-              bg-black/40
-              backdrop-blur-[2px]
+              bg-[#0F0F0F]/40
               md:hidden
             "
           />
 
-          {/* 
-              TOP DRAWER
-               */}
+          {/* TOP DRAWER */}
 
           <section
             role="dialog"
@@ -927,27 +1179,20 @@ export const SiteHeader: FC = () => {
               overflow-y-auto
               rounded-b-[28px]
               border-b
-              border-black/[0.06]
-              bg-white
+              border-[#0F0F0F]/10
+              bg-[#FFFFFF]
               px-4
               pb-5
               pt-[calc(0.75rem+env(safe-area-inset-top))]
-              shadow-[0_12px_45px_rgba(0,0,0,0.20)]
+              shadow-[0_12px_45px_rgba(15,15,15,0.18)]
               md:hidden
             "
           >
             <div className="mx-auto w-full max-w-[520px]">
-
-              {/* 
-                  HEADER / CLOSE
-                   */}
+              {/* HEADER / CLOSE */}
 
               <div className="mb-3 flex items-center justify-between">
-                <div className="flex items-center gap-2">
-
-
-
-                </div>
+                <div className="flex items-center gap-2" />
 
                 <button
                   type="button"
@@ -959,20 +1204,19 @@ export const SiteHeader: FC = () => {
                     items-center
                     justify-center
                     rounded-full
-                    bg-black/[0.045]
-                    text-[#555]
+                    bg-[#0F0F0F]/[0.05]
+                    text-[#0F0F0F]
                     transition
                     active:scale-95
-                    active:bg-black/[0.08]
+                    active:bg-[#95221C]/[0.08]
+                    active:text-[#95221C]
                   "
                 >
                   <CloseIcon className="size-[17px]" />
                 </button>
               </div>
 
-              {/* 
-                  USER HEADER
-                   */}
+              {/* USER HEADER */}
 
               <div
                 className="
@@ -981,9 +1225,12 @@ export const SiteHeader: FC = () => {
                   items-center
                   gap-3
                   rounded-2xl
-                  bg-[#faf8f4]
+                  border
+                  border-[#0F0F0F]/10
+                  bg-[#FFFFFF]
                   px-4
                   py-3
+                  shadow-[0_5px_18px_rgba(15,15,15,0.05)]
                 "
               >
                 {/* AVATAR */}
@@ -997,7 +1244,9 @@ export const SiteHeader: FC = () => {
                     justify-center
                     overflow-hidden
                     rounded-full
-                    bg-[#92251c]
+                    border-2
+                    border-[#95221C]
+                    bg-[#FFFFFF]
                   "
                 >
                   {user.profileImageUrl ? (
@@ -1012,7 +1261,7 @@ export const SiteHeader: FC = () => {
                       className="h-full w-full object-cover"
                     />
                   ) : (
-                    <span className="text-sm font-bold text-white">
+                    <span className="text-base font-extrabold leading-none text-[#95221C]">
                       {(
                         user.preferredName ||
                         user.fullName ||
@@ -1028,29 +1277,41 @@ export const SiteHeader: FC = () => {
 
                 {/* USER DETAILS */}
 
-<div className="min-w-0 flex-1">
-  <p className="m-0 truncate text-sm mb-3 font-bold leading-none text-[#222]">
-    {user.preferredName ||
-      user.fullName ||
-      user.name ||
-      "User"}
-  </p>
+                <div className="min-w-0 flex-1">
+                  <p
+                    className="
+                      m-0
+                      mb-2
+                      truncate
+                      text-sm
+                      font-bold
+                      leading-none
+                      text-[#0F0F0F]
+                    "
+                  >
+                    {user.preferredName || user.fullName || user.name || "User"}
+                  </p>
 
-  {user.email && (
-    <p className="m-0 truncate text-[11px] font-normal leading-none text-black/45">
-      {user.email}
-    </p>
-  )}
-</div>
+                  {user.email && (
+                    <p
+                      className="
+                        m-0
+                        truncate
+                        text-[11px]
+                        font-normal
+                        leading-none
+                        text-[#0F0F0F]/45
+                      "
+                    >
+                      {user.email}
+                    </p>
+                  )}
+                </div>
               </div>
 
-              {/* 
-                  ACCOUNT
-                   */}
+              {/* ACCOUNT */}
 
               <div className="mb-2">
-
-
                 {/* PROFILE */}
 
                 <Link
@@ -1065,11 +1326,11 @@ export const SiteHeader: FC = () => {
                     px-3
                     py-2.5
                     text-sm
-                    font-medium
-                    text-[#292929]
+                    font-semibold
+                    text-[#0F0F0F]
                     transition
                     active:scale-[0.98]
-                    active:bg-black/[0.04]
+                    active:bg-[#95221C]/[0.05]
                   "
                 >
                   <span
@@ -1080,15 +1341,15 @@ export const SiteHeader: FC = () => {
                       items-center
                       justify-center
                       rounded-xl
-                      bg-[#f5eee9]
+                      bg-[#95221C]/[0.08]
                     "
                   >
-                    <User className="size-[18px] text-[#92251c]" />
+                    <User className="size-[18px] text-[#95221C]" />
                   </span>
 
                   <span className="flex-1">Profile</span>
 
-                  <span className="text-lg leading-none text-black/25">
+                  <span className="text-lg leading-none text-[#0F0F0F]/25">
                     ›
                   </span>
                 </Link>
@@ -1107,11 +1368,11 @@ export const SiteHeader: FC = () => {
                     px-3
                     py-2.5
                     text-sm
-                    font-medium
-                    text-[#292929]
+                    font-semibold
+                    text-[#0F0F0F]
                     transition
                     active:scale-[0.98]
-                    active:bg-black/[0.04]
+                    active:bg-[#95221C]/[0.05]
                   "
                 >
                   <span
@@ -1122,31 +1383,33 @@ export const SiteHeader: FC = () => {
                       items-center
                       justify-center
                       rounded-xl
-                      bg-[#f5eee9]
+                      bg-[#95221C]/[0.08]
                     "
                   >
-                    <MapPin className="size-[18px] text-[#92251c]" />
+                    <MapPin className="size-[18px] text-[#95221C]" />
                   </span>
 
                   <span className="flex-1">Addresses</span>
 
-                  <span className="text-lg leading-none text-black/25">
+                  <span className="text-lg leading-none text-[#0F0F0F]/25">
                     ›
                   </span>
                 </Link>
               </div>
 
-              {/* 
-                  SUPPORT
-                   */}
+              {/* SUPPORT */}
 
-              <div className="mb-2 border-t border-black/[0.07] pt-2">
-
-
+              <div
+                className="
+                  mb-2
+                  border-t
+                  border-[#0F0F0F]/10
+                  pt-2
+                "
+              >
                 {/* CUSTOMER CARE */}
 
                 <Link
-                  // href="/customer-care"
                   href="/contact"
                   onClick={() => setMobileUserMenuOpen(false)}
                   className="
@@ -1158,11 +1421,11 @@ export const SiteHeader: FC = () => {
                     px-3
                     py-2.5
                     text-sm
-                    font-medium
-                    text-[#292929]
+                    font-semibold
+                    text-[#0F0F0F]
                     transition
                     active:scale-[0.98]
-                    active:bg-black/[0.04]
+                    active:bg-[#95221C]/[0.05]
                   "
                 >
                   <span
@@ -1173,15 +1436,15 @@ export const SiteHeader: FC = () => {
                       items-center
                       justify-center
                       rounded-xl
-                      bg-[#f5eee9]
+                      bg-[#95221C]/[0.08]
                     "
                   >
-                    <Headset className="size-[18px] text-[#92251c]" />
+                    <Headset className="size-[18px] text-[#95221C]" />
                   </span>
 
                   <span className="flex-1">Customer Care</span>
 
-                  <span className="text-lg leading-none text-black/25">
+                  <span className="text-lg leading-none text-[#0F0F0F]/25">
                     ›
                   </span>
                 </Link>
@@ -1200,11 +1463,11 @@ export const SiteHeader: FC = () => {
                     px-3
                     py-2.5
                     text-sm
-                    font-medium
-                    text-[#292929]
+                    font-semibold
+                    text-[#0F0F0F]
                     transition
                     active:scale-[0.98]
-                    active:bg-black/[0.04]
+                    active:bg-[#95221C]/[0.05]
                   "
                 >
                   <span
@@ -1215,25 +1478,29 @@ export const SiteHeader: FC = () => {
                       items-center
                       justify-center
                       rounded-xl
-                      bg-[#f5eee9]
+                      bg-[#95221C]/[0.08]
                     "
                   >
-                    <Phone className="size-[18px] text-[#92251c]" />
+                    <Phone className="size-[18px] text-[#95221C]" />
                   </span>
 
                   <span className="flex-1">Contact Us</span>
 
-                  <span className="text-lg leading-none text-black/25">
+                  <span className="text-lg leading-none text-[#0F0F0F]/25">
                     ›
                   </span>
                 </Link>
               </div>
 
-              {/* 
-                  ABOUT + LOGOUT
-                   */}
+              {/* ABOUT + LOGOUT */}
 
-              <div className="border-t border-black/[0.07] pt-2">
+              <div
+                className="
+                  border-t
+                  border-[#0F0F0F]/10
+                  pt-2
+                "
+              >
                 {/* ABOUT */}
 
                 <Link
@@ -1248,11 +1515,11 @@ export const SiteHeader: FC = () => {
                     px-3
                     py-2.5
                     text-sm
-                    font-medium
-                    text-[#292929]
+                    font-semibold
+                    text-[#0F0F0F]
                     transition
                     active:scale-[0.98]
-                    active:bg-black/[0.04]
+                    active:bg-[#95221C]/[0.05]
                   "
                 >
                   <span
@@ -1263,15 +1530,15 @@ export const SiteHeader: FC = () => {
                       items-center
                       justify-center
                       rounded-xl
-                      bg-[#f5eee9]
+                      bg-[#95221C]/[0.08]
                     "
                   >
-                    <Info className="size-[18px] text-[#92251c]" />
+                    <Info className="size-[18px] text-[#95221C]" />
                   </span>
 
                   <span className="flex-1">About Us</span>
 
-                  <span className="text-lg leading-none text-black/25">
+                  <span className="text-lg leading-none text-[#0F0F0F]/25">
                     ›
                   </span>
                 </Link>
@@ -1298,11 +1565,11 @@ export const SiteHeader: FC = () => {
                     py-2.5
                     text-left
                     text-sm
-                    font-medium
-                    text-[#92251c]
+                    font-semibold
+                    text-[#95221C]
                     transition
                     active:scale-[0.98]
-                    active:bg-[#92251c]/[0.05]
+                    active:bg-[#95221C]/[0.05]
                   "
                 >
                   <span
@@ -1313,10 +1580,10 @@ export const SiteHeader: FC = () => {
                       items-center
                       justify-center
                       rounded-xl
-                      bg-[#92251c]/[0.08]
+                      bg-[#95221C]/[0.08]
                     "
                   >
-                    <LogOut className="size-[18px]" />
+                    <LogOut className="size-[18px] text-[#95221C]" />
                   </span>
 
                   <span className="flex-1">Logout</span>
@@ -1328,8 +1595,8 @@ export const SiteHeader: FC = () => {
       )}
 
       {/* 
-          LOGIN SHEET
-           */}
+        LOGIN SHEET
+     */}
 
       <LoginSheet
         open={loginSheetOpen}

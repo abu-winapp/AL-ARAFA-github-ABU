@@ -373,7 +373,7 @@ function CartContent() {
 
   if (!cart || itemCount === 0) {
     return (
-      <div className="min-h-screen bg-background-gray py-12">
+      <div className="min-h-screen bg-background-gray pt-12 pb-12 md:pt-0">
         <div className="container mx-auto px-4">
           <div className="max-w-2xl mx-auto text-center py-20">
             <div className="text-8xl mb-6">🛒</div>
@@ -393,7 +393,7 @@ function CartContent() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F7F4EE] py-12 pb-32">
+    <div className="min-h-screen bg-[#F7F4EE] pt-12 pb-32 md:pt-0">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mx-auto w-full max-w-7xl">
           <div className="mb-10 text-center">

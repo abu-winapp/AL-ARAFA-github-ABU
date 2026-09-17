@@ -269,7 +269,7 @@ export default function CateringPage() {
       )}
 
       {/* Menu Items by Category */}
-      <section className="py-12 pb-32 bg-background-gray min-h-screen">
+      <section className="pt-12 pb-32 bg-background-gray min-h-screen md:pt-0">
         <div className="container mx-auto px-4">
           {isMenuLoading ? (
             <div className="text-center py-20">

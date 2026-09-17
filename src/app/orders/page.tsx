@@ -105,7 +105,7 @@ export default function OrdersPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background-gray py-12">
+    <div className="min-h-screen bg-background-gray pt-12 pb-12 md:pt-0">
       <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
           {/* Header */}

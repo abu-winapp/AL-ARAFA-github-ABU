@@ -74,7 +74,7 @@ export const CartBar: FC = () => {
             rounded-[18px]
             border
             border-[#0b3b27]
-            bg-[#063b25]
+            bg-[#92251C]
             px-2
             shadow-[0_8px_28px_rgba(0,0,0,0.22)]
           "
@@ -114,7 +114,7 @@ export const CartBar: FC = () => {
                 items-center
                 justify-center
                 rounded-full
-                bg-[#f4b400]
+                bg-[white]
                 px-1
                 text-[10px]
                 font-extrabold
@@ -179,15 +179,15 @@ export const CartBar: FC = () => {
               items-center
               gap-1
               rounded-full
-              bg-[#f4b400]
+              bg-[white]
               px-4
               text-[11px]
               font-extrabold
-              text-[#17351f]
+              text-[#92251C]
               shadow-sm
               transition-all
               duration-200
-              hover:bg-[#ffc21a]
+            
               active:scale-[0.96]
             "
           >
@@ -255,7 +255,7 @@ export const CartBar: FC = () => {
                 items-center
                 justify-center
                 rounded-full
-                bg-[#063b25]
+                bg-[#92251C]
                 text-white
               "
             >
@@ -319,7 +319,7 @@ export const CartBar: FC = () => {
               items-center
               gap-2
               rounded-xl
-              bg-[#063b25]
+              bg-[#92251C]
               px-8
               py-3
               font-bold
@@ -327,7 +327,7 @@ export const CartBar: FC = () => {
               shadow-lg
               transition-all
               duration-200
-              hover:bg-[#07502f]
+             hover:text-[white]
               hover:shadow-xl
               active:scale-[0.98]
             "

@@ -497,16 +497,41 @@ return (
   <div className="absolute inset-0 bg-gradient-to-r from-[#430705]/95 via-[#650b08]/80 to-[#74100c]/25" />
 
   <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#4d0907]/80 to-transparent" />
+<div
+  className="
+    relative z-10
+    mx-auto
+    flex h-full w-full
+    max-w-[1650px]
+    items-center
+    justify-center
+    px-5
+    text-center
 
-  <div className="relative z-10 mx-auto flex h-full w-full max-w-[1650px] items-center px-5 sm:px-6 lg:px-8">
-    <div className="max-w-[680px]">
-      <p className="mb-2 text-xs font-semibold uppercase tracking-[0.3em] text-[#f4d27a] sm:mb-3 sm:text-sm">
-        Al Arafa Cuisine Menu
-      </p>
+    sm:px-6
+    md:px-8
+    lg:px-10
+    xl:px-12
+    2xl:px-16
+  "
+>
+  <div className="w-full max-w-[680px]">
+    <p
+      className="
+        mb-2
+        text-[clamp(0.7rem,1.2vw,0.95rem)]
+        font-semibold
+        uppercase
+        tracking-[0.3em]
+        text-[#f4d27a]
 
-
-    </div>
+        sm:mb-3
+      "
+    >
+      Al Arafa Cuisine Menu
+    </p>
   </div>
+</div>
 
   {/* Curved transition */}
 
@@ -594,7 +619,7 @@ return (
     {/* 
         MENU
      */}
-    <section className="min-h-screen bg-[#faf7f2] px-0 pt-5 pb-32 sm:pt-7 lg:pt-8">
+    <section className="min-h-screen bg-[#faf7f2] px-0 pt-5 pb-32 sm:pt-7 md:pt-0">
       <div className="mx-auto w-full max-w-[1500px] px-5 sm:px-6 lg:px-8">
         {isMenuLoading ? (
           /* Loading */

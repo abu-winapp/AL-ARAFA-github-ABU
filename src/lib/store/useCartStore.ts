@@ -86,6 +86,7 @@ interface CartState {
     menuType: "regular" | "catering",
     type: "delivery" | "pickup",
   ) => void;
+  updateCartLocation: (locationId: string) => Promise<void>;
   // Whether the user has explicitly chosen a fulfillment method for this
   // menu type yet (as opposed to just the untouched default).
   hasFulfillmentTypeSelected: (menuType: "regular" | "catering") => boolean;
@@ -263,6 +264,11 @@ export const useCartStore = create<CartState>()(
           });
           throw error;
         }
+      },
+
+      updateCartLocation: async (locationId: string) => {
+        const cart = await cartService.updateCartLocation(locationId);
+        set({ cart });
       },
 
       clearCart: () => {

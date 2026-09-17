@@ -19,7 +19,9 @@ import {
 
 // API Base URL - Update this based on environment
 // const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://b2bezysales.com/RR-Briyani/ApiService/api';
-const API_BASE_URL = "https://b2bezysales.com/RR-Briyani/ApiService/api";
+// const API_BASE_URL = "https://b2bezysales.com/RR-Briyani/ApiService/api";
+const API_BASE_URL = "https://b2bezysales.com/AlArafa/ApiService/api";
+
 
 /**
  * Create Axios instance

@@ -25,6 +25,8 @@ const IMAGES = {
   experience: "/images/restaurant-1.png",
 };
 
+
+const food3 = "./images/mandi-3.webp";
 const food = "./images/mandi-1.webp";
 const food2 = "./images/mandi-2.webp";
 const restaurant = "./images/restaurant.webp";
@@ -99,7 +101,7 @@ export default function AboutPage() {
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: `url(${ABOUT_HERO})`,
+            backgroundImage: `url(${food3})`,
           }}
         />
 

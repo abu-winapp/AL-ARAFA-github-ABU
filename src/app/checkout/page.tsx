@@ -863,7 +863,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background-gray py-12 pb-32">
+    <div className="min-h-screen bg-background-gray pt-12 pb-32 md:pt-0">
       <CustomerInfoDialog
         open={customerDialogOpen}
         onClose={() => setCustomerDialogOpen(false)}

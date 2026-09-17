@@ -196,7 +196,7 @@ function ProfilePageContent() {
   // Show loading state while fetching profile
   if (isLoading) {
     return (
-      <div className="container max-w-2xl mx-auto py-8 px-4">
+      <div className="container max-w-2xl mx-auto pt-8 pb-8 px-4 md:pt-0">
         <Card>
           <CardContent className="flex items-center justify-center py-12">
             <div className="text-center">
@@ -210,7 +210,7 @@ function ProfilePageContent() {
   }
 
   return (
-    <div className="container max-w-2xl mx-auto py-8 px-4">
+    <div className="container max-w-2xl mx-auto pt-8 pb-8 px-4 md:pt-0">
       <Card>
         <CardHeader>
           <CardTitle>My Profile</CardTitle>
@@ -399,7 +399,7 @@ export default function ProfilePage() {
   return (
     <Suspense
       fallback={
-        <div className="container max-w-2xl mx-auto py-8 px-4">
+        <div className="container max-w-2xl mx-auto pt-8 pb-8 px-4 md:pt-0">
           <Card>
             <CardContent className="flex items-center justify-center py-12">
               <div className="text-center">

@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useCartStore } from "@/lib/store/useCartStore";
 
@@ -19,7 +18,11 @@ export default function OrderOption({
 }: OrderOptionProps) {
   const router = useRouter();
 
-  const { getFulfillmentType, setFulfillmentType } = useCartStore();
+  const {
+  getFulfillmentType,
+  setFulfillmentType,
+  hasFulfillmentTypeSelected,
+} = useCartStore();
 
   const currentFulfillment = getFulfillmentType(menuType);
 
@@ -107,337 +110,439 @@ export default function OrderOption({
     icon: React.ReactNode;
   }[];
 
-  // Use the store selection if it is available.
-  // Otherwise select the first option that API allows.
-  const getInitialSelection = (): FulfillmentType | null => {
-    const currentIsAvailable =
-      currentFulfillment === "delivery"
-        ? homeDeliveryAvailable
-        : pickFromStoreAvailable;
+const hasUserSelected = hasFulfillmentTypeSelected(menuType);
 
-    if (currentIsAvailable) {
-      return currentFulfillment;
-    }
-
-    return orderOptions[0]?.id ?? null;
-  };
-
-  const [selectedOption, setSelectedOption] = useState<FulfillmentType | null>(
-    getInitialSelection,
-  );
-
-  // Keep this section synchronized with the fulfillment store
-  useEffect(() => {
-    const availableCurrent =
-      currentFulfillment === "delivery"
-        ? homeDeliveryAvailable
-        : pickFromStoreAvailable;
-
-    if (availableCurrent) {
-      setSelectedOption(currentFulfillment);
-      return;
-    }
-
-    if (orderOptions.length > 0) {
-      const firstAvailable = orderOptions[0].id;
-
-      setSelectedOption(firstAvailable);
-      setFulfillmentType(menuType, firstAvailable);
-    }
-  }, [
-    currentFulfillment,
-    homeDeliveryAvailable,
-    pickFromStoreAvailable,
-    menuType,
-    setFulfillmentType,
-  ]);
+const selectedOption: FulfillmentType | null = hasUserSelected
+  ? currentFulfillment
+  : orderOptions[0]?.id ?? null;
 
   const handleOptionSelect = (type: FulfillmentType) => {
-    setSelectedOption(type);
-
-    // Save directly to the same store used by FulfillmentSelector
     setFulfillmentType(menuType, type);
   };
 
   const handleContinue = () => {
     if (!selectedOption) return;
 
-    // Make absolutely sure store has the selected value
-    setFulfillmentType(menuType, selectedOption);
-
     router.push("/menu");
   };
 
-  return (
-    <section
+
+return (
+  <section
+    className="
+      flex w-full items-center
+      bg-[#FFFFFF]
+      px-4 py-10
+      min-h-[100svh]
+
+      sm:px-6 sm:py-12
+
+      lg:min-h-[70svh]
+      lg:py-16
+    "
+  >
+    <div
       className="
-    flex w-full items-center
-    bg-[#063326]
-    px-4 py-8
-    min-h-[100svh]
-
-    sm:px-6 sm:py-10
-
-    lg:min-h-[70svh]
-  "
-    >
-      <div
-        className="
-        mx-auto flex w-full max-w-4xl
+        mx-auto flex w-full max-w-5xl
         flex-col justify-center
       "
-      >
-        {/* Heading */}
-        <div className="mb-7 text-center sm:mb-9">
+    >
+      {/* Heading */}
+      <div className="mb-8 text-center sm:mb-10">
+        {/* Eyebrow */}
+        <div className="mb-3 flex items-center justify-center gap-3">
+
           <p
             className="
-            mb-2
-            text-[10px]
-            font-semibold
-            uppercase
-            tracking-[0.2em]
-            text-[#D8B86A]
-            sm:text-[11px]
-          "
+              text-[10px]
+              font-semibold
+              uppercase
+              tracking-[0.24em]
+              text-[#95221C]
+              sm:text-[11px]
+            "
           >
             Order Your Way
           </p>
 
-          <h2
-            className="
-            font-serif
-            text-[26px]
-            font-bold
-            leading-[1.12]
-            text-[#FFF9F0]
-            sm:text-[36px]
-            lg:text-[38px]
-          "
-          >
-            How would you like to get your order?
-          </h2>
+        </div>
 
-          <p
-            className="
+        <h2
+          className="
+            font-serif
+            text-[27px]
+            font-bold
+            leading-[1.1]
+            tracking-[-0.02em]
+            text-[#0F0F0F]
+            sm:text-[36px]
+            lg:text-[42px]
+          "
+        >
+          How would you like to
+          <span className="block text-[#95221C]">
+            get your order?
+          </span>
+        </h2>
+
+        <p
+          className="
             mx-auto
-            mt-2.5
-            max-w-lg
+            mt-3
+            max-w-xl
             text-xs
             leading-5
-            text-[#E8DED2]
-            sm:mt-3
+            text-[#0F0F0F]/55
+            sm:mt-4
             sm:text-sm
             sm:leading-6
           "
+        >
+          Choose the option that works best for you.
+          We&apos;ll take care of the rest.
+        </p>
+      </div>
+
+      {/* No fulfillment methods */}
+      {orderOptions.length === 0 ? (
+        <div
+          className="
+            mx-auto
+            w-full
+            max-w-md
+            rounded-2xl
+            border
+            border-[#0F0F0F]/10
+            bg-[#FFFFFF]
+            p-7
+            text-center
+            shadow-[0_12px_40px_rgba(15,15,15,0.08)]
+          "
+        >
+          <div
+            className="
+              mx-auto
+              mb-4
+              flex
+              h-12
+              w-12
+              items-center
+              justify-center
+              rounded-full
+              bg-[#95221C]/10
+              text-[#95221C]
+            "
           >
-            Choose what works best for you. We&apos;ll take care of the rest.
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              className="h-6 w-6"
+            >
+              <path
+                d="M12 9V13"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+              <path
+                d="M12 17H12.01"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+              />
+              <circle
+                cx="12"
+                cy="12"
+                r="9"
+                stroke="currentColor"
+                strokeWidth="2"
+              />
+            </svg>
+          </div>
+
+          <h3
+            className="
+              text-base
+              font-bold
+              text-[#0F0F0F]
+              sm:text-lg
+            "
+          >
+            Ordering is currently unavailable
+          </h3>
+
+          <p
+            className="
+              mt-1.5
+              text-xs
+              leading-5
+              text-[#0F0F0F]/55
+            "
+          >
+            No fulfillment options are currently available.
           </p>
         </div>
+      ) : (
+        <>
+          {/* Fulfillment Options */}
+          <div
+            className={`grid w-full gap-3.5 sm:gap-5 ${
+              orderOptions.length === 1
+                ? "mx-auto max-w-md"
+                : "grid-cols-1 sm:grid-cols-2"
+            }`}
+          >
+            {orderOptions.map((option) => {
+              const isSelected = selectedOption === option.id;
 
-        {/* No fulfillment methods */}
-        {orderOptions.length === 0 ? (
-          <div className="mx-auto w-full max-w-md rounded-2xl border border-[#ead7bd] bg-white p-6 text-center shadow-sm">
-            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-[#f9e6df] text-[#92251c]">
-              <svg viewBox="0 0 24 24" fill="none" className="h-6 w-6">
-                <path
-                  d="M12 9V13"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M12 17H12.01"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                />
-                <circle
-                  cx="12"
-                  cy="12"
-                  r="9"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                />
-              </svg>
-            </div>
-
-            <h3 className="text-base font-bold text-[#221a16]">
-              Ordering is currently unavailable
-            </h3>
-
-            <p className="mt-1 text-xs text-[#6b6058]">
-              No fulfillment options are currently available.
-            </p>
-          </div>
-        ) : (
-          <>
-            {/* Fulfillment Options */}
-            <div
-              className={`grid w-full gap-4 lg:gap-5 ${
-                orderOptions.length === 1
-                  ? "mx-auto max-w-md"
-                  : "grid-cols-1 sm:grid-cols-2"
-              }`}
-            >
-              {orderOptions.map((option) => {
-                const isSelected = selectedOption === option.id;
-
-                return (
-                  <button
-                    key={option.id}
-                    type="button"
-                    onClick={() => handleOptionSelect(option.id)}
-                    className={`
-                    group relative w-full
-                    rounded-[20px]
+              return (
+                <button
+                  key={option.id}
+                  type="button"
+                  onClick={() => handleOptionSelect(option.id)}
+                  className={`
+                    group
+                    relative
+                    w-full
+                    overflow-hidden
+                    rounded-[22px]
                     border
-                    p-5
+                    p-4
                     text-left
-                    transition-all duration-200
+                    transition-all
+                    duration-300
+                    active:scale-[0.985]
+                    sm:rounded-2xl
                     sm:p-6
+
+                    focus:outline-none
+                    focus-visible:ring-2
+                    focus-visible:ring-[#95221C]
+                    focus-visible:ring-offset-2
+
                     ${
                       isSelected
                         ? `
-                          border-[#92251c]
-                          bg-[#fffaf7]
-                          shadow-[0_10px_30px_rgba(146,37,28,0.14)]
+                          border-[#95221C]
+                          bg-[#FFFFFF]
+                          shadow-[0_12px_32px_rgba(185,9,11,0.12)]
                         `
                         : `
-                          border-[#e7dcc9]
-                          bg-white
-                          hover:border-[#cfa79c]
-                          hover:shadow-[0_8px_25px_rgba(91,61,20,0.08)]
+                          border-[#0F0F0F]/10
+                          bg-[#FFFFFF]
+                          shadow-[0_6px_24px_rgba(15,15,15,0.05)]
+                          hover:border-[#95221C]/40
+                          hover:shadow-[0_12px_30px_rgba(15,15,15,0.10)]
                         `
                     }
                   `}
-                  >
-                    {/* Check */}
-                    <div
-                      className={`
-                      absolute right-4 top-4
-                      flex h-6 w-6
-                      items-center justify-center
+                >
+
+
+           
+                          <div className={`
+                      absolute
+                      right-4
+                      top-4
+                      flex
+                      h-7
+                      w-7
+                      items-center
+                      justify-center
                       rounded-full
                       transition-all
+                      duration-200
+
                       ${
                         isSelected
-                          ? "bg-[#92251c] text-white"
-                          : "border border-[#e7dcc9] bg-white text-transparent"
+                          ? "bg-[#95221C] text-[#FFFFFF]"
+                          : `
+                            border
+                            border-[#0F0F0F]/15
+                            bg-[#FFFFFF]
+                            text-transparent
+                            group-hover:border-[#95221C]/50
+                          `
                       }
                     `}
+                  >
+                    <svg
+                      viewBox="0 0 20 20"
+                      fill="none"
+                      className="h-3.5 w-3.5"
                     >
-                      <svg
-                        viewBox="0 0 20 20"
-                        fill="none"
-                        className="h-3.5 w-3.5"
-                      >
-                        <path
-                          d="M4 10L8 14L16 6"
-                          stroke="currentColor"
-                          strokeWidth="2.2"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
-                    </div>
+                      <path
+                        d="M4 10L8 14L16 6"
+                        stroke="currentColor"
+                        strokeWidth="2.2"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </div>
 
-                    {/* Icon */}
-                    <div
-                      className={`
-                      mb-5
-                      flex h-12 w-12
-                      items-center justify-center
+                  {/* Icon */}
+                  <div
+                    className={`
+                      mb-4
+                      flex
+                      h-12
+                      w-12
+                      items-center
+                      justify-center
                       rounded-xl
-                      transition-colors
-                      sm:h-14 sm:w-14
+                      transition-all
+                      duration-300
+                      sm:mb-5
+                      sm:h-14
+                      sm:w-14
                       sm:rounded-2xl
+
                       ${
                         isSelected
-                          ? "bg-[#f9e0dc] text-[#92251c]"
-                          : "bg-[#fff8f5] text-[#92251c] group-hover:bg-[#f9e0dc]"
+                          ? `
+                            bg-[#95221C]
+                            text-[#FFFFFF]
+                          `
+                          : `
+                            bg-[#0F0F0F]/[0.05]
+                            text-[#95221C]
+                            group-hover:bg-[#95221C]
+                            group-hover:text-[#FFFFFF]
+                          `
                       }
                     `}
-                    >
-                      {option.icon}
-                    </div>
+                  >
+                    {option.icon}
+                  </div>
 
-                    {/* Content */}
-                    <h3
-                      className="
-                      pr-8
-                      text-[17px]
+                  {/* Content */}
+                  <h3
+                    className="
+                      pr-10
+                      text-[16px]
                       font-bold
-                      text-[#221a16]
+                      leading-tight
+                      text-[#0F0F0F]
                       sm:text-[19px]
                     "
-                    >
-                      {option.title}
-                    </h3>
+                  >
+                    {option.title}
+                  </h3>
 
-                    <p
-                      className="
+                  <p
+                    className="
                       mt-1.5
+                      max-w-sm
                       pr-8
                       text-xs
                       leading-5
-                      text-[#6b6058]
+                      text-[#0F0F0F]/55
                       sm:text-sm
+                      sm:leading-6
                     "
-                    >
-                      {option.description}
-                    </p>
-                  </button>
-                );
-              })}
-            </div>
+                  >
+                    {option.description}
+                  </p>
 
-            {/* Continue */}
-            <div className="mt-7 flex justify-center sm:mt-8">
-              <button
-                type="button"
-                onClick={handleContinue}
-                disabled={!selectedOption}
-                className="
-                flex items-center gap-3
+                  {/* Selected */}
+                  <div
+                    className={`
+                      mt-4
+                      flex
+                      items-center
+                      gap-2
+                      text-[10px]
+                      font-bold
+                      uppercase
+                      tracking-[0.16em]
+                      text-[#95221C]
+                      transition-all
+                      duration-300
+                      ${
+                        isSelected
+                          ? "translate-y-0 opacity-100"
+                          : "translate-y-1 opacity-0"
+                      }
+                    `}
+                  >
+
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Continue */}
+          <div className="mt-8 flex justify-center sm:mt-10">
+            <button
+              type="button"
+              onClick={handleContinue}
+              disabled={!selectedOption}
+              className="
+                group
+                flex
+                items-center
+                gap-3
                 rounded-full
-                bg-[#D8B86A]
-                px-7 py-3
+                bg-[#95221C]
+                px-7
+                py-3
                 text-sm
                 font-semibold
-                text-black
-                shadow-sm
+                text-[#FFFFFF]
+                shadow-[0_8px_22px_rgba(185,9,11,0.18)]
                 transition-all
-                hover:bg-[#B58F1F]
+                duration-200
+
+                hover:bg-[#0F0F0F]
+                hover:shadow-[0_10px_25px_rgba(15,15,15,0.18)]
+
                 disabled:cursor-not-allowed
-                disabled:opacity-50
-                sm:px-8 sm:py-3.5
+                disabled:opacity-40
+                disabled:shadow-none
+
+                sm:px-8
+                sm:py-3.5
               "
-              >
-                Continue
-                <span
-                  className="
-                  flex h-7 w-7
-                  items-center justify-center
+            >
+              Continue
+
+              <span
+                className="
+                  flex
+                  h-7
+                  w-7
+                  items-center
+                  justify-center
                   rounded-full
-                  bg-[#92251c]
-                  text-white
+                  bg-[#FFFFFF]
+                  text-[#95221C]
+                  transition-transform
+                  duration-200
+                  group-hover:translate-x-0.5
                 "
+              >
+                <svg
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  className="h-4 w-4"
                 >
-                  <svg viewBox="0 0 20 20" fill="none" className="h-4 w-4">
-                    <path
-                      d="M4 10H15M11 6L15 10L11 14"
-                      stroke="currentColor"
-                      strokeWidth="1.8"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </span>
-              </button>
-            </div>
-          </>
-        )}
-      </div>
-    </section>
-  );
+                  <path
+                    d="M4 10H15M11 6L15 10L11 14"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
+          </div>
+        </>
+      )}
+    </div>
+  </section>
+);
+
 }

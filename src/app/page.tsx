@@ -13,6 +13,7 @@ import {
   MessageCircle,
   MapPin,
   ArrowUpRight,
+  Star,
 } from "lucide-react";
 
 import { getCategories, getMenuItems } from "@/lib/api/menu.service";
@@ -28,6 +29,8 @@ import { useCartStore } from "@/lib/store/useCartStore";
 import OrderOption from "./OrderOption";
 
 import Image from "next/image";
+
+const catName = "Categories"
 
 const herobg = "/images/HeroBg.webp";
 
@@ -314,380 +317,373 @@ export default function Home() {
 
           <Hero />
 
-          {/* FOOD CATEGORIES */}
-          <section
-            id="categories"
-            className=" mx-auto
-        w-full
-        max-w-[1700px]
-        px-4
-        sm:px-6
-        md:px-8
-        lg:px-10
-        xl:px-14
-        2xl:px-16"
-          >
-            <div className="mb-4 flex items-center justify-between gap-4 sm:mb-7 lg:mb-9">
-              <div className="min-w-0">
-                <div className="mt-2 flex items-center gap-2 sm:mt-3">
-                  <p
-                    className="
-    font-display
-    text-[22px]
-    font-bold
-    leading-[1.08]
-    tracking-[-0.02em]
-    text-[#221a16]
-    sm:text-2xl
-    lg:text-3xl
+{/* FOOD CATEGORIES */}
+<section
+  id="categories"
+  className="
+    mx-auto
+    w-full
+    max-w-[1700px]
+    px-4
+    sm:px-6
+    md:px-8
+    lg:px-8
+    xl:px-10
+    2xl:px-12
+    
   "
-                  >
-                    Categories
-                  </p>
-                </div>
-              </div>
-
-              {/* VIEW ALL */}
-              <Link
-                href="/menu"
+>
+{/* CATEGORY HEADER */}
+              {/* CATEGORY TITLE */}
+              <div
                 className="
-    group
-    flex
-    shrink-0
-    items-center
-    gap-1.5
-    pb-1
-    text-[11px]
-    font-bold
-    uppercase
-    tracking-[0.12em]
-    text-[#92251c]
-    transition-colors
-    duration-200
-    hover:text-[#6f1b15]
-    sm:text-xs
-    lg:text-sm
-  "
-              >
-                <span>View all</span>
-
-                <ChevronRight
-                  className="
-      size-4
-      text-[#92251c]
-      transition-transform
-      duration-200
-      group-hover:translate-x-1
-    "
-                />
-              </Link>
-            </div>
-
-            {/* Category Slider */}
-            <div
-              ref={categoryScrollRef}
-              className="
-    flex w-full gap-3 overflow-x-auto
-    pb-1 scrollbar-hide
-    sm:gap-4
-  "
-            >
-              {categories.map((category) => {
-                const items = groupedItems[category.id]?.items ?? [];
-
-                const imageUrl =
-                  category.imageUrl ||
-                  items.find((item) => item.imageUrl)?.imageUrl;
-
-                return (
-                  <button
-                    key={category.id}
-                    type="button"
-                    role="tab"
-                    onClick={() => scrollToCategory(category.id)}
-                    className="
-          group
-          flex
-          w-[82px]
-          shrink-0
-          flex-col
-          overflow-hidden
-          rounded-[15px]
-          border
-          border-[#e7dcc9]
-          bg-[#fffbf3]
-          p-1.5
-          text-center
-          shadow-[0_5px_18px_rgba(70,45,25,0.08)]
-          transition-all
-          duration-300
-
-          hover:border-[#d9c5ad]
-   
-
-          focus:outline-none
-          focus-visible:ring-2
-          focus-visible:ring-[#7a231d]
-          focus-visible:ring-offset-2
-
-          sm:w-[96px]
-          sm:rounded-[16px]
-          sm:p-2
-        "
-                  >
-                    {/* CATEGORY IMAGE */}
-                    <div
-                      className="
-            relative
-            h-[54px]
-            w-full
-            overflow-hidden
-            rounded-[10px]
-            bg-[#efe6d6]
-
-            sm:h-[62px]
-            sm:rounded-[11px]
-          "
-                    >
-                      {imageUrl ? (
-                        <img
-                          src={imageUrl}
-                          alt=""
-                          loading="lazy"
-                          className="
-                h-full
-                w-full
-                object-cover
-                transition-transform
-                duration-500
-                ease-out
-                group-hover:scale-[1.05]
-              "
-                        />
-                      ) : (
-                        <div
-                          className="
-                flex
-                h-full
-                w-full
-                items-center
-                justify-center
-                bg-gradient-to-br
-                from-[#f7f1e6]
-                to-[#efdfb8]
-              "
-                        >
-                          <span
-                            className="
-                  text-xl
-                  font-bold
-                  text-[#7a231d]
-                  transition-transform
-                  duration-300
-                  group-hover:scale-110
-
-                  sm:text-2xl
+                  mb-5
+                  flex
+                  items-end
+                  justify-between
+                  gap-4
+                  sm:mb-6
+                  lg:mb-7
                 "
-                          >
-                            {category.name.charAt(0).toUpperCase()}
-                          </span>
-                        </div>
-                      )}
-                    </div>
+              >
+                <h3
+                  className="
+                    m-0
+                    font-display
+                    text-[22px]
+                    font-bold
+                    leading-none
+                    tracking-[-0.025em]
+                    text-[#221a16]
+                    sm:text-2xl
+                    lg:text-3xl
+                  "
+                >
+                  Categories
+                </h3>
 
-                    {/* CATEGORY NAME */}
-                    <span
-                      className="
-            mt-1.5
-            line-clamp-1
-            w-full
-            px-0.5
-            text-[10px]
-            font-bold
-            leading-4
-            text-[#221a16]
-            transition-colors
-            duration-300
-            group-hover:text-[#7a231d]
+                <Link
+                  href="/menu"
+                  className="
+                    group
+                    flex shrink-0
+                    items-center gap-1
+                    text-[10px]
+                    font-bold
+                    uppercase
+                    tracking-[0.12em]
+                    text-[#92251c]
+                    transition-colors
+                    duration-200
+                    hover:text-[#6f1b15]
+                    sm:text-xs
+                    lg:text-sm
+                  "
+                >
+                  <span>View all</span>
 
-            sm:mt-2
-            sm:text-[11px]
-            sm:leading-4
+                  <ChevronRight
+                    className="
+                      size-4
+                      transition-transform
+                      duration-200
+                      group-hover:translate-x-1
+                    "
+                  />
+                </Link>
+              </div>
+
+  {/* CATEGORY SLIDER */}
+  <div
+    ref={categoryScrollRef}
+    className="
+      flex w-full
+      gap-3
+      overflow-x-auto
+      pb-1
+      scrollbar-hide
+      sm:gap-4
+    "
+  >
+    {categories.map((category) => {
+      const items = groupedItems[category.id]?.items ?? [];
+
+      const imageUrl =
+        category.imageUrl ||
+        items.find((item) => item.imageUrl)?.imageUrl;
+
+      return (
+        <button
+          key={category.id}
+          type="button"
+          role="tab"
+          onClick={() => scrollToCategory(category.id)}
+          className="
+            group
+            flex shrink-0
+            w-[82px]
+            flex-col
+            overflow-hidden
+            rounded-[15px]
+            border
+            border-[#e7dcc9]
+            bg-[#fffbf3]
+            p-1.5
+            text-center
+            shadow-[0_5px_18px_rgba(70,45,25,0.08)]
+            transition-all duration-300
+            hover:border-[#d9c5ad]
+            focus:outline-none
+            focus-visible:ring-2
+            focus-visible:ring-[#7a231d]
+            focus-visible:ring-offset-2
+
+            sm:w-[96px]
+            sm:rounded-[16px]
+            sm:p-2
           "
-                    >
-                      {category.name}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
-          </section>
-
-          {/* most ordered dishes */}
-          <div className="relative z-20 pb-10 sm:pb-12 lg:pb-16">
-            {loadingCategories ? (
-              <div className="flex items-center justify-center py-16">
-                <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#7a231d] border-t-transparent" />
-              </div>
-            ) : !selectedLocationId ? (
-              <div className="py-12 text-center text-sm text-[#6b6058]">
-                Menu items are unavailable right now.
-              </div>
+        >
+          {/* CATEGORY IMAGE */}
+          <div
+            className="
+              relative
+              h-[54px]
+              w-full
+              overflow-hidden
+              rounded-[10px]
+              bg-[#efe6d6]
+              sm:h-[62px]
+              sm:rounded-[11px]
+            "
+          >
+            {imageUrl ? (
+              <img
+                src={imageUrl}
+                alt=""
+                loading="lazy"
+                className="
+                  h-full
+                  w-full
+                  object-cover
+                  transition-transform
+                  duration-500
+                  ease-out
+                  group-hover:scale-[1.05]
+                "
+              />
             ) : (
               <div
                 className="
-        mx-auto
-        w-full
-        max-w-[1700px]
-        px-4
-        sm:px-6
-        md:px-8
-        lg:px-10
-        xl:px-14
-        2xl:px-16
-      "
+                  flex
+                  h-full
+                  w-full
+                  items-center
+                  justify-center
+                  bg-gradient-to-br
+                  from-[#f7f1e6]
+                  to-[#efdfb8]
+                "
               >
-                <div className="space-y-16 sm:space-y-20 lg:space-y-24 xl:space-y-28">
-                  {/* first 2 categories */}
-                  <div className="space-y-16 sm:space-y-20 lg:space-y-24 xl:space-y-28">
-                    {/* FIRST 2 CATEGORIES ONLY */}
-                    {homeMenuSections
-                      .slice(0, 2)
-                      .map(({ category, items }, index) => {
-                        const productsToShow = index === 0 ? 4 : 8;
-
-                        return (
-
-
-<section key={category.id}>
-<div className="mb-7 flex items-end justify-between sm:mb-8 lg:mb-10">
-  {/* CATEGORY NAME */}
-  <p
-    className="
-      m-0
-      font-display
-      text-[22px]
-      font-bold
-      leading-none
-      tracking-[-0.025em]
-      text-[#221a16]
-      sm:text-2xl
-      lg:text-3xl
-    "
-  >
-    {category.name}
-  </p>
-
-  {/* VIEW ALL */}
-              <Link
-                href="/menu"
-                className="
-    group
-    flex
-    shrink-0
-    items-center
-    gap-1.5
-    pb-1
-    text-[11px]
-    font-bold
-    uppercase
-    tracking-[0.12em]
-    text-[#92251c]
-    transition-colors
-    duration-200
-    hover:text-[#6f1b15]
-    sm:text-xs
-    lg:text-sm
-  "
-              >
-                <span>View all</span>
-
-                <ChevronRight
+                <span
                   className="
-      size-4
-      text-[#92251c]
-      transition-transform
-      duration-200
-      group-hover:translate-x-1
-    "
-                />
-              </Link>
-</div>
+                    text-xl
+                    font-bold
+                    text-[#7a231d]
+                    transition-transform
+                    duration-300
+                    group-hover:scale-110
+                    sm:text-2xl
+                  "
+                >
+                  {category.name.charAt(0).toUpperCase()}
+                </span>
+              </div>
+            )}
+          </div>
 
-  {/* PRODUCTS */}
-  <div
-    className="
-      grid
-      w-full
-      grid-cols-1
-      gap-5
-      sm:grid-cols-2
-      sm:gap-6
-      lg:grid-cols-4
-      lg:gap-6
-      xl:gap-7
-    "
-  >
-    {items.slice(0, productsToShow).map((item) => (
-      <MenuCard
-        key={item.id}
-        item={item}
-        locationId={selectedLocationId}
-        onLoginRequired={handleLoginPrompt}
-      />
-    ))}
+          {/* CATEGORY NAME */}
+          <span
+            className="
+              mt-1.5
+              line-clamp-1
+              w-full
+              px-0.5
+              text-[10px]
+              font-bold
+              leading-4
+              text-[#221a16]
+              transition-colors
+              duration-300
+              group-hover:text-[#7a231d]
+              sm:mt-2
+              sm:text-[11px]
+            "
+          >
+            {category.name}
+          </span>
+        </button>
+      );
+    })}
   </div>
 </section>
 
 
-                        );
-                      })}
+{/* MOST ORDERED DISHES */}
+<section className="mx-auto w-full max-w-[1700px] px-4 sm:px-6 md:px-8 lg:px-4  xl:px-10 2xl:px-12">
+  {loadingCategories ? (
+    <div className="flex items-center justify-center py-16">
+      <div className="h-10 w-10 animate-spin rounded-full border-4 border-[#7a231d] border-t-transparent" />
+    </div>
+  ) : !selectedLocationId ? (
+    <div className="py-12 text-center text-sm text-[#6b6058]">
+      Menu items are unavailable right now.
+    </div>
+  ) : (
+    <div className="pt-10 sm:pt-12 lg:pt-14">
+      {homeMenuSections
+        .slice(0, 2)
+        .map(({ category, items }, index) => {
+          const productsToShow = index === 0 ? 4 : 8;
 
-                    {/* VIEW MENU BUTTON */}
-                    <div className="flex justify-center pt-2 sm:pt-4">
-                      <Link
-                        href="/menu"
-                        className="
-        group
-        inline-flex
-        items-center
-        gap-2
-        rounded-full
-        border
-        border-[#7a231d]
-        px-7
-        py-3
-        text-xs
-        font-semibold
-        uppercase
-        tracking-[0.14em]
-        text-[#7a231d]
-        transition-all
-        duration-300
-        hover:bg-[#7a231d]
-        hover:text-white
-        sm:px-8
-        sm:py-3.5
-        sm:text-sm
-      "
-                      >
-                        <span>View Menu</span>
+          return (
+            <section
+              key={category.id}
+              className={`
+                ${index === 0 ? "mb-14 sm:mb-16 lg:mb-20" : ""}
+              `}
+            >
+              {/* CATEGORY TITLE */}
+              <div
+                className="
+                  mb-5
+                  flex
+                  items-end
+                  justify-between
+                  gap-4
+                  sm:mb-6
+                  lg:mb-7
+                "
+              >
+                <h3
+                  className="
+                    m-0
+                    font-display
+                    text-[22px]
+                    font-bold
+                    leading-none
+                    tracking-[-0.025em]
+                    text-[#221a16]
+                    sm:text-2xl
+                    lg:text-3xl
+                  "
+                >
+                  {category.name}
+                </h3>
 
-                        <ChevronRight
-                          className="
-          size-4
-          transition-transform
-          duration-300
-          group-hover:translate-x-1
-        "
-                        />
-                      </Link>
-                    </div>
-                  </div>
-                </div>
+                <Link
+                  href="/menu"
+                  className="
+                    group
+                    flex shrink-0
+                    items-center gap-1
+                    text-[10px]
+                    font-bold
+                    uppercase
+                    tracking-[0.12em]
+                    text-[#92251c]
+                    transition-colors
+                    duration-200
+                    hover:text-[#6f1b15]
+                    sm:text-xs
+                    lg:text-sm
+                  "
+                >
+                  <span>View all</span>
+
+                  <ChevronRight
+                    className="
+                      size-4
+                      transition-transform
+                      duration-200
+                      group-hover:translate-x-1
+                    "
+                  />
+                </Link>
               </div>
-            )}
-          </div>
+
+              {/* PRODUCTS */}
+              <div
+                className="
+                  grid
+                  w-full
+                  grid-cols-1
+                  gap-5
+                  sm:grid-cols-2
+                  sm:gap-6
+                  lg:grid-cols-4
+                  lg:gap-6
+                  xl:gap-7
+                "
+              >
+                {items
+                  .slice(0, productsToShow)
+                  .map((item) => (
+                    <MenuCard
+                      key={item.id}
+                      item={item}
+                      locationId={selectedLocationId}
+                      onLoginRequired={handleLoginPrompt}
+                    />
+                  ))}
+              </div>
+            </section>
+          );
+        })}
+
+      {/* VIEW MENU */}
+      <div className="flex justify-center pb-8 pt-1 sm:pb-10 lg:pb-12">
+        <Link
+          href="/menu"
+          className="
+            group
+            inline-flex
+            items-center
+            gap-2
+            rounded-full
+            border
+            border-[#7a231d]
+            px-7
+            py-3
+            text-xs
+            font-semibold
+            uppercase
+            tracking-[0.14em]
+            text-[#7a231d]
+            transition-all
+            duration-300
+            hover:bg-[#7a231d]
+            hover:text-white
+            sm:px-8
+            sm:py-3.5
+            sm:text-sm
+          "
+        >
+          <span>View Menu</span>
+
+          <ChevronRight
+            className="
+              size-4
+              transition-transform
+              duration-300
+              group-hover:translate-x-1
+            "
+          />
+        </Link>
+      </div>
+    </div>
+  )}
+</section>
+
         </section>
 
         {/* Order Options Section */}
@@ -697,211 +693,15 @@ export default function Home() {
           pickFromStoreAvailable={true}
         />
 
-        {/* trust and quality */}
-        <section className="relative w-full overflow-hidden bg-[#f7f1e6]">
-          {/* Very subtle background texture */}
-          <div
-            className="absolute inset-0 bg-cover bg-center opacity-[0.10]"
-            style={{
-              backgroundImage: "url('/images/trust-bg.jpg')",
-            }}
-          />
-
-          {/* Soft vignette */}
-          <div className="absolute inset-0 bg-[#f7f1e6]/20" />
-
-          {/* Responsive Full-Width Container */}
-          <div
-            className="relative mx-auto w-full max-w-[1280px] px-6 py-20
-                  sm:px-10 sm:py-24
-                  lg:max-w-[1400px] lg:px-12 lg:py-28
-                  xl:max-w-[1500px] xl:px-16 xl:py-32
-                  2xl:max-w-[1650px] 2xl:px-20 2xl:py-36"
-          >
-            {/* Header */}
-            <div className="mt-6 flex w-full flex-col items-center text-center sm:mt-8 lg:mt-10">
-              {/* Eyebrow */}
-              <div className="mb-2.5 flex items-center justify-center gap-2.5 text-[9px] font-semibold tracking-[0.18em] text-[#a9812f] sm:mb-3 sm:gap-3 sm:text-[10px] sm:tracking-[0.2em] lg:text-[11px] lg:tracking-[0.22em]">
-                <span className="h-px w-5 bg-[#C9A24B] sm:w-6 lg:w-7" />
-
-                <span>QUALITY YOU CAN TASTE</span>
-
-                <span className="h-px w-5 bg-[#C9A24B] sm:w-6 lg:w-7" />
-              </div>
-
-              {/* Heading */}
-              <h2 className="mb-3 max-w-[320px] font-serif text-2xl font-bold leading-tight text-[#221a16] sm:mb-4 sm:max-w-none sm:text-3xl lg:mb-5 lg:text-4xl">
-                Our Promise of <span className="text-[#7a231d]">Quality</span>
-              </h2>
-            </div>
-
-            {/* Trust Items */}
-            <div
-              className="mx-auto mt-12 grid w-full grid-cols-1
-                    sm:mt-14 sm:grid-cols-2
-                    lg:mt-16 lg:grid-cols-3
-                    xl:mt-20
-                    2xl:mt-24"
-            >
-              {trustItems.map((item) => (
-                <div
-                  key={item.title}
-                  className="
-            group
-            flex
-            min-h-[300px]
-            flex-col
-            items-center
-            justify-center
-            px-8
-            py-12
-            text-center
-
-            sm:min-h-[320px]
-            sm:px-10
-
-            lg:min-h-[340px]
-            lg:px-12
-
-            xl:min-h-[360px]
-            xl:px-16
-
-            2xl:min-h-[390px]
-            2xl:px-20
-          "
-                >
-                  {/* Icon */}
-                  <div
-                    className="
-              flex h-[105px] w-[105px]
-              items-center justify-center
-
-              sm:h-[115px] sm:w-[115px]
-
-              lg:h-[125px] lg:w-[125px]
-
-              xl:h-[135px] xl:w-[135px]
-
-              2xl:h-[150px] 2xl:w-[150px]
-            "
-                  >
-                    <img
-                      src={item.image}
-                      alt={item.title}
-                      className="
-                h-full
-                w-full
-                object-contain
-                opacity-90
-          
-                duration-700
-                ease-out
-               
-        
-              "
-                    />
-                  </div>
-
-                  {/* Title */}
-                  <h3
-                    className="
-              mt-7
-              font-serif
-              text-[19px]
-              font-medium
-              tracking-tight
-              text-[#221a16]
-
-              sm:text-xl
-
-              lg:mt-8
-              lg:text-[21px]
-
-              xl:mt-9
-              xl:text-[23px]
-
-              2xl:mt-10
-              2xl:text-[25px]
-            "
-                  >
-                    {item.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p
-                    className="
-              mt-3
-              max-w-[230px]
-              text-[13px]
-              leading-6
-              text-neutral-500
-
-              sm:text-sm
-
-              lg:mt-4
-              lg:max-w-[260px]
-
-              xl:max-w-[280px]
-              xl:text-[15px]
-              xl:leading-7
-
-              2xl:max-w-[300px]
-              2xl:text-base
-              2xl:leading-7
-            "
-                  >
-                    {item.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-
-            {/* Bottom statement */}
-            <div
-              className="
-        mt-16
-        text-center
-
-        sm:mt-20
-
-        lg:mt-24
-
-        xl:mt-28
-
-        2xl:mt-32
-      "
-            >
-              <p
-                className="
-          font-serif
-          text-base
-          italic
-          text-[#7a231d]/80
-
-          sm:text-lg
-
-          xl:text-xl
-
-          2xl:text-2xl
-        "
-              >
-                "Every meal is prepared with purpose."
-              </p>
-            </div>
-          </div>
-        </section>
-
         {/* Trust Section */}
         <section className="w-full bg-[#fffbf3] px-5 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
           <div className="mx-auto w-full max-w-[1280px] lg:max-w-[1400px] xl:max-w-[1500px] 2xl:max-w-[1650px]">
             {/* Section Header */}
             <div className="mx-auto mb-10 max-w-[720px] text-center sm:mb-12 lg:mb-14">
               <div className="mb-3 flex items-center justify-center gap-3">
-                <span className="h-px w-7 bg-[#C9A24B] sm:w-9" />
                 <span className="text-[10px] font-semibold tracking-[0.22em] text-[#a9812f] sm:text-[11px] lg:text-[12px]">
                   WHY CHOOSE US
                 </span>
-                <span className="h-px w-7 bg-[#C9A24B] sm:w-9" />
               </div>
 
               <h2 className="font-serif text-[30px] font-bold leading-[1.08] tracking-[-0.025em] text-[#221a16] sm:text-[36px] lg:text-[44px]">
@@ -967,9 +767,7 @@ export default function Home() {
           <div className="mt-6 flex w-full flex-col items-center text-center sm:mt-8 lg:mt-10">
             {/* Eyebrow */}
             <div className="mb-2.5 flex items-center justify-center gap-2.5 text-[9px] font-semibold tracking-[0.18em] text-[#a9812f] sm:mb-3 sm:gap-3 sm:text-[10px] sm:tracking-[0.2em] lg:text-[11px] lg:tracking-[0.22em]">
-
               <span>OUR STORY</span>
-
             </div>
 
             {/* Heading */}
@@ -1094,7 +892,7 @@ export default function Home() {
             >
               {/* Serving icon */}
               <img
-                src={serving}
+                src={logo}
                 alt="Every meal served with love"
                 className="
         mb-8
@@ -1138,33 +936,23 @@ export default function Home() {
           xl:text-[32px]
         "
                 >
-Every meal we serve is made with love and care.
-From our kitchen to your table, every bite tells a story.
-We use fresh ingredients, authentic flavors, and a whole lot of heart.
-Because good food fills the stomach, but food made with love fills the soul.
-
+                  Every meal we serve is made with love and care. From our
+                  kitchen to your table, every bite tells a story. We use fresh
+                  ingredients, authentic flavors, and a whole lot of heart.
+                  Because good food fills the stomach, but food made with love
+                  fills the soul.
                 </p>
               </div>
 
               {/* Bottom ornament */}
               <div className="mt-10 flex flex-col items-center sm:mt-12 lg:mt-14">
-                <span
-                  className="
-          block
-          h-12
-          w-px
-          bg-[#7a231d]/20
 
-          sm:h-14
-          lg:h-16
-        "
-                />
 
                 <span
                   className="
           mt-2
           text-[18px]
-          text-[#7a231d]/65
+          text-[#92251C]
 
           sm:text-[20px]
         "
@@ -1176,19 +964,10 @@ Because good food fills the stomach, but food made with love fills the soul.
           </section>
         </section>
         {/* instagram */}
-        <section className="w-full px-3 sm:px-4 lg:px-6 py-4 sm:py-6 lg:py-8">
-          <div
-            className="
-    relative w-full
-    overflow-hidden
-    rounded-[18px]
-    bg-[#062c20]
+                  <section className="mx-auto w-full max-w-[1650px] px-4 py-6 sm:px-6 sm:py-8 lg:px-8 lg:py-10 xl:px-10">
 
-    h-[300px]
-    sm:h-[400px]
-    lg:h-[605px]
-  "
-          >
+            <div className="group relative h-[45vh] min-h-[360px] w-full overflow-hidden rounded-[24px] sm:h-[50vh] lg:h-[600px] xl:h-[650px] lg:rounded-[28px]">
+
             {/* Restaurant / Food Image */}
             <div
               className="
@@ -1212,12 +991,12 @@ Because good food fills the stomach, but food made with love fills the soul.
             {/* Dark gradient */}
             <div
               className="
-        absolute inset-0
-        bg-gradient-to-r
-        from-[#062c20]
-        via-[#062c20]/95
-        to-transparent
-      "
+    absolute inset-0
+    bg-gradient-to-r
+    from-[#92251C]
+    via-[#92251C]/95
+    to-transparent
+  "
             />
 
             {/* Content */}
@@ -1317,7 +1096,7 @@ Because good food fills the stomach, but food made with love fills the soul.
 
                 <span>Follow Us</span>
 
-                <span className="ml-1 text-base">→</span>
+          
               </a>
             </div>
           </div>
@@ -1325,96 +1104,114 @@ Because good food fills the stomach, but food made with love fills the soul.
 
         {/* GOOGLE REVIEWS */}
 
-        <GoogleReviews />
-
-        {/*  slogan  */}
-        <section className="w-full px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
-          <div
-            className="
-      relative
-      flex
-      h-[300px]
-      w-full
-      items-center
-      justify-center
-      overflow-hidden
-      rounded-[18px]
-      bg-[#062c20]
-      sm:h-[400px]
-      lg:h-[605px]
-    "
-          >
-            {/* Green quote shape */}
-            <div
-              className="
-        relative
-        flex
-        aspect-[1.9/1]
-        w-[92%]
-        items-center
-        justify-center
-        overflow-hidden
-        rounded-[48%_52%_46%_54%/42%_48%_52%_58%]
-        bg-[#063326]
-        sm:w-[80%]
-        lg:w-[65%]
-      "
-            >
-              {/* Quote content */}
+        {/* <GoogleReviews /> */}
+        {/* 
+                  Google Reviews
+               */}
+        <div
+          className="
+                  google-review-card
+                  mx-auto
+                  my-10
+                  max-w-[880px]
+                  overflow-hidden
+                  rounded-[22px]
+                  border
+                  border-[#7a231d]/15
+                  bg-[#fffbf3]
+                  px-5
+                  py-5
+                  shadow-[0_12px_40px_rgba(70,45,25,0.06)]
+                  sm:px-7
+                  sm:py-6
+                  lg:rounded-[24px]
+                  lg:px-8
+                "
+        >
+          <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
+            {/* Google Details */}
+            <div className="flex items-center gap-4">
               <div
                 className="
-          relative
-          z-10
-          w-[78%]
-          text-center
-          sm:w-[68%]
-          lg:w-[62%]
-        "
+                        flex
+                        h-12
+                        w-12
+                        shrink-0
+                        items-center
+                        justify-center
+                        rounded-full
+                        border
+                        border-[#7a231d]/15
+                        bg-white
+                        text-lg
+                        font-bold
+                        text-[#4285F4]
+                      "
               >
-                <div
-                  className="
-            mb-1
-            text-lg
-            leading-none
-            text-[#c6a15b]
-            sm:text-xl
-            lg:text-2xl
-          "
-                >
-                  “
+                G
+              </div>
+
+              <div>
+                <h3 className="text-sm font-semibold text-[#221a16]">
+                  Al-Arafa Restaurant
+                </h3>
+
+                <div className="mt-1.5 flex items-center gap-2">
+                  <div className="flex gap-0.5 text-[#7a231d]">
+                    {Array.from({ length: 5 }).map((_, index) => (
+                      <Star
+                        key={index}
+                        size={13}
+                        strokeWidth={0}
+                        fill="currentColor"
+                      />
+                    ))}
+                  </div>
+
+                  <span className="text-xs font-semibold text-[#6b6058]">
+                    4.8
+                  </span>
                 </div>
 
-                <p
-                  className="
-            font-sans
-            text-[clamp(0.72rem,2vw,1.15rem)]
-            font-medium
-            leading-[1.45]
-            tracking-[0.01em]
-            text-white
-          "
-                >
-                  Good food is not just
-                  <br />
-                  about taste, it&apos;s about
-                  <br />
-                  people, culture and memories.
-                </p>
-
-                <p
-                  className="
-            mt-3
-            text-[clamp(0.68rem,1.5vw,0.95rem)]
-            font-medium
-            text-white/90
-          "
-                >
-                  - Al Arafa
+                <p className="mt-1 text-[11px] text-[#6b6058] sm:text-xs">
+                  Based on 1502 reviews · powered by Google
                 </p>
               </div>
             </div>
+
+            {/* Google CTA */}
+
+            <button
+              type="button"
+              onClick={() =>
+                window.open(
+                  "https://www.google.com/search?q=al+arafa+Cuisine+google+reviews+singapore&sca_esv=444dee17e46a57e2&sxsrf=APpeQntHxHEJwFxfIDTKponEWW9mhPSrCA%3A1788944372367&ei=9B-havaKFv2ohvcPtsazGA&biw=1920&bih=953&oq=al+arafa+Cuisine+google+reviews+sing&gs_lp=Egxnd3Mtd2l6LXNlcnAiI2FsIGFyYWZhIGN1c2luZSBnb29nbGUgcmV2aWV3cyBzaW5nKgIIADIHECEYChigATIHECEYChigATIHECEYChigAUjsLFCkCFi8HnABeAGQAQCYAcQBoAGfB6oBAzAuNbgBA8gBAPgBAZgCBKACvATCAgoQABhHGNYEGLADwgIEECEYFZgDAOIDBRIBMSBAiAYBkAYIkgcFMS4yLjGgB74OsgcFMC4yLjG4B7AEwgcHMC4xLjIuMcgHEoAIAQ&sclient=gws-wiz-serp#lrd=0x31da195bfbe3fee9:0x8e53aa0db7e5f3dc,1",
+                  "_blank",
+                  "noopener,noreferrer",
+                )
+              }
+              className="
+                             mt-5
+                             rounded-full
+                             bg-[#7a231d]
+                             px-6
+                             py-3
+                             text-sm
+                             font-semibold
+                             text-white
+                             shadow-md
+                             transition-all
+                             duration-300
+                             hover:-translate-y-0.5
+                             hover:bg-[#5c1b16]
+                             hover:shadow-lg
+                           "
+            >
+              ★ Review us on Google
+            </button>
           </div>
-        </section>
+        </div>
+
         {/*  LOCATION & HOURS */}
 
         <section className="w-full bg-[#f7f1e6] px-5 py-16 sm:px-8 md:px-12 lg:px-16 xl:px-20">
@@ -1423,11 +1220,11 @@ Because good food fills the stomach, but food made with love fills the soul.
             <div className="mt-6 flex w-full flex-col items-center text-center sm:mt-8 lg:mt-10">
               {/* Eyebrow */}
               <div className="mb-2.5 flex items-center justify-center gap-2.5 text-[9px] font-semibold tracking-[0.18em] text-[#a9812f] sm:mb-3 sm:gap-3 sm:text-[10px] sm:tracking-[0.2em] lg:text-[11px] lg:tracking-[0.22em]">
-                <span className="h-px w-5 bg-[#C9A24B] sm:w-6 lg:w-7" />
+               
 
                 <span>WE'D LOVE TO SEE YOU</span>
 
-                <span className="h-px w-5 bg-[#C9A24B] sm:w-6 lg:w-7" />
+               
               </div>
 
               {/* Heading */}
