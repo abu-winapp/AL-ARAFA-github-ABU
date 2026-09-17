@@ -12,14 +12,18 @@ import { usePathname } from 'next/navigation';
  * below `md`, so page content still needs bottom clearance there.
  *  - Admin routes: no clearance — HeaderWrapper doesn't render
  *    SiteHeader there (AdminHeader is used instead).
- *  - Homepage: no TOP clearance at any size — HeroPage already reserves
- *    that space internally so the header can sit transparently over the
- *    hero image.
+ *  - Home, About, Menu, Contact: no TOP clearance at any size — each of
+ *    these pages' own hero section reserves that space internally (tall +
+ *    vertically centered content, or explicit header-height padding) so
+ *    the header can float transparently over the hero background instead
+ *    of sitting above a blank clearance strip.
  *  - Every other page: top clearance ONLY from `md:` up, to clear the
  *    solid desktop/tablet top bar. Mobile gets zero top clearance since
  *    no fixed header exists there.
  *  - All non-admin pages: bottom clearance on mobile for the fixed tab bar.
  */
+const NO_TOP_CLEARANCE_PATHS = new Set(['/', '/about', '/menu', '/contact']);
+
 export function MainWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isAdmin = pathname.startsWith('/admin');
@@ -28,11 +32,11 @@ export function MainWrapper({ children }: { children: React.ReactNode }) {
     return <main className="min-h-screen">{children}</main>;
   }
 
-  const isHomePage = pathname === '/';
+  const skipTopClearance = NO_TOP_CLEARANCE_PATHS.has(pathname);
 
   return (
     <main
-      className={`min-h-screen ${isHomePage ? '' : 'md:pt-[80px] lg:pt-[88px]'} pb-[86px] md:pb-0`}
+      className={`min-h-screen ${skipTopClearance ? '' : 'md:pt-[80px] lg:pt-[88px]'} pb-[86px] md:pb-0`}
     >
       {children}
     </main>

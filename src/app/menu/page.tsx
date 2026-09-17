@@ -486,7 +486,7 @@ return (
     )}
   </div> */}
 
-<section className="relative h-[10vh] min-h-[100px] overflow-hidden bg-[#4d0907] text-white">
+<section className="relative h-[10vh] min-h-[100px] overflow-hidden bg-[#4d0907] text-white md:min-h-[180px] md:pt-[80px] lg:min-h-[188px] lg:pt-[88px]">
   <div
     className="absolute inset-0 bg-cover bg-center"
     style={{
