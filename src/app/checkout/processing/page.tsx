@@ -263,11 +263,11 @@ function ProcessingContent() {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-background-gray">
-        <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center">
-          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+      <div className="min-h-screen flex items-center justify-center bg-[#FBF8F4] px-4">
+        <div className="bg-[#FFFFFF] rounded-2xl border border-[#F5C2C7] shadow-lg p-8 max-w-md w-full text-center">
+          <div className="w-16 h-16 bg-[#F8D7DA]/60 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg
-              className="w-10 h-10 text-red-600"
+              className="w-8 h-8 text-[#B3261E]"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -280,9 +280,9 @@ function ProcessingContent() {
               />
             </svg>
           </div>
-          <h2 className="text-2xl font-bold text-red-600 mb-2">Order Failed</h2>
-          <p className="text-text-secondary mb-4">{error}</p>
-          <p className="text-sm text-text-tertiary">
+          <h2 className="text-xl font-bold text-[#1C1613] mb-2">Order Processing Issue</h2>
+          <p className="text-sm text-[#5C524B] mb-4">{error}</p>
+          <p className="text-xs text-[#8E8279]">
             Redirecting back to checkout...
           </p>
         </div>
@@ -291,17 +291,17 @@ function ProcessingContent() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background-gray">
-      <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center">
-        <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <h2 className="text-2xl font-bold text-text-primary mb-2">
+    <div className="min-h-screen flex items-center justify-center bg-[#FBF8F4] px-4">
+      <div className="bg-[#FFFFFF] rounded-2xl border border-[#EAE2D5] shadow-sm p-8 max-w-md w-full text-center">
+        <div className="w-12 h-12 border-3 border-[#95221C] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+        <h2 className="text-xl font-bold text-[#1C1613] mb-2">
           Processing Your Order
         </h2>
-        <p className="text-text-secondary">
-          Please wait while we create your order and prepare payment...
+        <p className="text-sm text-[#5C524B] mb-2">
+          Please wait while we secure your order and prepare your payment session...
         </p>
-        <p className="text-sm text-text-tertiary mt-4">
-          Do not close this window
+        <p className="text-xs text-[#8E8279] mt-4">
+          Please do not close or refresh this window
         </p>
       </div>
     </div>
@@ -312,12 +312,10 @@ export default function ProcessingPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex items-center justify-center bg-background-gray">
-          <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center">
-            <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <h2 className="text-2xl font-bold text-text-primary mb-2">
-              Loading...
-            </h2>
+        <div className="min-h-screen flex items-center justify-center bg-[#FBF8F4]">
+          <div className="text-center p-8">
+            <div className="w-12 h-12 border-3 border-[#95221C] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-sm font-semibold text-[#1C1613]">Loading...</p>
           </div>
         </div>
       }

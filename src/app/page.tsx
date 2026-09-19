@@ -330,201 +330,274 @@ export default function Home() {
     lg:px-8
     xl:px-10
     2xl:px-12
-    
   "
 >
-{/* CATEGORY HEADER */}
-              {/* CATEGORY TITLE */}
-              <div
-                className="
-                  mb-5
-                  flex
-                  items-end
-                  justify-between
-                  gap-4
-                  sm:mb-6
-                  lg:mb-7
-                "
-              >
-                <h3
-                  className="
-                    m-0
-                    font-display
-                    text-[22px]
-                    font-bold
-                    leading-none
-                    tracking-[-0.025em]
-                    text-[#221a16]
-                    sm:text-2xl
-                    lg:text-3xl
-                  "
-                >
-                  Categories
-                </h3>
-
-                <Link
-                  href="/menu"
-                  className="
-                    group
-                    flex shrink-0
-                    items-center gap-1
-                    text-[10px]
-                    font-bold
-                    uppercase
-                    tracking-[0.12em]
-                    text-[#92251c]
-                    transition-colors
-                    duration-200
-                    hover:text-[#6f1b15]
-                    sm:text-xs
-                    lg:text-sm
-                  "
-                >
-                  <span>View all</span>
-
-                  <ChevronRight
-                    className="
-                      size-4
-                      transition-transform
-                      duration-200
-                      group-hover:translate-x-1
-                    "
-                  />
-                </Link>
-              </div>
-
-  {/* CATEGORY SLIDER */}
+  {/* CATEGORY HEADER */}
   <div
-    ref={categoryScrollRef}
     className="
-      flex w-full
-      gap-3
-      overflow-x-auto
-      pb-1
-      scrollbar-hide
-      sm:gap-4
+      mb-5
+      flex
+      items-end
+      justify-between
+      gap-4
+      sm:mb-6
+      lg:mb-7
     "
   >
-    {categories.map((category) => {
-      const items = groupedItems[category.id]?.items ?? [];
+    <h3
+      className="
+        m-0
+        font-display
+        text-[22px]
+        font-bold
+        leading-none
+        tracking-[-0.025em]
+        text-[#221a16]
+        sm:text-2xl
+        lg:text-3xl
+      "
+    >
+      Categories
+    </h3>
 
-      const imageUrl =
-        category.imageUrl ||
-        items.find((item) => item.imageUrl)?.imageUrl;
+    <Link
+      href="/menu"
+      className="
+        group
+        flex
+        shrink-0
+        items-center
+        gap-1
+        text-[10px]
+        font-bold
+        uppercase
+        tracking-[0.12em]
+        text-[#92251c]
+        transition-colors
+        duration-200
+        hover:text-[#6f1b15]
+        sm:text-xs
+        lg:text-sm
+      "
+    >
+      <span>View all</span>
 
-      return (
-        <button
-          key={category.id}
-          type="button"
-          role="tab"
-          onClick={() => scrollToCategory(category.id)}
+      <ChevronRight
+        className="
+          size-4
+          transition-transform
+          duration-200
+          group-hover:translate-x-1
+        "
+      />
+    </Link>
+  </div>
+
+
+{/* RESPONSIVE CATEGORY GRID */}
+<div
+  className="
+    w-full
+
+    /* MOBILE: HORIZONTAL SWIPE */
+    flex
+    gap-3
+    overflow-x-auto
+    overflow-y-hidden
+    snap-x
+    snap-mandatory
+    pb-2
+    [-ms-overflow-style:none]
+    [scrollbar-width:none]
+    [&::-webkit-scrollbar]:hidden
+
+    /* TABLET + DESKTOP */
+    sm:grid
+    sm:grid-cols-2
+    sm:gap-4
+    sm:overflow-visible
+
+    lg:grid-cols-[repeat(auto-fit,minmax(180px,1fr))]
+    lg:gap-5
+  "
+>
+  {categories.map((category) => {
+    const items = groupedItems[category.id]?.items ?? [];
+
+    const imageUrl =
+      category.imageUrl ||
+      items.find((item) => item.imageUrl)?.imageUrl;
+
+    return (
+      <Link
+        key={category.id}
+        href={`/menu?category=${category.id}`}
+        scroll={false}
+        className="
+          group
+          flex
+          shrink-0
+          snap-start
+          items-center
+          overflow-hidden
+          rounded-[13px]
+          border
+          border-[#eadfd2]
+          bg-[#fffaf4]
+          p-2
+          text-left
+          shadow-[0_4px_16px_rgba(70,45,25,0.07)]
+          transition-all
+          duration-300
+
+          /* 2.5 CARDS VISIBLE ON MOBILE */
+          w-[calc((100vw-3.5rem)/2.5)]
+
+          hover:-translate-y-0.5
+          hover:border-[#d9c5ad]
+          hover:shadow-[0_7px_22px_rgba(70,45,25,0.11)]
+
+          focus:outline-none
+          focus-visible:ring-2
+          focus-visible:ring-[#7a231d]
+          focus-visible:ring-offset-2
+
+          sm:w-full
+          sm:rounded-[17px]
+          sm:p-2.5
+        "
+      >
+        {/* CATEGORY IMAGE */}
+        <div
           className="
-            group
-            flex shrink-0
-            w-[82px]
-            flex-col
+            relative
+            h-[46px]
+            w-[48px]
+            shrink-0
             overflow-hidden
-            rounded-[15px]
-            border
-            border-[#e7dcc9]
-            bg-[#fffbf3]
-            p-1.5
-            text-center
-            shadow-[0_5px_18px_rgba(70,45,25,0.08)]
-            transition-all duration-300
-            hover:border-[#d9c5ad]
-            focus:outline-none
-            focus-visible:ring-2
-            focus-visible:ring-[#7a231d]
-            focus-visible:ring-offset-2
+            rounded-[9px]
+            bg-[#efe6d6]
 
-            sm:w-[96px]
-            sm:rounded-[16px]
-            sm:p-2
+            sm:h-[66px]
+            sm:w-[76px]
+            sm:rounded-[12px]
           "
         >
-          {/* CATEGORY IMAGE */}
-          <div
-            className="
-              relative
-              h-[54px]
-              w-full
-              overflow-hidden
-              rounded-[10px]
-              bg-[#efe6d6]
-              sm:h-[62px]
-              sm:rounded-[11px]
-            "
-          >
-            {imageUrl ? (
-              <img
-                src={imageUrl}
-                alt=""
-                loading="lazy"
+          {imageUrl ? (
+            <img
+              src={imageUrl}
+              alt=""
+              loading="lazy"
+              className="
+                h-full
+                w-full
+                object-cover
+                transition-transform
+                duration-500
+                ease-out
+                group-hover:scale-[1.06]
+              "
+            />
+          ) : (
+            <div
+              className="
+                flex
+                h-full
+                w-full
+                items-center
+                justify-center
+                bg-gradient-to-br
+                from-[#f7f1e6]
+                to-[#efdfb8]
+              "
+            >
+              <span
                 className="
-                  h-full
-                  w-full
-                  object-cover
-                  transition-transform
-                  duration-500
-                  ease-out
-                  group-hover:scale-[1.05]
-                "
-              />
-            ) : (
-              <div
-                className="
-                  flex
-                  h-full
-                  w-full
-                  items-center
-                  justify-center
-                  bg-gradient-to-br
-                  from-[#f7f1e6]
-                  to-[#efdfb8]
+                  text-[13px]
+                  font-bold
+                  text-[#7a231d]
+                  sm:text-2xl
                 "
               >
-                <span
-                  className="
-                    text-xl
-                    font-bold
-                    text-[#7a231d]
-                    transition-transform
-                    duration-300
-                    group-hover:scale-110
-                    sm:text-2xl
-                  "
-                >
-                  {category.name.charAt(0).toUpperCase()}
-                </span>
-              </div>
-            )}
-          </div>
+                {category.name.charAt(0).toUpperCase()}
+              </span>
+            </div>
+          )}
+        </div>
 
-          {/* CATEGORY NAME */}
-          <span
+        {/* CATEGORY CONTENT */}
+        <div
+          className="
+            min-w-0
+            flex-1
+            px-1.5
+            sm:px-3
+          "
+        >
+          {/* FULL CATEGORY NAME */}
+<h4
+  className="
+    w-full
+    break-words
+    line-clamp-2
+    text-[10px]
+    font-bold
+    leading-[1.15]
+    tracking-[-0.01em]
+    text-[#221a16]
+    transition-colors
+    duration-300
+    group-hover:text-[#92251c]
+
+    min-[360px]:text-[10px]
+    min-[390px]:text-[11px]
+    min-[430px]:text-[12px]
+
+    sm:text-[13px]
+  "
+>
+  {category.name}
+</h4>
+
+          {/* EXPLORE */}
+          <div
             className="
-              mt-1.5
-              line-clamp-1
-              w-full
-              px-0.5
-              text-[10px]
+              mt-1
+              flex
+              items-center
+              gap-0.5
+              whitespace-nowrap
+              text-[7px]
               font-bold
-              leading-4
-              text-[#221a16]
-              transition-colors
-              duration-300
-              group-hover:text-[#7a231d]
+              leading-none
+              text-[#92251c]
+
+              min-[360px]:text-[8px]
+              min-[390px]:text-[9px]
+              min-[430px]:text-[10px]
+
               sm:mt-2
-              sm:text-[11px]
             "
           >
-            {category.name}
-          </span>
-        </button>
-      );
-    })}
-  </div>
+            <span>Explore</span>
+
+            <ChevronRight
+              className="
+                size-2.5
+                shrink-0
+                transition-transform
+                duration-200
+                group-hover:translate-x-0.5
+
+                sm:size-3
+              "
+            />
+          </div>
+        </div>
+      </Link>
+    );
+  })}
+</div>
 </section>
 
 
@@ -581,7 +654,8 @@ export default function Home() {
                 </h3>
 
                 <Link
-                  href="/menu"
+                  href={`/menu?category=${category.id}`}
+                  scroll={false}
                   className="
                     group
                     flex shrink-0
