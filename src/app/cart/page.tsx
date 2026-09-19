@@ -1,30 +1,94 @@
 /**
- * Al-Arafa Restaurant - Redesigned Cart Page (Stage 1)
- * Answers: "What am I ordering?"
+ * Al-Arafa Restaurant - Cart Page
  */
 
-'use client';
+"use client";
 
-import React, { useEffect, useRef, useState, useCallback } from 'react';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { ShoppingBag, ArrowRight, Plus, Clock, AlertTriangle, ShieldCheck, Sparkles } from 'lucide-react';
-import { ProtectedRoute } from '@/components/auth/ProtectedRoute';
-import { CartItem } from '@/components/cart/CartItem';
-import { CheckoutProgress } from '@/components/checkout/CheckoutProgress';
-import { PriceBreakdown } from '@/components/checkout/PriceBreakdown';
-import { StickyCheckoutBar } from '@/components/checkout/StickyCheckoutBar';
-import { useCartStore } from '@/lib/store/useCartStore';
-import { useAuthStore } from '@/lib/store/useAuthStore';
-import { useSettingsStore } from '@/lib/store/useSettingsStore';
-import { allowCheckout } from '@/lib/checkout/guard';
+import {
+  Minus,
+  Plus,
+  X,
+  Home,
+  Truck,
+  ShieldCheck,
+  Clock3,
+  ChevronRight,
+  Utensils,
+} from "lucide-react";
+
+import { useRouter } from "next/navigation";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import { useEffect, useRef, useState } from "react";
+import { useCallback } from "react";
+import Link from "next/link";
+import { CartItem } from "@/components/cart/CartItem";
+import { DeliveryProviderSelector } from "@/components/cart/DeliveryProviderSelector";
+import { OrderTimingSelector } from "@/components/cart/OrderTimingSelector";
+import { FulfillmentSelector } from "@/components/menu/FulfillmentSelector";
+import { Button } from "@/components/ui/Button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { useCartStore } from "@/lib/store/useCartStore";
+import { useAuthStore } from "@/lib/store/useAuthStore";
+import { useSettingsStore } from "@/lib/store/useSettingsStore";
+import type { UserAddress, Location } from "@/types";
+import * as addressService from "@/lib/api/address.service";
+import * as locationService from "@/lib/api/location.service";
+import * as cartService from "@/lib/api/cart.service";
+
+import { allowCheckout } from "@/lib/checkout/guard";
+
+const formatAddressSummary = (address: UserAddress): string => {
+  const parts: string[] = [];
+  if (address.unitNumber) parts.push(`#${address.unitNumber}`);
+  if (address.buildingName) parts.push(address.buildingName);
+  if (address.addressLine1) parts.push(address.addressLine1);
+  parts.push(`Singapore ${address.postalCode}`);
+  return parts.join(", ");
+};
 
 function CartContent() {
+  const {
+    cart,
+    isLoading,
+    fetchCart,
+    getItemCount,
+    getFulfillmentType,
+    hasFulfillmentTypeSelected,
+    selectedAddressId,
+    selectedDeliveryQuote,
+    quotesLoading,
+    setFulfillmentType,
+    orderTiming,
+    getAdvanceOrderSchedule,
+  } = useCartStore();
+
   const router = useRouter();
-  const { cart, isLoading, fetchCart, getItemCount } = useCartStore();
-  const { isAuthenticated, isInitialized } = useAuthStore();
+  const { isAuthenticated } = useAuthStore();
+  const handleCheckout = () => {
+    // console.log("Before:", sessionStorage.getItem("checkoutAllowed"));
+
+    allowCheckout();
+
+    // console.log("After:", sessionStorage.getItem("checkoutAllowed"));
+
+    if (isAuthenticated) {
+      router.push("/checkout");
+    } else {
+      router.push("/?login=true&redirect=" + encodeURIComponent("/checkout"));
+    }
+  };
+
+  const { isInitialized } = useAuthStore();
 
   const {
+    settings,
     fetchAllSettings,
     getMinOrderForDelivery,
     getGSTRate,
@@ -32,6 +96,8 @@ function CartContent() {
     getGST,
     getPointsPerDollar,
     getCateringMinLeadHours,
+    getHomeDeliveryEnabled,
+    getPickupEnabled,
     getServiceChargeValue,
     getServiceCharge,
     getServiceChargeType,
@@ -40,324 +106,704 @@ function CartContent() {
     getServerTime,
   } = useSettingsStore();
 
-  const [orderStatusReady, setOrderStatusReady] = useState(false);
-  const initialized = useRef(false);
-
-  // Initialize fresh settings and cart
-  useEffect(() => {
-    if (initialized.current) return;
-    initialized.current = true;
-
-    const init = async () => {
-      try {
-        await fetchAllSettings(true);
-        await fetchCart();
-        setOrderStatusReady(true);
-      } catch (err) {
-        console.error('Failed to initialize cart settings:', err);
-      }
-    };
-
-    init();
-  }, [fetchCart, fetchAllSettings]);
-
-  const itemCount = getItemCount();
-  const menuType = cart?.items?.[0]?.menuType || 'regular';
-
   const orderWindows = getOrderWindows();
   const acceptingOrders = getAcceptingOrdersNow();
-  const serverTime = getServerTime();
+
+  // testing
+
+  // storing the order windows in a variable to use in this component
+
+  const [addresses, setAddresses] = useState<UserAddress[]>([]);
+  const [deliveryAddress, setDeliveryAddress] = useState<UserAddress | null>(
+    null,
+  );
+  const [pickupLocation, setPickupLocation] = useState<Location | null>(null);
+
+  const [showDeliveryDialog, setShowDeliveryDialog] = useState(false);
+
+  const [orderStatusReady, setOrderStatusReady] = useState(false);
+  const hasAutoOpenedDeliveryDialog = useRef(false);
+
+  const itemCount = getItemCount();
+  const menuType = cart?.items?.[0]?.menuType || "regular";
+  const fulfillmentType = getFulfillmentType(
+    menuType as "regular" | "catering",
+  );
+
   const minOrderForDelivery = getMinOrderForDelivery();
 
-  // Operating window check
-  const isCurrentTimeInsideWindow = useCallback(
-    (windows: typeof orderWindows, sTime: string) => {
-      const currentTime = new Date(sTime);
-      const currentMinutes = currentTime.getHours() * 60 + currentTime.getMinutes();
+  // GST settings
+  const gstRate = getGSTRate();
+  const gstEnabled = isGSTEnabled();
 
-      for (const window of windows) {
-        const [startHour, startMinute] = window.start.split(':').map(Number);
-        const [endHour, endMinute] = window.end.split(':').map(Number);
-        const startMinutes = startHour * 60 + startMinute;
-        const endMinutes = endHour * 60 + endMinute;
+  // Service charge settings
+  const serviceChargeValue = getServiceChargeValue();
+  const serviceChargeType = getServiceChargeType();
 
-        if (currentMinutes >= startMinutes && currentMinutes <= endMinutes) {
-          return true;
-        }
+  // Calculate service charge
+  const serviceCharge =
+    cart?.subtotal && serviceChargeValue > 0
+      ? getServiceCharge(cart.subtotal)
+      : 0;
+
+  // Calculate delivery fee
+  const deliveryFee =
+    menuType === "regular" &&
+    fulfillmentType === "delivery" &&
+    selectedDeliveryQuote
+      ? selectedDeliveryQuote.fee
+      : 0;
+
+  // Calculate GST taxable amount
+  // GST = Subtotal + Service Charge + Platform Fee + Delivery Fee
+  const taxableAmount =
+    (cart?.subtotal ?? 0) +
+    serviceCharge +
+    (cart?.platformFee ?? 0) +
+    deliveryFee;
+
+  // Calculate GST
+  const calculatedGST = gstEnabled ? getGST(taxableAmount) : 0;
+
+  // Calculate final order total
+
+  const orderTotal =
+    (cart?.subtotal ?? 0) +
+    deliveryFee +
+    (cart?.platformFee ?? 0) +
+    serviceCharge +
+    calculatedGST;
+
+  const pointsPerDollar = getPointsPerDollar();
+  const cateringMinLeadHours = getCateringMinLeadHours();
+
+  // 24 hours to am pm
+
+  const formatTime = (time: string) =>
+    new Date(`2000-01-01T${time}`).toLocaleTimeString("en-SG", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+
+  // Checks whether the current server time falls inside any order window
+  const isCurrentTimeInsideWindow = (
+    windows: typeof orderWindows,
+    serverTime: string,
+  ) => {
+    // Convert server time into a Date object
+    const currentTime = new Date(serverTime);
+
+    // Convert current time to total minutes for easy comparison
+    const currentMinutes =
+      currentTime.getHours() * 60 + currentTime.getMinutes();
+
+    // Check each configured order window
+    for (const window of windows) {
+      const [startHour, startMinute] = window.start.split(":").map(Number);
+      const [endHour, endMinute] = window.end.split(":").map(Number);
+
+      const startMinutes = startHour * 60 + startMinute;
+      const endMinutes = endHour * 60 + endMinute;
+
+      // Return true as soon as the current time is inside a window
+      if (currentMinutes >= startMinutes && currentMinutes <= endMinutes) {
+        return true;
       }
-      return false;
-    },
-    [],
-  );
+    }
+
+    // No matching window found
+    return false;
+  };
+
+  const serverTime = getServerTime();
 
   const insideOrderWindow = serverTime
     ? isCurrentTimeInsideWindow(orderWindows, serverTime)
     : false;
 
-  const canCheckout = orderStatusReady && Boolean(acceptingOrders) && insideOrderWindow;
+  const isAdvanceOrder =
+    menuType === "catering" || orderTiming === "scheduled";
 
-  // Taxes & Charges Calculations
-  const gstRate = getGSTRate();
-  const gstEnabled = isGSTEnabled();
-  const serviceChargeValue = getServiceChargeValue();
-  const serviceChargeType = getServiceChargeType();
-  const pointsPerDollar = getPointsPerDollar();
-  const cateringMinLeadHours = getCateringMinLeadHours();
+  const isRestaurantOpen =
+    Boolean(acceptingOrders) && insideOrderWindow;
 
-  const subtotal = cart?.subtotal ?? 0;
-  const serviceCharge = subtotal > 0 && serviceChargeValue > 0 ? getServiceCharge(subtotal) : 0;
-  const platformFee = cart?.platformFee ?? 0;
-  const taxableAmount = subtotal + serviceCharge + platformFee;
-  const calculatedGST = gstEnabled ? getGST(taxableAmount) : 0;
-  const estimatedTotal = taxableAmount + calculatedGST;
+  const canCheckout =
+    orderStatusReady && (isAdvanceOrder || isRestaurantOpen);
 
-  const pointsEarned = Math.floor(subtotal * pointsPerDollar);
+  const isDelivery = fulfillmentType === "delivery";
+  const deliveryMet =
+    !isDelivery ||
+    ((cart?.subtotal ?? 0) >= minOrderForDelivery && !quotesLoading);
 
-  // Formatting hours
-  const formatTime = (time: string) =>
-    new Date(`2000-01-01T${time}`).toLocaleTimeString('en-SG', {
-      hour: 'numeric',
-      minute: '2-digit',
-      hour12: true,
-    });
+  const advanceSchedule = getAdvanceOrderSchedule();
+  const hasAdvanceTime =
+    menuType === "catering" ||
+    orderTiming !== "scheduled" ||
+    Boolean(advanceSchedule?.scheduledDate && advanceSchedule?.scheduledTime);
 
-  const handleContinueToOptions = () => {
-    allowCheckout();
+  const checkoutDisabled =
+    !canCheckout || !deliveryMet || !hasAdvanceTime;
 
-    if (isAuthenticated) {
-      router.push('/checkout?step=options');
-    } else {
-      router.push('/?login=true&redirect=' + encodeURIComponent('/checkout?step=options'));
+  // const updateOrderStatus = () => {
+  //   const windows = getOrderWindows();
+
+  //   console.log("Windows:", windows);
+
+  //   //testing
+
+  //   // scenario 1
+  //   // const acceptingOrders = false;
+  //   // const insideWindow = true;
+
+  //   // scenario 2
+  //   // const acceptingOrders = true;
+  //   // const insideWindow = false;
+
+  //   // actual code
+
+  //   const acceptingOrders = getAcceptingOrdersNow();
+  //   const insideWindow = isCurrentTimeInsideWindow(windows);
+
+  //   setOrderWindows(windows);
+  //   setAcceptingOrders(acceptingOrders);
+  //   setIsInsideOrderWindow(insideWindow);
+  //   console.log({
+  //     acceptingOrders,
+  //     insideWindow,
+  //   });
+  // };
+
+  // console.log({
+  //   orderTiming,
+  //   isOutsideOrderNowWindow,
+  //   fulfillmentType,
+  // });
+
+  // Delivery settings
+  const homeDeliveryAvailable = getHomeDeliveryEnabled();
+
+  const pickFromStoreAvailable = getPickupEnabled();
+
+  const loadAddresses = useCallback(async () => {
+    try {
+      const data = await addressService.getAddresses();
+
+      setAddresses(data);
+
+      const currentSelectedId = useCartStore.getState().selectedAddressId;
+
+      const selected =
+        data.find(
+          (addr) =>
+            currentSelectedId && String(addr.id) === String(currentSelectedId),
+        ) ||
+        data.find((addr) => addr.isDefault) ||
+        data[0] ||
+        null;
+
+      setDeliveryAddress(selected);
+    } catch (error) {
+      console.error("Failed to load addresses:", error);
     }
-  };
+  }, []);
+  // reloading the page with safe guard
+  const initialized = useRef(false);
 
-  const getCtaLabel = () => {
-    if (!orderStatusReady) return 'Checking Status...';
-    if (!acceptingOrders) return 'Restaurant Closed';
-    if (!insideOrderWindow) return 'Outside Order Hours';
-    return 'Continue to Options →';
-  };
+  useEffect(() => {
+    if (initialized.current) return;
 
-  const isCtaDisabled = !canCheckout;
+    initialized.current = true;
 
-  // Loading Screen
-  if (isLoading && !cart) {
+    const init = async () => {
+      try {
+        // Get fresh server time + order window first
+        await fetchAllSettings(true);
+
+        await Promise.all([fetchCart(), loadAddresses()]);
+
+        setOrderStatusReady(true);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    init();
+  }, [fetchCart, loadAddresses, fetchAllSettings]);
+
+  useEffect(() => {
+    if (!addresses.length) return;
+
+    const selected =
+      addresses.find((addr) => String(addr.id) === String(selectedAddressId)) ||
+      addresses.find((addr) => addr.isDefault) ||
+      addresses[0];
+
+    setDeliveryAddress(selected);
+  }, [addresses, selectedAddressId]);
+
+  useEffect(() => {
+    if (fulfillmentType === "pickup") {
+      locationService
+        .getActiveLocations()
+        .then((locs) => {
+          if (locs && locs.length > 0) {
+            const found = cart?.locationId
+              ? locs.find((l) => l.id === cart.locationId) || locs[0]
+              : locs[0];
+            setPickupLocation(found);
+            if (!cart?.locationId && found) {
+              void cartService.updateCartLocation(found.id);
+            }
+          }
+        })
+        .catch(console.error);
+    }
+  }, [fulfillmentType, cart?.locationId]);
+
+  useEffect(() => {
+    if (
+      !hasAutoOpenedDeliveryDialog.current &&
+      cart &&
+      getItemCount() > 0 &&
+      !hasFulfillmentTypeSelected(menuType as "regular" | "catering")
+    ) {
+      if (!homeDeliveryAvailable && !pickFromStoreAvailable) {
+        hasAutoOpenedDeliveryDialog.current = true;
+        return;
+      }
+
+      if (homeDeliveryAvailable && !pickFromStoreAvailable) {
+        setFulfillmentType(menuType as "regular" | "catering", "delivery");
+        hasAutoOpenedDeliveryDialog.current = true;
+        return;
+      }
+
+      if (!homeDeliveryAvailable && pickFromStoreAvailable) {
+        setFulfillmentType(menuType as "regular" | "catering", "pickup");
+        hasAutoOpenedDeliveryDialog.current = true;
+        return;
+      }
+
+      setShowDeliveryDialog(true);
+      hasAutoOpenedDeliveryDialog.current = true;
+    }
+  }, [
+    cart,
+    getItemCount,
+    hasFulfillmentTypeSelected,
+    menuType,
+    homeDeliveryAvailable,
+    pickFromStoreAvailable,
+    setFulfillmentType,
+  ]);
+
+  if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#FBF8F4] flex items-center justify-center">
-        <div className="text-center p-8">
-          <div className="w-12 h-12 border-3 border-[#95221C] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-sm font-medium text-[#5C524B]">
-            {!isInitialized ? 'Connecting...' : 'Loading your cart...'}
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-text-secondary">
+            {!isInitialized ? "Initializing..." : "Loading your cart..."}
           </p>
         </div>
       </div>
     );
   }
 
-  // Empty Cart Screen
   if (!cart || itemCount === 0) {
     return (
-      <div className="min-h-screen bg-[#FBF8F4] flex flex-col justify-center items-center px-4 py-16">
-        <div className="max-w-md w-full text-center">
-          <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-[#FAF3E0] border border-[#F0DFBE] flex items-center justify-center mx-auto mb-6 text-3xl sm:text-4xl shadow-sm">
-            🍛
+      <div className="min-h-screen bg-background-gray pt-12 pb-12 md:pt-0">
+        <div className="container mx-auto px-4">
+          <div className="max-w-2xl mx-auto text-center py-20">
+            <div className="text-8xl mb-6">🛒</div>
+            <h1 className="text-3xl font-bold text-text-primary mb-3">
+              Your cart is empty
+            </h1>
+            <p className="text-xl text-text-secondary mb-8">
+              Add some delicious items from our menu to get started!
+            </p>
+            <Link href="/menu">
+              <Button size="lg">Browse Menu</Button>
+            </Link>
           </div>
-
-          <h1 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-[#1C1613] mb-2">
-            Your cart is empty
-          </h1>
-
-          <p className="text-sm sm:text-base text-[#5C524B] mb-8 leading-relaxed">
-            Discover our signature dum biryanis, aromatic curries, and authentic South Indian delicacies.
-          </p>
-
-          <Link
-            href="/menu"
-            className="inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl bg-[#95221C] hover:bg-[#7D1B16] text-white font-bold text-sm sm:text-base shadow-[0_4px_16px_rgba(149,34,28,0.22)] transition-all active:scale-[0.98]"
-          >
-            <ShoppingBag className="w-4 h-4" />
-            <span>Explore Menu</span>
-          </Link>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-[#FBF8F4] pb-32 md:pb-20">
-      <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10">
-        {/* Checkout Progression Tracker */}
-        <div className="mb-6 sm:mb-8">
-          <CheckoutProgress currentStep="cart" />
-        </div>
-
-        {/* Page Title Row */}
-        <div className="flex items-center justify-between pb-6 mb-6 border-b border-[#EAE2D5]">
-          <div>
-            <h1 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight text-[#1C1613]">
+    <div className="min-h-screen bg-[#F7F4EE] pt-12 pb-32 md:pt-0">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto w-full max-w-7xl">
+          <div className="mb-10 text-center">
+            <h1 className="mb-2 text-3xl font-bold tracking-tight text-[#241F1B] md:text-4xl">
               Your Cart
             </h1>
-            <p className="text-xs sm:text-sm text-[#5C524B] mt-0.5">
-              Review your order before choosing delivery or pickup options
+
+            <p className="text-sm font-medium text-[black] md:text-base">
+              {itemCount} {itemCount === 1 ? "item" : "items"} in your cart
             </p>
           </div>
-          <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#FAF3E0] text-[#7A5B14] border border-[#F0DFBE]">
-            {itemCount} {itemCount === 1 ? 'item' : 'items'}
-          </span>
-        </div>
-        {/* Order Hours Alert Banner if outside window */}
-        {!canCheckout && orderStatusReady && (
-          <div className="mb-6 p-4 rounded-2xl border border-[#F1D49A] bg-[#FFF9ED] flex items-start gap-3.5 shadow-sm">
-            <Clock className="w-5 h-5 text-[#B88E34] shrink-0 mt-0.5" />
-            <div className="flex-1 text-xs sm:text-sm">
-              <h4 className="font-bold text-[#634208]">
-                {!acceptingOrders ? 'Currently Closed for Ordering' : 'Outside Operating Hours'}
-              </h4>
-              <p className="text-[#855B14] mt-0.5">
-                We are currently not accepting new orders. Please visit us during our service hours:
-              </p>
-              {orderWindows.length > 0 && (
-                <div className="mt-2 flex flex-wrap gap-2">
-                  {orderWindows.map((win) => (
-                    <span
-                      key={win.name}
-                      className="inline-block bg-[#FFFFFF] px-2.5 py-1 rounded-md text-xs font-semibold text-[#634208] border border-[#F0DFBE]"
-                    >
-                      {win.name}: {formatTime(win.start)} - {formatTime(win.end)}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
-        )}
 
-        {/* Catering Notice if catering order */}
-        {menuType === 'catering' && (
-          <div className="mb-6 p-4 rounded-2xl border border-[#C5E8D4] bg-[#E8F5EE] flex items-start gap-3.5 shadow-sm">
-            <Sparkles className="w-5 h-5 text-[#2D6A4F] shrink-0 mt-0.5" />
-            <div className="text-xs sm:text-sm text-[#1B4D36]">
-              <h4 className="font-bold">Catering Package Order</h4>
-              <p className="mt-0.5">
-                Catering orders require at least {cateringMinLeadHours} hours advance notice for special preparation. You will pick your exact date and time in the next step.
-              </p>
-            </div>
-          </div>
-        )}
-
-        {/* Two-Column Responsive Layout */}
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Left Column: Items (7 cols) */}
-          <div className="lg:col-span-7 space-y-4">
-            <div className="flex items-center justify-between pb-2">
-              <h2 className="text-base sm:text-lg font-bold text-[#1C1613]">
-                Order Items ({itemCount})
-              </h2>
-              <Link
-                href="/menu"
-                className="text-xs sm:text-sm font-semibold text-[#95221C] hover:underline inline-flex items-center gap-1"
-              >
-                <Plus className="w-3.5 h-3.5" />
-                <span>Add More</span>
-              </Link>
-            </div>
-
-            {/* Cart Items List */}
-            <div className="space-y-3">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.65fr)_minmax(360px,0.75fr)] xl:gap-10">
+            <div className="space-y-4">
               {cart.items.map((item) => (
                 <CartItem key={item.id} item={item} />
               ))}
-            </div>
 
-            {/* Add More Items Button Banner */}
-            <div className="pt-2">
-              <Link
-                href="/menu"
-                className="w-full py-3.5 px-4 rounded-2xl border-2 border-dashed border-[#EAE2D5] bg-[#FFFFFF]/60 hover:bg-[#FFFFFF] hover:border-[#95221C]/40 text-[#95221C] font-semibold text-xs sm:text-sm flex items-center justify-center gap-2 transition-all"
-              >
-                <Plus className="w-4 h-4" />
-                <span>Add More Items From Menu</span>
+              <div className="bg-[#FFFCF8] rounded-xl shadow-md border border-[#E8E1D8] p-4 flex items-center justify-between gap-4">
+                <div className="min-w-0">
+                  <div className="text-xs font-medium text-[black] uppercase tracking-wide mb-1">
+                    Delivery Method
+                  </div>
+                  <div className="font-semibold text-[#241F1B]">
+                    {fulfillmentType === "delivery"
+                      ? "Home Delivery"
+                      : "Self Collect"}
+                  </div>
+                  {fulfillmentType === "delivery" && (
+                    <div className="text-sm text-[black] mt-0.5 truncate">
+                      {deliveryAddress
+                        ? formatAddressSummary(deliveryAddress)
+                        : "No delivery address selected yet"}
+                    </div>
+                  )}
+                  {fulfillmentType === "pickup" && (
+                    <div className="text-sm text-[black] mt-0.5 truncate">
+                      {pickupLocation
+                        ? `${pickupLocation.name} (${pickupLocation.address})`
+                        : "Self collect at store"}
+                    </div>
+                  )}
+                </div>
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  className="shrink-0"
+                  onClick={() => setShowDeliveryDialog(true)}
+                >
+                  Change
+                </Button>
+              </div>
+
+              {menuType === "regular" && (
+                <OrderTimingSelector isRestaurantOpen={isRestaurantOpen} />
+              )}
+
+              {homeDeliveryAvailable && fulfillmentType === "delivery" && (
+                <DeliveryProviderSelector deliveryAddress={deliveryAddress} />
+              )}
+
+              <Link href="/menu">
+                <button className="w-full py-4 text-[#B33A2E]   hover:border-[#B33A2E] transition-all font-semibold flex items-center justify-center gap-2">
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M12 4v16m8-8H4"
+                    />
+                  </svg>
+                  <span>Add More Items</span>
+                </button>
               </Link>
             </div>
 
-            {/* Delivery hint */}
-            {minOrderForDelivery > 0 && (
-              <p className="text-xs text-[#8E8279] pl-1">
-                * Note: Minimum order for home delivery is S$ {minOrderForDelivery.toFixed(2)}. Delivery partner & timing are chosen in the next step.
-              </p>
-            )}
-          </div>
+            <div>
+              <div className="bg-[#FFFCF8] rounded-2xl shadow-xl p-6 lg:p-7 sticky top-32">
+                <h2 className="text-xl font-bold text-[#241F1B] mb-6">
+                  Order Summary
+                </h2>
 
-          {/* Right Column: Order Summary (5 cols) */}
-          <div className="lg:col-span-5 lg:sticky lg:top-24">
-            <div className="bg-[#FFFFFF] border border-[#EAE2D5] rounded-2xl p-5 sm:p-6 shadow-sm">
-              <h3 className="font-bold text-base sm:text-lg text-[#1C1613] pb-4 mb-4 border-b border-[#F0EBE3]">
-                Price Summary
-              </h3>
+                <div className="space-y-4 mb-6">
+                  <div className="flex items-center justify-between text-[black]">
+                    <span>Subtotal</span>
+                    <span className="font-semibold">
+                      S$ {cart.subtotal.toFixed(2)}
+                    </span>
+                  </div>
 
-              {/* Price Breakdown */}
-              <PriceBreakdown
-                subtotal={subtotal}
-                platformFee={platformFee}
-                serviceCharge={serviceCharge}
-                serviceChargeRate={serviceChargeValue}
-                serviceChargeType={serviceChargeType}
-                gstAmount={calculatedGST}
-                gstRate={gstRate}
-                gstEnabled={gstEnabled}
-                total={estimatedTotal}
-                pointsEarned={pointsEarned}
-                isDelivery={false}
-              />
+                  {menuType === "regular" &&
+                    fulfillmentType === "delivery" &&
+                    selectedDeliveryQuote && (
+                      <div className="flex items-center justify-between text-[black]">
+                        <div className="flex flex-col">
+                          <span>Delivery Fee</span>
+                          <span className="text-xs text-[#9A9086]">
+                            via {selectedDeliveryQuote.providerName}
+                            {" • "}
+                            {selectedDeliveryQuote.estimatedTime}
+                          </span>
+                        </div>
+                        <span className="font-semibold">
+                          {selectedDeliveryQuote.fee === 0 ? (
+                            <span className="text-[#287A52]">FREE</span>
+                          ) : (
+                            `S$ ${selectedDeliveryQuote.fee.toFixed(2)}`
+                          )}
+                        </span>
+                      </div>
+                    )}
 
-              {/* Next Step Teaser */}
-              <div className="mt-5 p-3 rounded-xl bg-[#FAF7F2] border border-[#EAE2D5] text-xs text-[#5C524B]">
-                <span className="font-bold text-[#1C1613] block mb-0.5">
-                  Next: Choose Delivery or Pickup
-                </span>
-                Fulfillment method, live delivery partner rates, and preferred order timing will be configured in the next step.
-              </div>
+                  {cart.platformFee !== undefined && cart.platformFee > 0 && (
+                    <div className="flex items-center justify-between text-[black]">
+                      <span>Platform Fee</span>
+                      <span className="font-semibold">
+                        S$ {cart.platformFee.toFixed(2)}
+                      </span>
+                    </div>
+                  )}
 
-              {/* Desktop Continue CTA */}
-              <div className="hidden md:block mt-5 pt-2">
-                <button
-                  type="button"
-                  disabled={isCtaDisabled}
-                  onClick={handleContinueToOptions}
-                  className={`
-                    w-full py-4 px-6 rounded-xl font-bold text-base text-white shadow-md transition-all duration-200 flex items-center justify-center gap-2
-                    ${
-                      isCtaDisabled
-                        ? 'bg-[#B0A79E] opacity-60 cursor-not-allowed shadow-none'
-                        : 'bg-[#95221C] hover:bg-[#7D1B16] shadow-[0_4px_16px_rgba(149,34,28,0.22)] active:scale-[0.99]'
-                    }
-                  `}
+                  {serviceChargeValue > 0 && serviceCharge > 0 && (
+                    <div className="flex items-center justify-between text-[black]">
+                      <span>
+                        Service Charge{" "}
+                        {serviceChargeType === "percentage"
+                          ? `(${serviceChargeValue}%)`
+                          : "(Flat)"}
+                      </span>
+
+                      <span className="font-semibold">
+                        S$ {serviceCharge.toFixed(2)}
+                      </span>
+                    </div>
+                  )}
+
+                  <div className="flex items-center justify-between text-[black]">
+                    <div className="flex flex-col">
+                      <span>GST {gstEnabled ? `(${gstRate}%)` : ""}</span>
+                    </div>
+                    <span className="font-semibold">
+                      S$ {calculatedGST.toFixed(2)}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="border-t-2 border-[#E8E1D8] pt-4 mb-6">
+                  <div className="flex items-center justify-between">
+                    <span className="text-lg font-bold text-[#241F1B]">
+                      Total
+                    </span>
+
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-[#B33A2E]">
+                        S$ {orderTotal.toFixed(2)}
+                      </div>
+
+                      <div className="text-xs text-[#9A9086]">
+                        (incl. fees and tax)
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {menuType === "regular" &&
+                  fulfillmentType === "delivery" &&
+                  cart.subtotal < minOrderForDelivery && (
+                    <div className="mb-4 p-3 bg-[#FFF7E8] border border-[#F1D49A] rounded-lg">
+                      <div className="flex items-start gap-2">
+                        <svg
+                          className="w-5 h-5 text-[#B7791F] flex-shrink-0 mt-0.5"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                            clipRule="evenodd"
+                          />
+                        </svg>
+                        <div className="text-sm text-[#805B20]">
+                          <div className="font-semibold mb-1">
+                            Minimum order not met
+                          </div>
+                          <div>
+                            Add S${" "}
+                            {(minOrderForDelivery - cart.subtotal).toFixed(2)}{" "}
+                            more to meet the minimum delivery order of S${" "}
+                            {minOrderForDelivery.toFixed(2)}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                {menuType === "catering" && (
+                  <div className="mb-4 p-3 bg-[#EEF6F5] border border-[#C8E1DE] rounded-lg">
+                    <div className="flex items-start gap-2">
+                      <svg
+                        className="w-5 h-5 text-[#2C716B] flex-shrink-0 mt-0.5"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      <div className="text-sm text-[#285C58]">
+                        <div className="font-semibold mb-1">Catering Order</div>
+                        <div>
+                          Catering orders require at least{" "}
+                          {cateringMinLeadHours} hours advance notice.
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* {cart.subtotal > 0 && pointsPerDollar > 0 && (
+                  <div className="mb-4 p-3 bg-[#EEF7F1] border border-[#CBE2D3] rounded-lg">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <svg
+                          className="w-5 h-5 text-[#287A52]"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                        <span className="text-sm font-semibold text-[#245D43]">
+                          Earn Points
+                        </span>
+                      </div>
+                      <span className="text-sm font-bold text-[#245D43]">
+                        +{Math.floor(cart.subtotal * pointsPerDollar)} points
+                      </span>
+                    </div>
+                  </div>
+                )} */}
+
+                <Button
+                  className="w-full"
+                  size="lg"
+                  disabled={checkoutDisabled}
+                  onClick={checkoutDisabled ? undefined : handleCheckout}
                 >
-                  <span>{getCtaLabel()}</span>
-                  {canCheckout && <ArrowRight className="w-4 h-4" />}
-                </button>
-              </div>
+                  {!orderStatusReady
+                    ? "Checking Order Status..."
+                    : !isAdvanceOrder && !acceptingOrders
+                      ? "Restaurant Closed"
+                      : !isAdvanceOrder && !insideOrderWindow
+                        ? "Outside Order Hours"
+                        : isAdvanceOrder && !hasAdvanceTime
+                          ? "Select Date & Time"
+                          : isDelivery && cart.subtotal < minOrderForDelivery
+                            ? "Minimum Order Not Met"
+                            : isDelivery && quotesLoading
+                              ? "Loading Delivery Options..."
+                              : "Proceed to Checkout"}
+                </Button>
 
-              {/* Security guarantee */}
-              <div className="mt-4 pt-4 border-t border-[#F0EBE3] flex items-center justify-center gap-2 text-xs text-[#2D6A4F]">
-                <ShieldCheck className="w-4 h-4" />
-                <span className="font-medium">Direct Restaurant Ordering • Secure Checkout</span>
+                {menuType === "regular" && !isRestaurantOpen && !isAdvanceOrder && (
+                  <div className="mt-4 rounded-xl border border-[#E8E1D8] bg-[#F8F5F0] px-4 py-3">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-full ">
+                        <svg
+                          className="h-5 w-5 text-[#B33A2E]"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                      </div>
+
+                      <div>
+                        <div className="mt-1 text-xs text-[black]">
+                          <span className="font-medium text-[#241F1B] block">
+                            Order Hours
+                          </span>
+
+                          {orderWindows.length > 0 ? (
+                            orderWindows.map((window) => (
+                              <div key={window.name} className="mt-2">
+                                <div className="font-medium text-[#241F1B]">
+                                  {window.name}
+                                </div>
+
+                                <div>
+                                  {formatTime(window.start)} -{" "}
+                                  {formatTime(window.end)}
+                                </div>
+                              </div>
+                            ))
+                          ) : (
+                            <div className="mt-2">No order hours available</div>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {menuType === "regular" &&
+                  fulfillmentType === "delivery" &&
+                  quotesLoading && (
+                    <p className="text-xs text-[#B33A2E] mt-3 text-center flex items-center justify-center gap-1">
+                      <svg
+                        className="w-3.5 h-3.5 animate-spin"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                        />
+                      </svg>
+                      Finding best delivery options...
+                    </p>
+                  )}
+
+                <Link href="/menu">
+                  <button className="w-full mt-3 py-3 text-[#B33A2E] hover:bg-[#B33A2E]/5 rounded-lg transition-all font-semibold text-sm">
+                    Continue Ordering
+                  </button>
+                </Link>
               </div>
             </div>
           </div>
         </div>
-      </main>
+      </div>
 
-      {/* Mobile Sticky Bottom Checkout Action */}
-      <StickyCheckoutBar
-        total={estimatedTotal}
-        ctaText={getCtaLabel()}
-        onCtaClick={handleContinueToOptions}
-        disabled={isCtaDisabled}
-        itemCount={itemCount}
-        hintText="Subtotal + Tax"
-        errorText={!canCheckout && orderStatusReady ? (!acceptingOrders ? 'Restaurant Closed' : 'Outside Order Hours') : undefined}
-      />
+      <Dialog open={showDeliveryDialog} onOpenChange={setShowDeliveryDialog}>
+        <DialogContent className="max-w-lg">
+          <DialogHeader>
+            <DialogTitle>Choose Delivery Method</DialogTitle>
+            <DialogDescription>
+              Choose Home Delivery or Self Collect for this order.
+            </DialogDescription>
+          </DialogHeader>
+
+          <FulfillmentSelector
+            menuType={menuType as "regular" | "catering"}
+            homeDeliveryAvailable={homeDeliveryAvailable}
+            pickFromStoreAvailable={pickFromStoreAvailable}
+          />
+
+          <DialogFooter>
+            <Button type="button" onClick={() => setShowDeliveryDialog(false)}>
+              Done
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

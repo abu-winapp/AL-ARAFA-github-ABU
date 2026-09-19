@@ -172,15 +172,13 @@ export default function CheckoutPage() {
     ? isCurrentTimeInsideWindow(orderWindows, serverTime)
     : false;
 
-  // Checkout is only enabled once we've fetched fresh settings AND the
-  // restaurant is accepting orders AND we're inside the order window.
-  const canCheckout =
-    orderStatusReady && Boolean(acceptingOrders) && insideOrderWindow;
-
-  // Order timing (instant vs scheduled) is tracked independently of the
-  // delivery provider - selectedDeliveryQuote always holds a real provider
-  // (lalamove, grab_express, ...) and its real quotation ID.
   const isAdvanceOrder = orderTiming === "scheduled";
+
+  const canCheckout =
+    orderStatusReady &&
+    (isAdvanceOrder ||
+      menuType === "catering" ||
+      (Boolean(acceptingOrders) && insideOrderWindow));
 
   // Calculate total from cart values with points discount applied before GST
   const calculateTotal = () => {
@@ -296,6 +294,11 @@ export default function CheckoutPage() {
     };
 
     const checkOrderStatus = async () => {
+      if (isAdvanceOrder || menuType === "catering") {
+        setOrderStatusReady(true);
+        return;
+      }
+
       await fetchAllSettings(true);
 
       const settingsState = useSettingsStore.getState();
@@ -542,7 +545,16 @@ export default function CheckoutPage() {
       return;
     }
 
-    // Set ref immediately to prevent any redirects
+    if (fulfillmentType === "delivery" && !selectedAddress) {
+      alert("Please select a delivery address.");
+      return;
+    }
+
+    if (fulfillmentType === "pickup" && !location && !cart.locationId) {
+      alert("Please select a pickup location.");
+      return;
+    }
+
     isPlacingOrderRef.current = true;
     setIsPlacingOrder(true);
     const orderType =
@@ -591,7 +603,7 @@ export default function CheckoutPage() {
     const orderRequest: CreateOrderRequest = {
       orderType,
       fulfillmentType,
-      locationId: cart.locationId || "",
+      locationId: cart.locationId || location?.id || "",
       contactName: orderContactName,
       contactPhone: orderContactPhone,
       contactEmail,
@@ -819,38 +831,39 @@ export default function CheckoutPage() {
   }
 
   const handleProceedToPayment = async () => {
-    await fetchAllSettings(true);
+    if (!isAdvanceOrder && menuType !== "catering") {
+      await fetchAllSettings(true);
 
-    const settingsState = useSettingsStore.getState();
+      const settingsState = useSettingsStore.getState();
 
-    const acceptingOrders = settingsState.getAcceptingOrdersNow();
+      const acceptingOrders = settingsState.getAcceptingOrdersNow();
 
-    const serverTime = settingsState.getServerTime();
-    // const currentTime = new Date(serverTime);
+      const serverTime = settingsState.getServerTime();
 
-    const orderWindows = settingsState.getOrderWindows();
+      const orderWindows = settingsState.getOrderWindows();
 
-    if (!serverTime) {
-      toast({
-        title: "Unable to verify ordering time",
-        description: "Please try again.",
-      });
-      return;
-    }
+      if (!serverTime) {
+        toast({
+          title: "Unable to verify ordering time",
+          description: "Please try again.",
+        });
+        return;
+      }
 
-    const insideOrderWindow = isCurrentTimeInsideWindow(
-      orderWindows,
-      serverTime,
-    );
+      const insideOrderWindow = isCurrentTimeInsideWindow(
+        orderWindows,
+        serverTime,
+      );
 
-    if (!acceptingOrders || !insideOrderWindow) {
-      restaurantClosedToast();
+      if (!acceptingOrders || !insideOrderWindow) {
+        restaurantClosedToast();
 
-      setTimeout(() => {
-        router.replace("/cart");
-      }, 2000);
+        setTimeout(() => {
+          router.replace("/cart");
+        }, 2000);
 
-      return;
+        return;
+      }
     }
 
     // Only after server validation succeeds

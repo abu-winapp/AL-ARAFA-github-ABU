@@ -20,8 +20,8 @@ function HeaderFallback() {
 export function HeaderWrapper() {
   const pathname = usePathname();
 
-  // Don't render customer header on admin routes or checkout
-  if (pathname.startsWith('/admin') || pathname.startsWith('/checkout')) {
+  // Don't render customer header on admin routes
+  if (pathname.startsWith('/admin')) {
     return null;
   }
 

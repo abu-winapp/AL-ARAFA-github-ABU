@@ -6,8 +6,8 @@ import { Footer } from './Footer';
 export function FooterWrapper() {
   const pathname = usePathname();
 
-  // Don't render footer on admin routes or checkout
-  if (pathname.startsWith('/admin') || pathname.startsWith('/checkout')) {
+  // Don't render footer on admin routes
+  if (pathname.startsWith('/admin')) {
     return null;
   }
 

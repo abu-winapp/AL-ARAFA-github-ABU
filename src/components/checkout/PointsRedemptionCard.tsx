@@ -1,11 +1,12 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
-import { AlertCircle, Sparkles } from 'lucide-react';
+import { AlertCircle, Gift, Sparkles } from 'lucide-react';
 import { useSettingsStore } from '@/lib/store/useSettingsStore';
 
 interface PointsRedemptionCardProps {
@@ -29,7 +30,7 @@ export default function PointsRedemptionCard({
   const minRedemption = getMinRedemption(); // Minimum points to redeem
 
   // Calculate max points that can be redeemed
-  const maxPointsByAmount = Math.floor(maxRedeemableAmount / (pointValue || 1));
+  const maxPointsByAmount = Math.floor(maxRedeemableAmount / pointValue);
   const maxRedeemablePoints = Math.min(availablePoints, maxPointsByAmount);
 
   // Calculate discount value
@@ -37,6 +38,7 @@ export default function PointsRedemptionCard({
   const discountValue = Math.min(pointsNum * pointValue, maxRedeemableAmount);
 
   useEffect(() => {
+    // Validate and update parent
     const points = parseInt(pointsToRedeem) || 0;
 
     if (points === 0) {
@@ -75,6 +77,7 @@ export default function PointsRedemptionCard({
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    // Only allow numbers
     if (value === '' || /^\d+$/.test(value)) {
       setPointsToRedeem(value);
     }
@@ -85,66 +88,46 @@ export default function PointsRedemptionCard({
     setPointsToRedeem(maxRedeemablePoints.toString());
   };
 
+  // Check if redemption is available
   const canRedeem = availablePoints >= minRedemption && maxRedeemableAmount > 0;
 
   if (!canRedeem) {
     return (
-      <div className="bg-[#FFFFFF] border border-[#EAE2D5] rounded-2xl p-5 sm:p-6 shadow-sm">
-        <div className="flex items-center gap-2 mb-2">
-          <div className="w-8 h-8 rounded-lg bg-[#FAF3E0] text-[#B88E34] flex items-center justify-center">
-            <Sparkles className="w-4 h-4" />
-          </div>
-          <h3 className="font-bold text-base text-[#1C1613]">
-            Loyalty Points
-          </h3>
-        </div>
-        <p className="text-xs sm:text-sm text-[#8E8279] pl-10">
+      <div className="bg-white rounded-2xl shadow-lg p-6">
+        <h2 className="text-xl font-bold text-text-primary mb-4 flex items-center gap-2">
+          <svg className="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+          </svg>
+          Loyalty Points
+        </h2>
+        <p className="text-sm text-text-secondary">
           {availablePoints < minRedemption
-            ? `You have ${availablePoints} points. At least ${minRedemption} points are required to redeem discounts.`
-            : 'Loyalty points cannot be applied to this order.'}
+            ? `You need at least ${minRedemption} points to redeem. You currently have ${availablePoints} points.`
+            : 'Points cannot be redeemed for this order.'}
         </p>
       </div>
     );
   }
 
   return (
-    <div className="bg-[#FFFFFF] border border-[#EAE2D5] rounded-2xl p-5 sm:p-6 shadow-sm">
-      <div className="flex items-start justify-between gap-4 mb-4">
-        <div className="flex items-center gap-2.5">
-          <div className="w-9 h-9 rounded-xl bg-[#FAF3E0] text-[#B88E34] flex items-center justify-center shrink-0">
-            <Sparkles className="w-5 h-5" />
-          </div>
-          <div>
-            <h3 className="font-bold text-sm sm:text-base text-[#1C1613]">
-              Redeem Loyalty Points
-            </h3>
-            <p className="text-xs text-[#8E8279] mt-0.5">
-              Available: <span className="font-semibold text-[#1C1613]">{availablePoints} pts</span>
-              {' • '}
-              Worth <span className="font-semibold text-[#2D6A4F]">S$ {(availablePoints * pointValue).toFixed(2)}</span>
-            </p>
-          </div>
-        </div>
-
-        {pointsNum > 0 && !error && (
-          <span className="text-xs font-bold text-[#2D6A4F] bg-[#E8F5EE] px-2.5 py-1 rounded-full border border-[#C5E8D4] shrink-0">
-            - S$ {discountValue.toFixed(2)}
-          </span>
-        )}
-      </div>
+    <div className="bg-white rounded-2xl shadow-lg p-6">
+      <h2 className="text-xl font-bold text-text-primary mb-4 flex items-center gap-2">
+        <svg className="w-6 h-6 text-primary" fill="currentColor" viewBox="0 0 20 20">
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+        </svg>
+        Redeem Loyalty Points
+      </h2>
+      <p className="text-sm text-text-secondary mb-6">
+        You have <span className="font-semibold text-text-primary">{availablePoints}</span> points
+        (worth <span className="font-semibold text-text-primary">S$ {(availablePoints * pointValue).toFixed(2)}</span>)
+      </p>
 
       <div className="space-y-4">
         {/* Points Input */}
         <div className="space-y-2">
-          <div className="flex items-center justify-between text-xs font-medium text-[#5C524B]">
-            <Label htmlFor="points-redeem" className="text-xs font-medium">
-              Points to Redeem
-            </Label>
-            <span className="text-[11px] text-[#8E8279]">
-              Max: {maxRedeemablePoints} pts
-            </span>
-          </div>
-
+          <Label htmlFor="points-redeem" className="text-sm font-medium">
+            Points to redeem
+          </Label>
           <div className="flex gap-2">
             <Input
               id="points-redeem"
@@ -155,32 +138,38 @@ export default function PointsRedemptionCard({
               onChange={handleInputChange}
               disabled={disabled}
               placeholder="0"
-              className={`flex-1 text-sm ${error ? 'border-[#B3261E] focus-visible:ring-[#B3261E]' : ''}`}
+              className={`flex-1 ${error ? 'border-red-500' : ''}`}
             />
             <Button
               type="button"
               variant="outline"
               onClick={handleMaxRedeem}
               disabled={disabled}
-              className="px-4 whitespace-nowrap text-xs font-semibold border-[#D0C6B8] hover:border-[#95221C] hover:text-[#95221C]"
+              className="px-4 whitespace-nowrap"
             >
-              Use Max
+              Max
             </Button>
           </div>
-
           {error && (
-            <div className="flex items-center gap-1.5 text-xs text-[#B3261E]">
-              <AlertCircle className="w-3.5 h-3.5 shrink-0" />
+            <div className="flex items-center gap-2 text-sm text-red-600">
+              <AlertCircle className="w-4 h-4" />
               <span>{error}</span>
             </div>
+          )}
+          {!error && pointsNum > 0 && (
+            <p className="text-sm text-green-700 font-medium">
+              Discount: - S$ {discountValue.toFixed(2)}
+            </p>
           )}
         </div>
 
         {/* Slider */}
-        <div className="space-y-2 pt-1">
-          <div className="flex items-center justify-between text-xs text-[#8E8279]">
-            <span>Slide to adjust</span>
-            <span>{pointsNum > 0 ? `${Math.round((pointsNum / maxRedeemablePoints) * 100)}%` : '0%'}</span>
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <Label className="text-sm text-gray-600">Slide to redeem</Label>
+            <span className="text-xs text-gray-500">
+              {pointsNum > 0 ? `${Math.round((pointsNum / maxRedeemablePoints) * 100)}%` : '0%'}
+            </span>
           </div>
           <Slider
             value={[pointsNum]}
@@ -191,16 +180,19 @@ export default function PointsRedemptionCard({
             disabled={disabled}
             className="w-full"
           />
-          <div className="flex items-center justify-between text-[11px] text-[#8E8279]">
-            <span>0</span>
+          <div className="flex items-center justify-between text-xs text-gray-500">
+            <span>0 pts</span>
             <span>{maxRedeemablePoints} pts</span>
           </div>
         </div>
 
-        {/* Notes */}
-        <div className="bg-[#FAF7F2] rounded-xl p-3 border border-[#EAE2D5] text-[11px] text-[#5C524B] leading-relaxed">
-          <span className="font-semibold text-[#1C1613]">Reward Note: </span>
-          Redeem up to {maxRedeemablePoints} points for a S$ {(maxRedeemablePoints * pointValue).toFixed(2)} discount. Minimum redemption is {minRedemption} points.
+        {/* Info */}
+        <div className="bg-background-gray rounded-lg p-3 border border-border-light">
+          <p className="text-xs text-text-secondary">
+            <span className="font-medium">Note:</span> Maximum {maxRedeemablePoints} points
+            (S$ {(maxRedeemablePoints * pointValue).toFixed(2)}) can be redeemed for this order.
+            Minimum {minRedemption} points required.
+          </p>
         </div>
       </div>
     </div>

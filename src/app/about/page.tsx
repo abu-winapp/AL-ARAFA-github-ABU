@@ -6,7 +6,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight, ChefHat, Leaf, Heart, MapPin } from "lucide-react";
-import { restaurantClosedToast } from "../checkout/page";
 
 export const metadata: Metadata = {
   title: "About Us - Al Arafa Cuisine",

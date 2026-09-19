@@ -27,17 +27,16 @@ const NO_TOP_CLEARANCE_PATHS = new Set(['/', '/about', '/menu', '/contact']);
 export function MainWrapper({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const isAdmin = pathname.startsWith('/admin');
-  const isCheckout = pathname.startsWith('/checkout');
 
   if (isAdmin) {
     return <main className="min-h-screen">{children}</main>;
   }
 
-  const skipTopClearance = NO_TOP_CLEARANCE_PATHS.has(pathname) || isCheckout;
+  const skipTopClearance = NO_TOP_CLEARANCE_PATHS.has(pathname);
 
   return (
     <main
-      className={`min-h-screen ${skipTopClearance ? '' : 'md:pt-[80px] lg:pt-[88px]'} ${isCheckout ? 'pb-0' : 'pb-[86px] md:pb-0'}`}
+      className={`min-h-screen ${skipTopClearance ? '' : 'md:pt-[80px] lg:pt-[88px]'} pb-[86px] md:pb-0`}
     >
       {children}
     </main>

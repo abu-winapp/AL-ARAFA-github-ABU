@@ -47,7 +47,7 @@ function restaurantClosedToast() {
 
 // Checks whether the current server time falls inside any order window re
 const isCurrentTimeInsideWindow = (
-  windows: typeof orderWindows,
+  windows: OrderTimeWindow[],
   serverTime: string,
 ) => {
   // Convert server time into a Date object
@@ -144,6 +144,15 @@ function ProcessingContent() {
     // Final fresh check before we actually create the order - accepting
     // orders / order window can change between checkout and this page.
     const verifyOrderWindowAndProcess = async () => {
+      const isAdvance =
+        orderData?.orderType === "scheduled" ||
+        orderData?.orderType === "catering";
+
+      if (isAdvance) {
+        processOrder(orderData);
+        return;
+      }
+
       await useSettingsStore.getState().fetchAllSettings(true);
 
       const settingsState = useSettingsStore.getState();
@@ -205,26 +214,8 @@ function ProcessingContent() {
 
       console.log("Payment response:", paymentResponse);
 
-      // Extract payment URL
-      let paymentUrl: string | null = null;
-
-      if (paymentResponse.payment?.paymentUrl) {
-        paymentUrl = paymentResponse.payment.paymentUrl;
-      } else if (paymentResponse.payment) {
-        const dataString =
-          paymentResponse.payment.webhookData ||
-          paymentResponse.payment.gatewayResponse;
-        if (dataString) {
-          const urlMatch = dataString.match(/url=(https:\/\/[^\s,}]+)/);
-          if (urlMatch && urlMatch[1]) {
-            paymentUrl = urlMatch[1];
-          }
-        }
-      }
-
-      if (!paymentUrl && paymentResponse.paymentUrl) {
-        paymentUrl = paymentResponse.paymentUrl;
-      }
+      // Extract payment URL using robust helper that handles all backend field name variants
+      const paymentUrl = paymentService.extractPaymentUrl(paymentResponse);
 
       console.log("Extracted payment URL:", paymentUrl);
 
@@ -235,7 +226,6 @@ function ProcessingContent() {
         console.log("Cart cleared successfully");
       } catch (err) {
         console.error("Failed to clear cart:", err);
-        // Still clear local store even if API fails
         clearCart();
       }
 
@@ -248,12 +238,12 @@ function ProcessingContent() {
     } catch (error) {
       console.error("Failed to process order:", error);
 
-      // Allow processing again if user retries
       hasStarted.current = false;
 
-      setError(
-        error instanceof Error ? error.message : "Failed to process order",
-      );
+      const message =
+        error instanceof Error ? error.message : "Failed to process order";
+
+      setError(message);
 
       setTimeout(() => {
         router.push("/checkout");
@@ -263,11 +253,11 @@ function ProcessingContent() {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-[#FBF8F4] px-4">
-        <div className="bg-[#FFFFFF] rounded-2xl border border-[#F5C2C7] shadow-lg p-8 max-w-md w-full text-center">
-          <div className="w-16 h-16 bg-[#F8D7DA]/60 rounded-full flex items-center justify-center mx-auto mb-4">
+      <div className="min-h-screen flex items-center justify-center bg-background-gray">
+        <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center">
+          <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <svg
-              className="w-8 h-8 text-[#B3261E]"
+              className="w-10 h-10 text-red-600"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -280,9 +270,9 @@ function ProcessingContent() {
               />
             </svg>
           </div>
-          <h2 className="text-xl font-bold text-[#1C1613] mb-2">Order Processing Issue</h2>
-          <p className="text-sm text-[#5C524B] mb-4">{error}</p>
-          <p className="text-xs text-[#8E8279]">
+          <h2 className="text-2xl font-bold text-red-600 mb-2">Order Failed</h2>
+          <p className="text-text-secondary mb-4">{error}</p>
+          <p className="text-sm text-text-tertiary">
             Redirecting back to checkout...
           </p>
         </div>
@@ -291,17 +281,17 @@ function ProcessingContent() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#FBF8F4] px-4">
-      <div className="bg-[#FFFFFF] rounded-2xl border border-[#EAE2D5] shadow-sm p-8 max-w-md w-full text-center">
-        <div className="w-12 h-12 border-3 border-[#95221C] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-        <h2 className="text-xl font-bold text-[#1C1613] mb-2">
+    <div className="min-h-screen flex items-center justify-center bg-background-gray">
+      <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center">
+        <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+        <h2 className="text-2xl font-bold text-text-primary mb-2">
           Processing Your Order
         </h2>
-        <p className="text-sm text-[#5C524B] mb-2">
-          Please wait while we secure your order and prepare your payment session...
+        <p className="text-text-secondary">
+          Please wait while we create your order and prepare payment...
         </p>
-        <p className="text-xs text-[#8E8279] mt-4">
-          Please do not close or refresh this window
+        <p className="text-sm text-text-tertiary mt-4">
+          Do not close this window
         </p>
       </div>
     </div>
@@ -312,10 +302,12 @@ export default function ProcessingPage() {
   return (
     <Suspense
       fallback={
-        <div className="min-h-screen flex items-center justify-center bg-[#FBF8F4]">
-          <div className="text-center p-8">
-            <div className="w-12 h-12 border-3 border-[#95221C] border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
-            <p className="text-sm font-semibold text-[#1C1613]">Loading...</p>
+        <div className="min-h-screen flex items-center justify-center bg-background-gray">
+          <div className="bg-white rounded-2xl shadow-xl p-8 max-w-md w-full text-center">
+            <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+            <h2 className="text-2xl font-bold text-text-primary mb-2">
+              Loading...
+            </h2>
           </div>
         </div>
       }
