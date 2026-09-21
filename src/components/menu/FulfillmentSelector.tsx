@@ -118,33 +118,7 @@ export const FulfillmentSelector: FC<FulfillmentSelectorProps> = ({
   );
   const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs());
 
-  // Delivery slot and time selection for advance orders.
-  const deliverySlots = [
-    {
-      id: "slot1",
-      label: "12:00 PM - 03:00 PM",
-      times: [
-        "12:00 PM",
-        "12:30 PM",
-        "01:00 PM",
-        "01:30 PM",
-        "02:00 PM",
-        "02:30 PM",
-        "03:00 PM",
-      ],
-    },
-    {
-      id: "slot2",
-      label: "03:00 PM - 05:00 PM",
-      times: ["03:00 PM", "03:30 PM", "04:00 PM", "04:30 PM", "05:00 PM"],
-    },
 
-    {
-      id: "slot3",
-      label: "05:00 PM - 07:00 PM",
-      times: ["05:00 PM", "05:30 PM", "06:00 PM", "06:30 PM", "07:00 PM"],
-    },
-  ];
 
   //model dialog for order time selection
 
@@ -460,19 +434,7 @@ return (
               disabled:opacity-80
             `}
           >
-            <svg
-              className="h-5 w-5 shrink-0"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5 17h2m10 0h2m-1-5h2l-2-5H9v10h2m4 0h2m-9-5h4m-8 5a2 2 0 104 0m8 0a2 2 0 104 0"
-              />
-            </svg>
+
 
             <span>Delivery</span>
 
@@ -508,19 +470,7 @@ return (
               disabled:opacity-80
             `}
           >
-            <svg
-              className="h-5 w-5 shrink-0"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M3 10h18M5 10v10h14V10M4 10l1-6h14l1 6M8 14h3v6H8z"
-              />
-            </svg>
+
 
             <span>Self Collect</span>
 
@@ -545,7 +495,7 @@ return (
             ORDER HOURS
          */}
         <div className="mt-2.5 flex min-h-[42px] items-center gap-2.5 rounded-lg bg-[#fff8ef] px-3 py-2">
-          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#f9e6df] text-[#a51f16]">
+          <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[white] text-[#a51f16]">
             <svg
               className="h-4 w-4"
               fill="none"
@@ -561,21 +511,38 @@ return (
             </svg>
           </div>
 
-          <p className="min-w-0 truncate text-xs text-[#514943] sm:text-sm">
-            <span className="font-bold text-[#29221e]">
-              Order Hours:
-            </span>{" "}
-            {orderWindows.length > 0
-              ? orderWindows
-                  .map(
-                    (window) =>
-                      `${formatTime(window.start)} - ${formatTime(
-                        window.end,
-                      )}`,
-                  )
-                  .join(" • ")
-              : "Not Available"}
-          </p>
+<div className="min-w-0 text-xs text-[#514943] sm:text-sm">
+  <span className="font-bold text-[#29221e]">
+    Order Hours
+  </span>
+
+  <div className="mt-1 flex flex-wrap gap-x-2 gap-y-1">
+    {orderWindows.length > 0 ? (
+      orderWindows.map((window, index) => (
+        <span
+          key={index}
+          className="
+            whitespace-nowrap
+            rounded-md
+            bg-[#f7f4f1]
+            px-2
+            py-1
+            text-[11px]
+            font-medium
+            text-[#514943]
+            sm:text-xs
+          "
+        >
+          {formatTime(window.start)} - {formatTime(window.end)}
+        </span>
+      ))
+    ) : (
+      <span className="text-[#8a817b]">
+        Not Available
+      </span>
+    )}
+  </div>
+</div>
         </div>
 
         {/* Divider */}
@@ -591,7 +558,7 @@ return (
 
                 {/* Heading */}
                 <div className="flex items-center gap-2.5">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#f9e6df] text-[#a51f16]">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[white] text-[#a51f16]">
                     <svg
                       className="h-4 w-4"
                       fill="none"
@@ -651,7 +618,7 @@ return (
                           return (
                             <div className="flex w-full min-w-0 items-center gap-3 text-left">
 
-                              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#f9e6df] text-[#a51f16]">
+                              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[white] text-[#a51f16]">
                                 <svg
                                   className="h-5 w-5"
                                   fill="none"
@@ -677,19 +644,6 @@ return (
                                 </p>
                               </div>
 
-                              <svg
-                                className="h-4 w-4 shrink-0 text-[#a51f16]"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M9 5l7 7-7 7"
-                                />
-                              </svg>
                             </div>
                           );
                         })()}
@@ -704,7 +658,7 @@ return (
                         className="cursor-pointer py-2.5"
                       >
                         <div className="flex items-center gap-3">
-                          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#f9e6df] text-[#a51f16]">
+                          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[white] text-[#a51f16]">
                             <svg
                               className="h-4 w-4"
                               fill="none"
@@ -734,6 +688,9 @@ return (
                     ))}
                   </SelectContent>
                 </Select>
+
+
+                
               </div>
             ) : (
               <div className="py-5 text-center text-text-secondary">
@@ -767,7 +724,7 @@ return (
                 <div className="flex items-center justify-between gap-3">
 
                   <div className="flex min-w-0 items-center gap-2.5">
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#f9e6df] text-[#a51f16]">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[white] text-[#a51f16]">
                       <svg
                         className="h-4 w-4"
                         fill="none"
@@ -804,7 +761,7 @@ return (
                       text-xs
                       font-semibold
                       text-[#a51f16]
-                      hover:bg-[#f9e6df]
+                      hover:bg-[white]
                       hover:text-[#8d180f]
                     "
                   >
@@ -852,7 +809,7 @@ return (
                           return (
                             <div className="flex w-full min-w-0 items-center gap-3 text-left">
 
-                              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#f9e6df] text-[#a51f16]">
+                              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[white] text-[#a51f16]">
                                 <svg
                                   className="h-5 w-5"
                                   fill="none"
@@ -953,7 +910,7 @@ return (
             ) : (
               <div className="rounded-xl border border-dashed border-[#d9b99d] bg-[#fff8ef] px-4 py-5 text-center">
 
-                <div className="mx-auto mb-2 flex h-11 w-11 items-center justify-center rounded-full bg-[#f9e6df] text-[#a51f16]">
+                <div className="mx-auto mb-2 flex h-11 w-11 items-center justify-center rounded-full bg-[white] text-[#a51f16]">
                   <svg
                     className="h-5 w-5"
                     fill="none"

@@ -57,53 +57,25 @@ const BRAND_RED = "#A40301";
 
 const deliverySlots = [
   {
-    id: "slot1",
-    label: "11:00 AM - 02:00 PM",
+    id: "afternoon",
+    label: "01:00 PM - 03:00 PM",
     times: [
-      "11:00 AM",
-      "11:30 AM",
-      "12:00 PM",
-      "12:30 PM",
       "01:00 PM",
       "01:30 PM",
       "02:00 PM",
-    ],
-  },
-  {
-    id: "slot2",
-    label: "02:00 PM - 05:00 PM",
-    times: [
-      "02:00 PM",
       "02:30 PM",
       "03:00 PM",
-      "03:30 PM",
-      "04:00 PM",
-      "04:30 PM",
-      "05:00 PM",
     ],
   },
   {
-    id: "slot3",
-    label: "05:00 PM - 08:00 PM",
+    id: "evening",
+    label: "07:00 PM - 09:00 PM",
     times: [
-      "05:00 PM",
-      "05:30 PM",
-      "06:00 PM",
-      "06:30 PM",
       "07:00 PM",
       "07:30 PM",
       "08:00 PM",
-    ],
-  },
-  {
-    id: "slot4",
-    label: "08:00 PM - 10:00 PM",
-    times: [
-      "08:00 PM",
       "08:30 PM",
       "09:00 PM",
-      "09:30 PM",
-      "10:00 PM",
     ],
   },
 ];

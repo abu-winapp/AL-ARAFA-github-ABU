@@ -3,6 +3,8 @@
 import { useRouter } from "next/navigation";
 import { useCartStore } from "@/lib/store/useCartStore";
 
+import {useEffect, useState} from "react";
+
 interface OrderOptionProps {
   menuType: "regular" | "catering";
   homeDeliveryAvailable: boolean;
@@ -25,6 +27,15 @@ export default function OrderOption({
 } = useCartStore();
 
   const currentFulfillment = getFulfillmentType(menuType);
+
+
+    // preventing hydration 
+
+  const [hasHydrated, setHasHydrated] = useState(false);
+
+useEffect(() => {
+  setHasHydrated(true);
+}, []);
 
   // Build options dynamically from API availability
   const orderOptions = [
@@ -110,11 +121,14 @@ export default function OrderOption({
     icon: React.ReactNode;
   }[];
 
-const hasUserSelected = hasFulfillmentTypeSelected(menuType);
+const hasUserSelected = hasHydrated
+  ? hasFulfillmentTypeSelected(menuType)
+  : false;
 
-const selectedOption: FulfillmentType | null = hasUserSelected
-  ? currentFulfillment
-  : orderOptions[0]?.id ?? null;
+const selectedOption: FulfillmentType | null =
+  hasHydrated && hasUserSelected
+    ? currentFulfillment
+    : orderOptions[0]?.id ?? null;
 
   const handleOptionSelect = (type: FulfillmentType) => {
     setFulfillmentType(menuType, type);
@@ -125,6 +139,10 @@ const selectedOption: FulfillmentType | null = hasUserSelected
 
     router.push("/menu");
   };
+
+
+
+
 
 
 return (

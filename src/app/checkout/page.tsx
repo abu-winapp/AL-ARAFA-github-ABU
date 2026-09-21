@@ -46,7 +46,8 @@ import { toast } from "@/lib/hooks/use-toast";
 
 export function restaurantClosedToast() {
   toast({
-    title: (
+    title: "Restaurant Closed",
+    description: (
       <div className="flex items-center gap-3">
         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-amber-100">
           <Image
@@ -497,7 +498,7 @@ export default function CheckoutPage() {
 
       // Validate minimum lead time
 
-      // commented the catering block for not in the usage right now 
+      // commented the catering block for not in the usage right now
 
       // const [startTime] = selectedTimeRange.split("-");
       // const scheduledDateTime = parseISO(`${selectedDate}T${startTime}:00`);
@@ -908,15 +909,16 @@ export default function CheckoutPage() {
                   d="M15 19l-7-7 7-7"
                 />
               </svg>
-              <span className="font-medium">Back to Cart</span>
+              <div>
+
+              </div>
+              <span className="font-medium">Back to Cart</span> 
             </Link>
-            <h1 className="text-3xl md:text-4xl font-bold text-text-primary mb-2">
-              Checkout
-            </h1>
+
             <div className="flex items-center gap-3">
-              <p className="text-text-secondary">Complete your order details</p>
+             
               {/* Order Type Indicator */}
-              <span
+              {/* <span
                 className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${
                   menuType === "catering"
                     ? "bg-amber-100 text-amber-800 border border-amber-200"
@@ -941,24 +943,24 @@ export default function CheckoutPage() {
                     Catering Order
                   </>
                 ) : (
-                  <>
-                    <svg
-                      className="w-3.5 h-3.5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-                      />
-                    </svg>
-                    Instant Order
-                  </>
+                      <>
+                        <svg
+                          className="w-3 h-3"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                          />
+                        </svg>
+                        Instant order
+                      </>
                 )}
-              </span>
+              </span> */}
             </div>
           </div>
 
@@ -1074,7 +1076,7 @@ export default function CheckoutPage() {
                           </svg>
                         </div>
                         <div className="flex-1">
-                          <h3 className="font-bold text-text-primary mb-1">
+                          <h3 className="text-[20px] mb-1">
                             {location.name}
                           </h3>
                           <p className="text-sm text-text-secondary mb-2">
@@ -1235,7 +1237,7 @@ export default function CheckoutPage() {
               )}
 
               {/* Points Redemption Card */}
-              <PointsRedemptionCard
+              {/* <PointsRedemptionCard
                 availablePoints={pointsBalance?.currentBalance || 0}
                 maxRedeemableAmount={getMaxRedeemableAmount()}
                 onPointsChange={(points, discount) => {
@@ -1243,7 +1245,7 @@ export default function CheckoutPage() {
                   setPointsDiscount(discount);
                 }}
                 disabled={isPlacingOrder}
-              />
+              /> */}
 
               {/* Delivery Provider - Only for regular menu delivery orders */}
               {menuType === "regular" &&
@@ -1446,8 +1448,10 @@ export default function CheckoutPage() {
                     </div>
                   </div>
                 </div>
+
+                {/* i comment this for not in the use right now */}
                 {/* Loyalty Points to Earn */}
-                {(cart?.subtotal ?? 0) > 0 && pointsPerDollar > 0 && (
+                {/* {(cart?.subtotal ?? 0) > 0 && pointsPerDollar > 0 && (
                   <div className="mb-6 pb-6 border-b border-border-light">
                     <div className="flex items-center justify-between text-sm">
                       <span className="text-text-secondary flex items-center gap-1.5">
@@ -1466,9 +1470,9 @@ export default function CheckoutPage() {
                       </span>
                     </div>
                   </div>
-                )}
+                )} */}
                 {/* Catering Lead Time Warning */}
-                {menuType === "catering" && (
+                {/* {menuType === "catering" && (
                   <div className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg">
                     <div className="flex items-start gap-2">
                       <svg
@@ -1494,7 +1498,7 @@ export default function CheckoutPage() {
                       </div>
                     </div>
                   </div>
-                )}
+                )} */}
                 {/* Minimum Order Warning - Backup validation for delivery */}
                 {menuType === "regular" &&
                   fulfillmentType === "delivery" &&
@@ -1528,34 +1532,56 @@ export default function CheckoutPage() {
                       </div>
                     </div>
                   )}
-                {/* Place Order Button */}
-                <Button
-                  type="button"
-                  className="w-full"
-                  size="lg"
-                  onClick={(event) => {
-                    event.preventDefault();
+                {/* Desktop Place Order Button */}
+                <div className="hidden md:block">
+                  <Button
+                    type="button"
+                    className="w-full"
+                    size="lg"
+                    onClick={(event) => {
+                      event.preventDefault();
+                      void handleProceedToPayment();
+                    }}
+                    disabled={
+                      isPlacingOrder || !cart?.items?.length || !canCheckout
+                    }
+                  >
+                    {isPlacingOrder
+                      ? "Processing..."
+                      : !canCheckout
+                        ? "Ordering Unavailable"
+                        : "Proceed to Payment"}
+                  </Button>
 
-                    console.log("Proceed to Payment button clicked", {
-                      fulfillmentType,
-                      selectedAddress: !!selectedAddress,
-                      location: !!location,
-                      isPlacingOrder,
-                      cartItems: cart?.items?.length ?? 0,
-                    });
+                  {fulfillmentType === "delivery" && !selectedAddress && (
+                    <p className="text-xs text-error mt-3 text-center">
+                      Please select a delivery address
+                    </p>
+                  )}
 
-                    void handleProceedToPayment();
-                  }}
-                  disabled={
-                    isPlacingOrder || !cart?.items?.length || !canCheckout
-                  }
-                >
-                  {isPlacingOrder
-                    ? "Processing..."
-                    : !canCheckout
-                      ? "Ordering Unavailable"
-                      : "Proceed to Payment"}
-                </Button>
+                  {fulfillmentType === "pickup" && !location && (
+                    <p className="text-xs text-error mt-3 text-center">
+                      Self Collect location not available
+                    </p>
+                  )}
+
+                  {menuType === "regular" &&
+                    fulfillmentType === "delivery" &&
+                    (cart?.subtotal ?? 0) < minOrderForDelivery && (
+                      <p className="text-xs text-error mt-3 text-center">
+                        Minimum order of S$ {minOrderForDelivery.toFixed(2)}{" "}
+                        required for delivery
+                      </p>
+                    )}
+
+                  {menuType === "catering" &&
+                    (!selectedDate || !selectedTimeRange) && (
+                      <p className="text-xs text-error mt-3 text-center">
+                        Please select a date and time slot for your catering
+                        order
+                      </p>
+                    )}
+                </div>
                 {fulfillmentType === "delivery" && !selectedAddress && (
                   <p className="text-xs text-error mt-3 text-center">
                     Please select a delivery address
@@ -1591,6 +1617,67 @@ export default function CheckoutPage() {
             </div>
           </div>
         </div>
+      </div>
+      {/* Mobile Fixed Checkout CTA */}
+      <div
+        className="
+    fixed
+    inset-x-0
+    bottom-0
+    z-50
+    md:hidden
+    border-t
+    border-border-light
+    bg-white/95
+    backdrop-blur-md
+    px-4
+    pt-3
+    pb-[calc(0.75rem+env(safe-area-inset-bottom))]
+    shadow-[0_-4px_20px_rgba(0,0,0,0.08)]
+  "
+      >
+        <Button
+          type="button"
+          className="w-full h-12 text-base font-semibold rounded-xl"
+          size="lg"
+          onClick={(event) => {
+            event.preventDefault();
+            void handleProceedToPayment();
+          }}
+          disabled={isPlacingOrder || !cart?.items?.length || !canCheckout}
+        >
+          {isPlacingOrder
+            ? "Processing..."
+            : !canCheckout
+              ? "Ordering Unavailable"
+              : "Proceed to Payment"}
+        </Button>
+
+        {fulfillmentType === "delivery" && !selectedAddress && (
+          <p className="text-[11px] text-error mt-1.5 text-center">
+            Please select a delivery address
+          </p>
+        )}
+
+        {fulfillmentType === "pickup" && !location && (
+          <p className="text-[11px] text-error mt-1.5 text-center">
+            Self Collect location not available
+          </p>
+        )}
+
+        {menuType === "regular" &&
+          fulfillmentType === "delivery" &&
+          (cart?.subtotal ?? 0) < minOrderForDelivery && (
+            <p className="text-[11px] text-error mt-1.5 text-center">
+              Minimum order of S$ {minOrderForDelivery.toFixed(2)} required
+            </p>
+          )}
+
+        {menuType === "catering" && (!selectedDate || !selectedTimeRange) && (
+          <p className="text-[11px] text-error mt-1.5 text-center">
+            Please select a date and time slot
+          </p>
+        )}
       </div>
     </div>
   );

@@ -29,6 +29,8 @@ import { LoginSheet } from "@/components/auth/LoginSheet";
 
 const logo = "/images/logo.webp";
 
+
+
 export const SiteHeader: FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileUserMenuOpen, setMobileUserMenuOpen] = useState(false);
@@ -123,6 +125,11 @@ export const SiteHeader: FC = () => {
     after:duration-300
     hover:after:w-full
   `;
+
+
+  const hideMobileTabBar =
+  pathname === "/cart" ||
+  pathname.startsWith("/checkout");
 
   return (
     <>
@@ -717,6 +724,11 @@ export const SiteHeader: FC = () => {
         MOBILE FLOATING TAB BAR
      */}
 
+
+
+{!hideMobileTabBar && (
+  <nav>
+
       <nav
         className="
         fixed
@@ -1142,6 +1154,12 @@ export const SiteHeader: FC = () => {
           )}
         </div>
       </nav>
+  </nav>
+)}
+
+
+
+
 
       {/* 
         MOBILE PROFILE TOP DRAWER

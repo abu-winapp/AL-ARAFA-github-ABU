@@ -762,7 +762,7 @@ const hasMoreDescription = cleanedDescription.length > 15;
         className="
           min-w-0
           flex-1
-
+          mt-2
           line-clamp-2
           overflow-hidden
 
@@ -784,6 +784,7 @@ const hasMoreDescription = cleanedDescription.length > 15;
         className="
           shrink-0
           whitespace-nowrap
+          mt-2
 
           text-[12px]
           font-bold
@@ -807,6 +808,7 @@ const hasMoreDescription = cleanedDescription.length > 15;
         min-w-0
         items-center
         whitespace-nowrap
+        mt-4
         overflow-hidden
         sm:hidden
       "
@@ -821,10 +823,11 @@ const hasMoreDescription = cleanedDescription.length > 15;
           text-[#6b625c]
         "
       >
-        {mobileDescription}
+        {mobileDescription} 
         {hasMoreDescription ? "..." : ""}
+        
       </span>
-
+      
       {hasMoreDescription && (
         <button
           type="button"
@@ -846,6 +849,7 @@ const hasMoreDescription = cleanedDescription.length > 15;
           Read more
         </button>
       )}
+
     </div>
 
     {/* DESKTOP */}

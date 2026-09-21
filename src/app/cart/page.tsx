@@ -5,15 +5,11 @@
 "use client";
 
 import {
-  Minus,
   Plus,
-  X,
-  Home,
-  Truck,
   ShieldCheck,
   Clock3,
   ChevronRight,
-  Utensils,
+  ChevronLeft,
 } from "lucide-react";
 
 import { useRouter } from "next/navigation";
@@ -122,6 +118,10 @@ function CartContent() {
   const [showDeliveryDialog, setShowDeliveryDialog] = useState(false);
 
   const [orderStatusReady, setOrderStatusReady] = useState(false);
+
+  // Same /cart route, two-step journey.
+  const [step, setStep] = useState<"cart" | "details">("cart");
+
   const hasAutoOpenedDeliveryDialog = useRef(false);
 
   const itemCount = getItemCount();
@@ -222,14 +222,11 @@ function CartContent() {
     ? isCurrentTimeInsideWindow(orderWindows, serverTime)
     : false;
 
-  const isAdvanceOrder =
-    menuType === "catering" || orderTiming === "scheduled";
+  const isAdvanceOrder = menuType === "catering" || orderTiming === "scheduled";
 
-  const isRestaurantOpen =
-    Boolean(acceptingOrders) && insideOrderWindow;
+  const isRestaurantOpen = Boolean(acceptingOrders) && insideOrderWindow;
 
-  const canCheckout =
-    orderStatusReady && (isAdvanceOrder || isRestaurantOpen);
+  const canCheckout = orderStatusReady && (isAdvanceOrder || isRestaurantOpen);
 
   const isDelivery = fulfillmentType === "delivery";
   const deliveryMet =
@@ -242,8 +239,7 @@ function CartContent() {
     orderTiming !== "scheduled" ||
     Boolean(advanceSchedule?.scheduledDate && advanceSchedule?.scheduledTime);
 
-  const checkoutDisabled =
-    !canCheckout || !deliveryMet || !hasAdvanceTime;
+  const checkoutDisabled = !canCheckout || !deliveryMet || !hasAdvanceTime;
 
   // const updateOrderStatus = () => {
   //   const windows = getOrderWindows();
@@ -353,7 +349,8 @@ function CartContent() {
               : locs[0];
             setPickupLocation(found);
             if (!cart?.locationId && found) {
-              void cartService.updateCartLocation(found.id);
+              // Keep the selected location locally for the UI.
+              setPickupLocation(found);
             }
           }
         })
@@ -398,6 +395,16 @@ function CartContent() {
     setFulfillmentType,
   ]);
 
+  const handleContinueToDetails = () => {
+    setStep("details");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleBackToCart = () => {
+    setStep("cart");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -433,224 +440,125 @@ function CartContent() {
   }
 
   return (
-    <div className="min-h-screen bg-[#F7F4EE] pt-12 pb-32 md:pt-0">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="mx-auto w-full max-w-7xl">
-          <div className="mb-10 text-center">
-            <h1 className="mb-2 text-3xl font-bold tracking-tight text-[#241F1B] md:text-4xl">
-              Your Cart
-            </h1>
-
-            <p className="text-sm font-medium text-[black] md:text-base">
-              {itemCount} {itemCount === 1 ? "item" : "items"} in your cart
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-[minmax(0,1.65fr)_minmax(360px,0.75fr)] xl:gap-10">
-            <div className="space-y-4">
-              {cart.items.map((item) => (
-                <CartItem key={item.id} item={item} />
-              ))}
-
-              <div className="bg-[#FFFCF8] rounded-xl shadow-md border border-[#E8E1D8] p-4 flex items-center justify-between gap-4">
-                <div className="min-w-0">
-                  <div className="text-xs font-medium text-[black] uppercase tracking-wide mb-1">
-                    Delivery Method
-                  </div>
-                  <div className="font-semibold text-[#241F1B]">
-                    {fulfillmentType === "delivery"
-                      ? "Home Delivery"
-                      : "Self Collect"}
-                  </div>
-                  {fulfillmentType === "delivery" && (
-                    <div className="text-sm text-[black] mt-0.5 truncate">
-                      {deliveryAddress
-                        ? formatAddressSummary(deliveryAddress)
-                        : "No delivery address selected yet"}
-                    </div>
-                  )}
-                  {fulfillmentType === "pickup" && (
-                    <div className="text-sm text-[black] mt-0.5 truncate">
-                      {pickupLocation
-                        ? `${pickupLocation.name} (${pickupLocation.address})`
-                        : "Self collect at store"}
-                    </div>
-                  )}
+    <div className="min-h-screen bg-[#F7F4EE] pt-3 pb-32 md:pt-8 lg:pt-10">
+      <div className="w-full px-3 sm:px-6 lg:px-8">
+        <div className="mx-auto w-full max-w-[1180px]">
+          {step === "cart" ? (
+            /*  STEP 1  */
+            <div className="mx-auto  w-full max-w-3xl">
+              <div className="space-y-4">
+                <div className="flex items-center justify-center">
+                  <h1 className="text-2xl md:text-xl lg:text-3xl ">
+                    Your Cart
+                  </h1>
                 </div>
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  className="shrink-0"
-                  onClick={() => setShowDeliveryDialog(true)}
-                >
-                  Change
-                </Button>
+                {cart.items.map((item) => (
+                  <CartItem key={item.id} item={item} />
+                ))}
+
+                <Link href="/menu">
+                  <button className="w-full rounded-xl py-4 font-semibold text-[#B33A2E] transition-all hover:bg-[#B33A2E]/5 flex items-center justify-center gap-2">
+                    <Plus className="h-5 w-5" />
+                    <span>Add More Items</span>
+                  </button>
+                </Link>
+
+                {/* Fixed Bottom CTA */}
+                <div className="fixed inset-x-0 bottom-0 z-40 border-t border-[#E8E1D8] bg-[white] px-4 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-3 shadow-[0_-4px_16px_rgba(36,31,27,0.08)] md:static md:border-0 md:bg-transparent md:px-0 md:pb-0 md:pt-0 md:shadow-none">
+                  <div className="mx-auto max-w-2xl">
+                    <div className="mb-3 flex items-center justify-between p-2">
+                      <div className="text-xl text-[#92251C]">Subtotal</div>
+                      <div className="text-xl font-bold text-[#241F1B]">
+                        S$ {cart.subtotal.toFixed(2)}
+                      </div>
+                    </div>
+
+                    <Button
+                      type="button"
+                      size="lg"
+                      className="h-14 w-full rounded-xl text-base font-semibold"
+                      onClick={handleContinueToDetails}
+                    >
+                      Continue
+                      <ChevronRight className="ml-1 h-5 w-5" />
+                    </Button>
+
+                    <p className="mt-2 text-center text-[11px] leading-4 text-[#9A9086]">
+                      Delivery, service charges, GST, and order timing are
+                      selected next.
+                    </p>
+                  </div>
+                </div>
               </div>
-
-              {menuType === "regular" && (
-                <OrderTimingSelector isRestaurantOpen={isRestaurantOpen} />
-              )}
-
-              {homeDeliveryAvailable && fulfillmentType === "delivery" && (
-                <DeliveryProviderSelector deliveryAddress={deliveryAddress} />
-              )}
-
-              <Link href="/menu">
-                <button className="w-full py-4 text-[#B33A2E]   hover:border-[#B33A2E] transition-all font-semibold flex items-center justify-center gap-2">
-                  <svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 4v16m8-8H4"
-                    />
-                  </svg>
-                  <span>Add More Items</span>
-                </button>
-              </Link>
             </div>
-
-            <div>
-              <div className="bg-[#FFFCF8] rounded-2xl shadow-xl p-6 lg:p-7 sticky top-32">
-                <h2 className="text-xl font-bold text-[#241F1B] mb-6">
-                  Order Summary
-                </h2>
-
-                <div className="space-y-4 mb-6">
-                  <div className="flex items-center justify-between text-[black]">
-                    <span>Subtotal</span>
-                    <span className="font-semibold">
-                      S$ {cart.subtotal.toFixed(2)}
-                    </span>
-                  </div>
-
-                  {menuType === "regular" &&
-                    fulfillmentType === "delivery" &&
-                    selectedDeliveryQuote && (
-                      <div className="flex items-center justify-between text-[black]">
-                        <div className="flex flex-col">
-                          <span>Delivery Fee</span>
-                          <span className="text-xs text-[#9A9086]">
-                            via {selectedDeliveryQuote.providerName}
-                            {" • "}
-                            {selectedDeliveryQuote.estimatedTime}
-                          </span>
-                        </div>
-                        <span className="font-semibold">
-                          {selectedDeliveryQuote.fee === 0 ? (
-                            <span className="text-[#287A52]">FREE</span>
-                          ) : (
-                            `S$ ${selectedDeliveryQuote.fee.toFixed(2)}`
-                          )}
-                        </span>
-                      </div>
-                    )}
-
-                  {cart.platformFee !== undefined && cart.platformFee > 0 && (
-                    <div className="flex items-center justify-between text-[black]">
-                      <span>Platform Fee</span>
-                      <span className="font-semibold">
-                        S$ {cart.platformFee.toFixed(2)}
-                      </span>
-                    </div>
-                  )}
-
-                  {serviceChargeValue > 0 && serviceCharge > 0 && (
-                    <div className="flex items-center justify-between text-[black]">
-                      <span>
-                        Service Charge{" "}
-                        {serviceChargeType === "percentage"
-                          ? `(${serviceChargeValue}%)`
-                          : "(Flat)"}
-                      </span>
-
-                      <span className="font-semibold">
-                        S$ {serviceCharge.toFixed(2)}
-                      </span>
-                    </div>
-                  )}
-
-                  <div className="flex items-center justify-between text-[black]">
-                    <div className="flex flex-col">
-                      <span>GST {gstEnabled ? `(${gstRate}%)` : ""}</span>
-                    </div>
-                    <span className="font-semibold">
-                      S$ {calculatedGST.toFixed(2)}
-                    </span>
-                  </div>
+          ) : (
+            /*  STEP 2  */
+            <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-[minmax(0,1.65fr)_minmax(360px,0.75fr)] lg:gap-8 xl:gap-10">
+              <div className="space-y-3 sm:space-y-4 lg:space-y-5">
+                {/* Fulfillment */}
+                <div className="flex items-center justify-center">
+                  <h1 className="text-2xl md:text-xl lg:text-3xl ">
+                    Delivery Option And Timing
+                  </h1>
                 </div>
-
-                <div className="border-t-2 border-[#E8E1D8] pt-4 mb-6">
-                  <div className="flex items-center justify-between">
-                    <span className="text-lg font-bold text-[#241F1B]">
-                      Total
-                    </span>
-
-                    <div className="text-right">
-                      <div className="text-2xl font-bold text-[#B33A2E]">
-                        S$ {orderTotal.toFixed(2)}
-                      </div>
-
-                      <div className="text-xs text-[#9A9086]">
-                        (incl. fees and tax)
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {menuType === "regular" &&
-                  fulfillmentType === "delivery" &&
-                  cart.subtotal < minOrderForDelivery && (
-                    <div className="mb-4 p-3 bg-[#FFF7E8] border border-[#F1D49A] rounded-lg">
-                      <div className="flex items-start gap-2">
-                        <svg
-                          className="w-5 h-5 text-[#B7791F] flex-shrink-0 mt-0.5"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                        <div className="text-sm text-[#805B20]">
-                          <div className="font-semibold mb-1">
-                            Minimum order not met
-                          </div>
-                          <div>
-                            Add S${" "}
-                            {(minOrderForDelivery - cart.subtotal).toFixed(2)}{" "}
-                            more to meet the minimum delivery order of S${" "}
-                            {minOrderForDelivery.toFixed(2)}
-                          </div>
+                <section className="rounded-2xl border border-[#E8E1D8] bg-[white] p-5 shadow-md md:p-6">
+                  <div className="rounded-xl border border-[#E8E1D8] bg-white p-4">
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="min-w-0">
+                        <div className="text-xs font-medium uppercase tracking-wide text-black">
+                          Delivery Method
                         </div>
-                      </div>
-                    </div>
-                  )}
 
-                {menuType === "catering" && (
-                  <div className="mb-4 p-3 bg-[#EEF6F5] border border-[#C8E1DE] rounded-lg">
-                    <div className="flex items-start gap-2">
-                      <svg
-                        className="w-5 h-5 text-[#2C716B] flex-shrink-0 mt-0.5"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
+                        <div className="mt-1 font-semibold text-[#241F1B]">
+                          {fulfillmentType === "delivery"
+                            ? "Home Delivery"
+                            : "Self Collect"}
+                        </div>
+
+                        {fulfillmentType === "delivery" && (
+                          <div className="mt-0.5 truncate text-sm text-black">
+                            {deliveryAddress
+                              ? formatAddressSummary(deliveryAddress)
+                              : "No delivery address selected yet"}
+                          </div>
+                        )}
+
+                        {fulfillmentType === "pickup" && (
+                          <div className="mt-0.5 truncate text-sm text-black">
+                            {pickupLocation
+                              ? `${pickupLocation.name} (${pickupLocation.address})`
+                              : "Self collect at store"}
+                          </div>
+                        )}
+                      </div>
+
+                      <Button
+                        type="button"
+                        variant="outline"
+                        size="sm"
+                        className="shrink-0"
+                        onClick={() => setShowDeliveryDialog(true)}
                       >
-                        <path
-                          fillRule="evenodd"
-                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
+                        Change
+                      </Button>
+                    </div>
+                  </div>
+                </section>
+
+                {/* Timing */}
+                {menuType === "regular" && (
+                  <section className="rounded-2xl border border-[#E8E1D8] bg-[white] p-5 shadow-md md:p-6">
+                    <OrderTimingSelector isRestaurantOpen={isRestaurantOpen} />
+                  </section>
+                )}
+
+                {/* Catering notice */}
+                {/* {menuType === "catering" && (
+                  <div className="rounded-xl border border-[#C8E1DE] bg-[#EEF6F5] p-4">
+                    <div className="flex items-start gap-2">
+                      <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-[#2C716B]" />
                       <div className="text-sm text-[#285C58]">
-                        <div className="font-semibold mb-1">Catering Order</div>
+                        <div className="mb-1 font-semibold">Catering Order</div>
                         <div>
                           Catering orders require at least{" "}
                           {cateringMinLeadHours} hours advance notice.
@@ -658,73 +566,36 @@ function CartContent() {
                       </div>
                     </div>
                   </div>
-                )}
-
-                {/* {cart.subtotal > 0 && pointsPerDollar > 0 && (
-                  <div className="mb-4 p-3 bg-[#EEF7F1] border border-[#CBE2D3] rounded-lg">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <svg
-                          className="w-5 h-5 text-[#287A52]"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                        </svg>
-                        <span className="text-sm font-semibold text-[#245D43]">
-                          Earn Points
-                        </span>
-                      </div>
-                      <span className="text-sm font-bold text-[#245D43]">
-                        +{Math.floor(cart.subtotal * pointsPerDollar)} points
-                      </span>
-                    </div>
-                  </div>
                 )} */}
 
-                <Button
-                  className="w-full"
-                  size="lg"
-                  disabled={checkoutDisabled}
-                  onClick={checkoutDisabled ? undefined : handleCheckout}
-                >
-                  {!orderStatusReady
-                    ? "Checking Order Status..."
-                    : !isAdvanceOrder && !acceptingOrders
-                      ? "Restaurant Closed"
-                      : !isAdvanceOrder && !insideOrderWindow
-                        ? "Outside Order Hours"
-                        : isAdvanceOrder && !hasAdvanceTime
-                          ? "Select Date & Time"
-                          : isDelivery && cart.subtotal < minOrderForDelivery
-                            ? "Minimum Order Not Met"
-                            : isDelivery && quotesLoading
-                              ? "Loading Delivery Options..."
-                              : "Proceed to Checkout"}
-                </Button>
+                {/* Delivery provider */}
+                {homeDeliveryAvailable && fulfillmentType === "delivery" && (
+                  <section className="rounded-2xl border border-[#E8E1D8] bg-[white] p-5 shadow-md md:p-6">
+                    <div className="mb-4">
+                      <h2 className="text-lg font-bold text-[#241F1B]">
+                        Delivery options
+                      </h2>
+                      <p className="mt-1 text-sm text-[#9A9086]">
+                        Choose the available delivery provider for your address.
+                      </p>
+                    </div>
 
-                {menuType === "regular" && !isRestaurantOpen && !isAdvanceOrder && (
-                  <div className="mt-4 rounded-xl border border-[#E8E1D8] bg-[#F8F5F0] px-4 py-3">
-                    <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 items-center justify-center rounded-full ">
-                        <svg
-                          className="h-5 w-5 text-[#B33A2E]"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                          />
-                        </svg>
-                      </div>
+                    <DeliveryProviderSelector
+                      deliveryAddress={deliveryAddress}
+                    />
+                  </section>
+                )}
 
-                      <div>
-                        <div className="mt-1 text-xs text-[black]">
-                          <span className="font-medium text-[#241F1B] block">
+                {/* Closed / order hours */}
+                {menuType === "regular" &&
+                  !isRestaurantOpen &&
+                  !isAdvanceOrder && (
+                    <div className="rounded-xl border border-[#E8E1D8] bg-[white] px-4 py-3">
+                      <div className="flex items-start gap-3">
+                        <Clock3 className="mt-0.5 h-5 w-5 shrink-0 text-[#B33A2E]" />
+
+                        <div className="text-xs text-black">
+                          <span className="block font-medium text-[#241F1B]">
                             Order Hours
                           </span>
 
@@ -734,7 +605,6 @@ function CartContent() {
                                 <div className="font-medium text-[#241F1B]">
                                   {window.name}
                                 </div>
-
                                 <div>
                                   {formatTime(window.start)} -{" "}
                                   {formatTime(window.end)}
@@ -747,15 +617,14 @@ function CartContent() {
                         </div>
                       </div>
                     </div>
-                  </div>
-                )}
+                  )}
 
                 {menuType === "regular" &&
                   fulfillmentType === "delivery" &&
                   quotesLoading && (
-                    <p className="text-xs text-[#B33A2E] mt-3 text-center flex items-center justify-center gap-1">
+                    <p className="flex items-center justify-center gap-1 text-center text-xs text-[#B33A2E]">
                       <svg
-                        className="w-3.5 h-3.5 animate-spin"
+                        className="h-3.5 w-3.5 animate-spin"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -770,15 +639,198 @@ function CartContent() {
                       Finding best delivery options...
                     </p>
                   )}
+              </div>
 
-                <Link href="/menu">
-                  <button className="w-full mt-3 py-3 text-[#B33A2E] hover:bg-[#B33A2E]/5 rounded-lg transition-all font-semibold text-sm">
-                    Continue Ordering
-                  </button>
-                </Link>
+              {/* Summary */}
+              <div>
+                <div
+                  className="
+      rounded-xl
+      bg-[white]
+      p-3
+      shadow-md
+      sm:rounded-2xl
+      sm:p-5
+      lg:sticky
+      lg:top-32
+      lg:p-7
+      lg:shadow-xl
+    "
+                >
+                  {/* Header */}
+                  <div className="mb-3 flex items-center justify-between sm:mb-5">
+                    <h2 className="text-base font-bold text-[#241F1B] sm:text-lg lg:text-xl">
+                      Order Summary
+                    </h2>
+
+                    <button
+                      type="button"
+                      onClick={handleBackToCart}
+                      className="text-[11px] font-semibold text-[#B33A2E] hover:underline sm:text-xs"
+                    >
+                      Edit Cart
+                    </button>
+                  </div>
+
+                  {/* Price Breakdown */}
+                  <div className="mb-3 space-y-2 sm:mb-5 sm:space-y-3 lg:space-y-4">
+                    {/* Subtotal */}
+                    <div className="flex items-center justify-between text-sm text-black sm:text-base">
+                      <span>Subtotal</span>
+
+                      <span className="font-semibold">
+                        S$ {cart.subtotal.toFixed(2)}
+                      </span>
+                    </div>
+
+                    {/* Delivery Fee */}
+                    {menuType === "regular" &&
+                      fulfillmentType === "delivery" &&
+                      selectedDeliveryQuote && (
+                        <div className="flex items-center justify-between text-sm text-black sm:text-base">
+                          <div className="flex min-w-0 flex-col">
+                            <span>Delivery Fee</span>
+
+                            <span className="text-[10px] leading-tight text-[#9A9086] sm:text-xs">
+                              via {selectedDeliveryQuote.providerName} •{" "}
+                              {selectedDeliveryQuote.estimatedTime}
+                            </span>
+                          </div>
+
+                          <span className="shrink-0 font-semibold">
+                            {selectedDeliveryQuote.fee === 0 ? (
+                              <span className="text-[#287A52]">FREE</span>
+                            ) : (
+                              `S$ ${selectedDeliveryQuote.fee.toFixed(2)}`
+                            )}
+                          </span>
+                        </div>
+                      )}
+
+                    {/* Platform Fee */}
+                    {cart.platformFee !== undefined && cart.platformFee > 0 && (
+                      <div className="flex items-center justify-between text-sm text-black sm:text-base">
+                        <span>Platform Fee</span>
+
+                        <span className="font-semibold">
+                          S$ {cart.platformFee.toFixed(2)}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Service Charge */}
+                    {serviceChargeValue > 0 && serviceCharge > 0 && (
+                      <div className="flex items-center justify-between text-sm text-black sm:text-base">
+                        <span>
+                          Service Charge{" "}
+                          {serviceChargeType === "percentage"
+                            ? `(${serviceChargeValue}%)`
+                            : "(Flat)"}
+                        </span>
+
+                        <span className="font-semibold">
+                          S$ {serviceCharge.toFixed(2)}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* GST */}
+                    <div className="flex items-center justify-between text-sm text-black sm:text-base">
+                      <span>GST {gstEnabled ? `(${gstRate}%)` : ""}</span>
+
+                      <span className="font-semibold">
+                        S$ {calculatedGST.toFixed(2)}
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Total */}
+                  <div className="mb-3 border-t border-[#E8E1D8] pt-3 sm:mb-5 sm:border-t-2 sm:pt-4">
+                    <div className="flex items-center justify-between">
+                      <span className="text-base font-bold text-[#241F1B] sm:text-lg">
+                        Total
+                      </span>
+
+                      <div className="text-right">
+                        <div className="text-xl font-bold text-[#B33A2E] sm:text-2xl">
+                          S$ {orderTotal.toFixed(2)}
+                        </div>
+
+                        <div className="text-[10px] text-[#9A9086] sm:text-xs">
+                          incl. fees and tax
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Minimum Delivery Order Warning */}
+                  {menuType === "regular" &&
+                    fulfillmentType === "delivery" &&
+                    cart.subtotal < minOrderForDelivery && (
+                      <div className="mb-3 rounded-lg border border-[#F1D49A] bg-[#FFF7E8] p-2 sm:mb-4 sm:p-3">
+                        <div className="flex items-start gap-2">
+                          <svg
+                            className="mt-0.5 h-4 w-4 shrink-0 text-[#B7791F] sm:h-5 sm:w-5"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+
+                          <div className="text-[11px] leading-tight text-[#805B20] sm:text-sm sm:leading-normal">
+                            <div className="mb-0.5 font-semibold sm:mb-1">
+                              Minimum order not met
+                            </div>
+
+                            <div>
+                              Add S{" "}
+                              {(minOrderForDelivery - cart.subtotal).toFixed(2)}{" "}
+                              more to meet the minimum delivery order of S{" "}
+                              {minOrderForDelivery.toFixed(2)}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                  {/* Checkout Button */}
+                  <Button
+                    className="
+        h-10
+        w-full
+        rounded-lg
+        text-sm
+        sm:h-11
+        sm:rounded-xl
+        sm:text-base
+       
+      "
+                    size="lg"
+                    disabled={checkoutDisabled}
+                    onClick={checkoutDisabled ? undefined : handleCheckout}
+                  >
+                    {!orderStatusReady
+                      ? "Checking Order Status..."
+                      : !isAdvanceOrder && !acceptingOrders
+                        ? "Restaurant Closed"
+                        : !isAdvanceOrder && !insideOrderWindow
+                          ? "Outside Order Hours"
+                          : isAdvanceOrder && !hasAdvanceTime
+                            ? "Select Date & Time"
+                            : isDelivery && cart.subtotal < minOrderForDelivery
+                              ? "Minimum Order Not Met"
+                              : isDelivery && quotesLoading
+                                ? "Loading Delivery Options..."
+                                : "Continue to Checkout"}
+                  </Button>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 
