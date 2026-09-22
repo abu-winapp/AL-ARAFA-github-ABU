@@ -107,7 +107,7 @@ export default function OrdersPage() {
   return (
     <div className="min-h-screen w-full overflow-x-hidden bg-background-gray pt-12 pb-12 md:pt-0">
       <div className="mx-auto w-full max-w-full px-4 sm:px-6">
-        <div className="max-w-4xl mx-auto">
+        <div className="mx-auto w-full max-w-4xl min-w-0">
           {/* Header */}
           <h1 className="text-3xl md:text-4xl font-bold text-text-primary mb-8">
             My Orders
@@ -168,7 +168,7 @@ export default function OrdersPage() {
             </div>
           ) : (
             <>
-              <div className="space-y-5 sm:space-y-6">
+              <div className="flex flex-col gap-6 sm:gap-8">
                 {filteredOrders.map((order) => {
                   // Determine order type badge text
                   const getOrderTypeBadge = () => {
@@ -183,7 +183,11 @@ export default function OrdersPage() {
                   const orderTypeBadge = getOrderTypeBadge();
 
                   return (
-                    <Link key={order.id} href={`/orders/${order.id}`}>
+                    <Link
+                      key={order.id}
+                      href={`/orders/${order.id}`}
+                      className="block"
+                    >
                       <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all p-6 border border-border-light hover:border-primary/50">
                         <div className="mb-4 flex min-w-0 flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                           <div className="min-w-0 flex-1">
@@ -225,7 +229,7 @@ export default function OrdersPage() {
                               )}
                             </p>
                             {order.locationName && (
-                              <p className="text-sm text-text-secondary mt-1 flex items-center gap-1">
+                              <p className="mt-1 flex min-w-0 items-start gap-1 text-sm text-text-secondary">
                                 <svg
                                   className="w-4 h-4"
                                   fill="none"
@@ -245,7 +249,7 @@ export default function OrdersPage() {
                                     d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                                   />
                                 </svg>
-                                {order.locationName}
+                                <span className="min-w-0 break-words">{order.locationName}</span>
                               </p>
                             )}
                           </div>
@@ -255,7 +259,7 @@ export default function OrdersPage() {
                         </div>
 
                         {/* Items Summary */}
-                        <div className="flex items-center gap-2 text-sm text-text-secondary mb-4">
+                        <div className="mb-4 flex min-w-0 flex-wrap items-center gap-x-2 gap-y-1 text-sm text-text-secondary">
                           <svg
                             className="w-4 h-4"
                             fill="none"
@@ -282,7 +286,7 @@ export default function OrdersPage() {
                         {/* Total and Points */}
                         <div className="flex items-center justify-between pt-4 border-t border-border-light">
                           <div>
-                            <span className="text-text-secondary font-medium">
+                            <span className="whitespace-nowrap px-1 text-sm font-medium text-text-secondary sm:text-base">
                               Total
                             </span>
                             {/* Only show points earned for completed orders (delivered/picked_up/completed) */}
@@ -315,7 +319,7 @@ export default function OrdersPage() {
 
               {/* Pagination Controls */}
               {totalPages > 1 && (
-                <div className="flex justify-center items-center gap-4 mt-8">
+                <div className="mt-8 flex flex-wrap items-center justify-center gap-2 sm:gap-4">
                   <Button
                     variant="outline"
                     disabled={!hasPrevious || isLoading}
@@ -336,7 +340,7 @@ export default function OrdersPage() {
                     </svg>
                     Previous
                   </Button>
-                  <span className="text-text-secondary font-medium">
+                  <span className="whitespace-nowrap px-1 text-sm font-medium text-text-secondary sm:text-base">
                     Page {currentPage + 1} of {totalPages}
                   </span>
                   <Button
