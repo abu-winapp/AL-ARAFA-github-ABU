@@ -493,14 +493,19 @@ function CartContent() {
             </div>
           ) : (
             /*  STEP 2  */
-            <div className="grid grid-cols-1 gap-4 sm:gap-5 lg:grid-cols-[minmax(0,1.65fr)_minmax(360px,0.75fr)] lg:gap-8 xl:gap-10">
-              <div className="space-y-3 sm:space-y-4 lg:space-y-5">
-                {/* Fulfillment */}
-                <div className="flex items-center justify-center">
-                  <h1 className="text-2xl md:text-xl lg:text-3xl ">
-                    Delivery Option And Timing
-                  </h1>
-                </div>
+            <div className="w-full">
+              {/* Page title */}
+              <div className="mb-6 flex items-center justify-center lg:mb-7">
+                <h1 className="text-2xl font-semibold text-[#241F1B] md:text-3xl">
+                  Delivery Option And Timing
+                </h1>
+              </div>
+
+              {/* Main checkout layout */}
+              <div className="grid grid-cols-1 gap-5 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start lg:gap-8 xl:grid-cols-[minmax(0,1fr)_380px]">
+                {/* Left content */}
+                <div className="space-y-4 lg:space-y-5">
+                  {/* Fulfillment */}
                 <section className="rounded-2xl border border-[#E8E1D8] bg-[white] p-5 shadow-md md:p-6">
                   <div className="rounded-xl border border-[#E8E1D8] bg-white p-4">
                     <div className="flex items-center justify-between gap-4">
@@ -641,22 +646,9 @@ function CartContent() {
                   )}
               </div>
 
-              {/* Summary */}
-              <div>
-                <div
-                  className="
-      rounded-xl
-      bg-[white]
-      p-3
-      shadow-md
-      sm:rounded-2xl
-      sm:p-5
-      lg:sticky
-      lg:top-32
-      lg:p-7
-      lg:shadow-xl
-    "
-                >
+                  {/* Summary */}
+                  <aside className="lg:sticky lg:top-28">
+                    <div className="rounded-2xl border border-[#E8E1D8] bg-white p-5 shadow-[0_12px_35px_rgba(36,31,27,0.10)] lg:p-6">
                   {/* Header */}
                   <div className="mb-3 flex items-center justify-between sm:mb-5">
                     <h2 className="text-base font-bold text-[#241F1B] sm:text-lg lg:text-xl">
@@ -827,9 +819,10 @@ function CartContent() {
                                 ? "Loading Delivery Options..."
                                 : "Continue to Checkout"}
                   </Button>
+                    </div>
+                  </aside>
                 </div>
               </div>
-            </div>
           )}
         </div>
       </div>

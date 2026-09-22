@@ -8,15 +8,21 @@
 import { Suspense, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 
+function sanitizeRedirect(url?: string | null): string {
+  if (!url) return '/menu';
+  if (url.startsWith('/') && !url.startsWith('//') && !url.startsWith('/\\')) {
+    return url;
+  }
+  return '/menu';
+}
+
 function LoginRedirect() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const redirect = searchParams.get('redirect') || '/menu';
+  const redirect = sanitizeRedirect(searchParams.get('redirect'));
 
   useEffect(() => {
-    // Redirect to home page with login sheet state
-    // The header will be visible and user can click Sign In to open the sheet
-    router.push(`/?login=true&redirect=${encodeURIComponent(redirect)}`);
+    router.replace(`/?login=true&redirect=${encodeURIComponent(redirect)}`);
   }, [router, redirect]);
 
   return (

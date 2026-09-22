@@ -21,29 +21,25 @@ export function ProtectedRoute({
   const pathname = usePathname();
 
   const { isInitialized, isAuthenticated, user } = useAuthStore();
+  const isCustomer = isCustomerAuthenticated(user, isAuthenticated);
 
   useEffect(() => {
     if (!isInitialized) return;
 
-    // prevent redirect loop
     if (pathname === "/login") return;
 
-    // not logged in
     if (!isAuthenticated) {
       router.replace(`/?login=true&redirect=${encodeURIComponent(pathname)}`);
       return;
     }
-    // customer protection
-    if (customerOnly && !isCustomerAuthenticated(user, isAuthenticated)) {
-      router.replace("/");
 
+    if (customerOnly && !isCustomer) {
+      router.replace("/");
       return;
     }
-  }, [isInitialized, isAuthenticated, user, customerOnly, pathname, router]);
+  }, [isInitialized, isAuthenticated, isCustomer, customerOnly, pathname, router]);
 
-  // prevent protected page flash
-
-  if (!isInitialized) {
+  if (!isInitialized || !isAuthenticated || (customerOnly && !isCustomer)) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div

@@ -42,7 +42,7 @@ export default function OrdersPage() {
     }
 
     if (!isAuthenticated) {
-      router.push('/login?redirect=/orders');
+      router.replace('/login?redirect=/orders');
       return;
     }
 

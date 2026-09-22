@@ -11,6 +11,7 @@ type OnboardingStep = "fulfillment" | "address" | "success";
 
 export default function OnboardingPage() {
   const router = useRouter();
+  const isInitialized = useAuthStore((state) => state.isInitialized);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const user = useAuthStore((state) => state.user);
   const [currentStep, setCurrentStep] = useState<OnboardingStep>("fulfillment");
@@ -19,14 +20,14 @@ export default function OnboardingPage() {
   >(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Auth guard
   useEffect(() => {
+    if (!isInitialized) return;
     if (!isAuthenticated) {
-      router.push("/login?redirect=/onboarding");
+      router.replace("/login?redirect=/onboarding");
     } else {
       setIsLoading(false);
     }
-  }, [isAuthenticated, router]);
+  }, [isInitialized, isAuthenticated, router]);
 
   const handleSelectDelivery = () => {
     setSelectedFulfillment("delivery");

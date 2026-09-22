@@ -32,7 +32,9 @@ function PaymentSuccessContent() {
     }
 
     if (!isAuthenticated) {
-      router.push('/login');
+      const orderId = searchParams.get('orderId');
+      const redirectUrl = orderId ? `/payment/success?orderId=${encodeURIComponent(orderId)}` : '/orders';
+      router.replace(`/login?redirect=${encodeURIComponent(redirectUrl)}`);
       return;
     }
 

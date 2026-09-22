@@ -47,8 +47,7 @@ export const SiteHeader: FC = () => {
 
   const cartCount = getItemCount();
 
-  const isCustomerAuthenticated =
-    isCustomerAuth(user, isAuthenticated) || Boolean(user);
+  const isCustomerAuthenticated = isCustomerAuth(user, isAuthenticated);
 
   const isHomePage = pathname === "/";
 
@@ -408,7 +407,7 @@ export const SiteHeader: FC = () => {
           text-white
           transition-all
           duration-200
-          hover:bg-[#7a1c17]
+          hover:bg-[white]
           hover:shadow-[0_6px_18px_rgba(149,34,28,0.18)]
           lg:inline-flex
         "

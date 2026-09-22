@@ -47,7 +47,7 @@ export default function LoyaltyPage() {
     }
 
     if (!isAuthenticated) {
-      router.push('/login?redirect=/loyalty');
+      router.replace('/login?redirect=/loyalty');
       return;
     }
 

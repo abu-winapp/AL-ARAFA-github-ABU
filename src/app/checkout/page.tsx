@@ -268,7 +268,7 @@ export default function CheckoutPage() {
     hasCheckedCheckout.current = true;
 
     if (!isAuthenticated) {
-      router.push("/login?redirect=/checkout");
+      router.replace("/login?redirect=/checkout");
       return;
     }
 

@@ -55,7 +55,7 @@ function ProfilePageContent() {
     }
 
     if (!isAuthenticated) {
-      router.push("/login?redirect=/profile");
+      router.replace("/login?redirect=/profile");
       return;
     }
 

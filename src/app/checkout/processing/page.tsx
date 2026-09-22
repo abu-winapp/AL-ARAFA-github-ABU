@@ -101,7 +101,7 @@ function ProcessingContent() {
     }
 
     if (!isAuthenticated) {
-      router.push("/login?redirect=/checkout");
+      router.replace("/login?redirect=/checkout");
       return;
     }
 

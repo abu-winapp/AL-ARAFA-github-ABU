@@ -36,7 +36,7 @@ export default function AdminPromosPage() {
   const [showPromoForm, setShowPromoForm] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
-  const { isAuthenticated, user } = useAuthStore();
+  const { isAuthenticated, user, isInitialized } = useAuthStore();
 
   const promoForm = useForm<PromoFormData>({
     defaultValues: {
@@ -46,13 +46,15 @@ export default function AdminPromosPage() {
   });
 
   useEffect(() => {
+    if (!isInitialized) return;
+
     if (!isAuthenticated || user?.userType !== 'admin') {
-      router.push('/admin/login');
+      router.replace('/admin/login');
       return;
     }
 
     loadPromos();
-  }, [isAuthenticated, user, router]);
+  }, [isAuthenticated, user, isInitialized, router]);
 
   const loadPromos = async () => {
     try {

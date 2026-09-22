@@ -90,7 +90,7 @@ export default function OrderTrackingPage() {
     }
 
     if (!isAuthenticated) {
-      router.push(`/login?redirect=/orders/${orderId}`);
+      router.replace(`/login?redirect=/orders/${orderId}`);
       return;
     }
 
