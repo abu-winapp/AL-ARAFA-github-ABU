@@ -898,7 +898,7 @@ export default function CheckoutPage() {
               <div className="mb-4 md:hidden">
                 <button
                   type="button"
-                  onClick={() => router.push("/menu")}
+                  onClick={() => router.push("/cart")}
                   className="flex items-center gap-1.5 text-sm font-semibold text-[#241F1B] transition-colors hover:text-[#B33A2E]"
                 >
                   <ChevronLeft className="h-5 w-5" />

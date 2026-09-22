@@ -262,7 +262,7 @@ export function OrderTimingSelector({
 
             <div className="mt-1 text-[10px] leading-tight text-[#9A9086] sm:text-xs">
               {isRestaurantOpen
-                ? "within two hours"
+                ? "within 1.20 Hrs"
                 : "Outside opening hours"}
             </div>
           </div>
