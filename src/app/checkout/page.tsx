@@ -44,6 +44,8 @@ import type { PointsBalance } from "@/types";
 import CustomerInfoDialog from "@/components/ui/CustomerInfoDialog";
 import { toast } from "@/lib/hooks/use-toast";
 
+import { ChevronLeft } from "lucide-react";
+
 export function restaurantClosedToast() {
   toast({
     title: "Restaurant Closed",
@@ -892,28 +894,17 @@ export default function CheckoutPage() {
         <div className="max-w-5xl mx-auto">
           {/* Header */}
           <div className="mb-8">
-            <Link
-              href="/cart"
-              className="inline-flex items-center gap-2 text-text-secondary hover:text-primary mb-4 transition-colors"
-            >
-              <svg
-                className="w-5 h-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M15 19l-7-7 7-7"
-                />
-              </svg>
-              <div>
-
+              {/* Mobile Back Button */}
+              <div className="mb-4 md:hidden">
+                <button
+                  type="button"
+                  onClick={() => router.push("/menu")}
+                  className="flex items-center gap-1.5 text-sm font-semibold text-[#241F1B] transition-colors hover:text-[#B33A2E]"
+                >
+                  <ChevronLeft className="h-5 w-5" />
+                  Back
+                </button>
               </div>
-              <span className="font-medium">Back to Cart</span> 
-            </Link>
 
             <div className="flex items-center gap-3">
              
