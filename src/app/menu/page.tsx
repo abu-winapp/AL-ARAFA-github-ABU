@@ -63,6 +63,9 @@ function MenuPageContent() {
 
   const hasInitializedLocation = useRef(false);
 
+  const [activeCategory, setActiveCategory] = useState<string>("all");
+  const categoryPillsRef = useRef<Record<string, HTMLButtonElement | null>>({});
+
   const categoryScrollRef = useRef<HTMLDivElement>(null);
 
   const scrollCategories = (
@@ -323,7 +326,93 @@ function MenuPageContent() {
     >
   );
 
-  // Initial loading
+  const scrollToCategory = (categoryId: string) => {
+    setActiveCategory(categoryId);
+    const element = document.getElementById(`category-${categoryId}`);
+
+    if (element) {
+      const isMobile = window.innerWidth < 768;
+      const yOffset = isMobile ? -60 : -140;
+
+      const y =
+        element.getBoundingClientRect().top +
+        window.pageYOffset +
+        yOffset;
+
+      window.scrollTo({
+        top: Math.max(0, y),
+        behavior: "smooth",
+      });
+
+      const pill = categoryPillsRef.current[categoryId];
+      if (pill) {
+        pill.scrollIntoView({
+          behavior: "smooth",
+          inline: "center",
+          block: "nearest",
+        });
+      }
+    }
+  };
+
+  useEffect(() => {
+    const categoryParam = searchParams.get("category");
+    if (
+      !categoryParam ||
+      isInitialLoading ||
+      isMenuLoading ||
+      categories.length === 0
+    ) {
+      return;
+    }
+
+    const targetCategory = categories.find(
+      (c) =>
+        c.id === categoryParam ||
+        c.name.toLowerCase() === categoryParam.toLowerCase() ||
+        c.id.toLowerCase() === categoryParam.toLowerCase()
+    );
+
+    if (targetCategory) {
+      setActiveCategory(targetCategory.id);
+
+      const timer = setTimeout(() => {
+        scrollToCategory(targetCategory.id);
+      }, 150);
+
+      return () => clearTimeout(timer);
+    }
+  }, [searchParams, isInitialLoading, isMenuLoading, categories]);
+
+  useEffect(() => {
+    if (isMenuLoading || isInitialLoading || categories.length === 0) return;
+
+    const handleScroll = () => {
+      const isMobile = window.innerWidth < 768;
+      const scrollPosition = window.scrollY + (isMobile ? 120 : 200);
+
+      if (window.scrollY < 200) {
+        setActiveCategory("all");
+        return;
+      }
+
+      for (let i = categories.length - 1; i >= 0; i--) {
+        const cat = categories[i];
+        const el = document.getElementById(`category-${cat.id}`);
+        if (el) {
+          const top = el.getBoundingClientRect().top + window.pageYOffset;
+          if (scrollPosition >= top) {
+            setActiveCategory(cat.id);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isMenuLoading, isInitialLoading, categories]);
+
   if (isInitialLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#faf7f2]">
@@ -338,7 +427,6 @@ function MenuPageContent() {
     );
   }
 
-  // Error
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#faf7f2]">
@@ -369,30 +457,6 @@ function MenuPageContent() {
       </div>
     );
   }
-
-  // Scroll to category
-  const scrollToCategory = (
-    categoryId: string
-  ) => {
-    const element =
-      document.getElementById(
-        `category-${categoryId}`
-      );
-
-    if (element) {
-      const yOffset = -80;
-
-      const y =
-        element.getBoundingClientRect().top +
-        window.pageYOffset +
-        yOffset;
-
-      window.scrollTo({
-        top: y,
-        behavior: "smooth",
-      });
-    }
-  };
 
 return (
   <>
@@ -568,12 +632,17 @@ return (
             <button
               type="button"
               onClick={() => {
+                setActiveCategory("all");
                 window.scrollTo({
                   top: 0,
                   behavior: "smooth",
                 });
               }}
-              className="shrink-0 rounded-full bg-[#92251C] px-4 py-2.5 text-sm font-semibold text-white transition-all hover:bg-[#7f1f17]"
+              className={`shrink-0 rounded-full px-4 py-2.5 text-sm font-semibold transition-all ${
+                activeCategory === "all"
+                  ? "bg-[#92251C] text-white shadow-sm"
+                  : "bg-[#f5f1eb] text-[#211a16] hover:bg-[#92251C] hover:text-white"
+              }`}
             >
               All
             </button>
@@ -583,16 +652,29 @@ return (
 
               if (!group) return null;
 
+              const isActive = activeCategory === category.id;
+
               return (
                 <button
                   key={category.id}
+                  ref={(el) => {
+                    categoryPillsRef.current[category.id] = el;
+                  }}
                   type="button"
                   onClick={() => scrollToCategory(category.id)}
-                  className="flex shrink-0 items-center whitespace-nowrap rounded-full bg-[#f5f1eb] px-4 py-2.5 text-sm font-semibold text-[#211a16] transition-all hover:bg-[#92251C] hover:text-white"
+                  className={`flex shrink-0 items-center whitespace-nowrap rounded-full px-4 py-2.5 text-sm font-semibold transition-all ${
+                    isActive
+                      ? "bg-[#92251C] text-white shadow-sm"
+                      : "bg-[#f5f1eb] text-[#211a16] hover:bg-[#92251C] hover:text-white"
+                  }`}
                 >
                   {category.name}
 
-                  <span className="ml-1.5 text-xs opacity-60">
+                  <span
+                    className={`ml-1.5 text-xs ${
+                      isActive ? "text-white/80" : "opacity-60"
+                    }`}
+                  >
                     {group.items.length}
                   </span>
                 </button>
@@ -655,7 +737,7 @@ return (
                 <section
                   key={category.id}
                   id={`category-${category.id}`}
-                  className="scroll-mt-20"
+                  className="scroll-mt-20 md:scroll-mt-36 lg:scroll-mt-40"
                 >
                   {/* Category heading */}
                   <div className="mb-6 sm:mb-7">

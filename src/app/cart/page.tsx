@@ -299,6 +299,9 @@ function CartContent() {
         null;
 
       setDeliveryAddress(selected);
+      if (selected) {
+        useCartStore.getState().setSelectedAddressId(String(selected.id));
+      }
     } catch (error) {
       console.error("Failed to load addresses:", error);
     }
@@ -335,8 +338,17 @@ function CartContent() {
       addresses.find((addr) => addr.isDefault) ||
       addresses[0];
 
-    setDeliveryAddress(selected);
+    setDeliveryAddress(selected || null);
+    if (selected && String(selected.id) !== String(selectedAddressId)) {
+      useCartStore.getState().setSelectedAddressId(String(selected.id));
+    }
   }, [addresses, selectedAddressId]);
+
+  useEffect(() => {
+    if (fulfillmentType === "delivery" && addresses.length === 0) {
+      loadAddresses();
+    }
+  }, [fulfillmentType, addresses.length, loadAddresses]);
 
   useEffect(() => {
     if (fulfillmentType === "pickup") {

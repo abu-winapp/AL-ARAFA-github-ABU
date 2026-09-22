@@ -155,7 +155,7 @@ export const Footer: FC = () => {
 
                 {/* Instagram */}
                 <a
-                  href="https://instagram.com/alarafacuisine"
+                  href="https://www.instagram.com/al_arafacuisine?stkn=MXFybjd1YWdoZWd6cA=="
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Instagram"
@@ -168,7 +168,7 @@ export const Footer: FC = () => {
 
                 {/* Facebook */}
                 <a
-                  href="https://www.facebook.com/share/18xAjy5E9s/"
+                  href="https://www.facebook.com/share/1FBowLXJqm/"
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Facebook"

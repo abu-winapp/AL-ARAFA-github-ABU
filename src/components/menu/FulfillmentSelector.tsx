@@ -195,7 +195,7 @@ export const FulfillmentSelector: FC<FulfillmentSelectorProps> = ({
           // Ensure address id is a string to satisfy state typings
           const addressToSelect =
             selectedAddressId &&
-            addressesData.find((a) => a.id === selectedAddressId)
+            addressesData.find((a) => String(a.id) === String(selectedAddressId))
               ? String(selectedAddressId)
               : String(
                   (addressesData.find((a) => a.isDefault) || addressesData[0])
@@ -234,10 +234,8 @@ export const FulfillmentSelector: FC<FulfillmentSelectorProps> = ({
     };
   }, []);
 
-  // Initialize location from cart data after locations are loaded
   useEffect(() => {
     if (cart && locations.length > 0) {
-      // Set location from cart
       if (cart.locationId) {
         setSelectedLocation(cart.locationId);
       } else if (locations.length > 0) {
@@ -245,6 +243,22 @@ export const FulfillmentSelector: FC<FulfillmentSelectorProps> = ({
       }
     }
   }, [cart, locations]);
+
+  useEffect(() => {
+    if (isDelivery && addresses.length > 0 && !selectedAddress) {
+      const addressToSelect =
+        (selectedAddressId &&
+          addresses.find((a) => String(a.id) === String(selectedAddressId))) ||
+        addresses.find((a) => a.isDefault) ||
+        addresses[0];
+
+      if (addressToSelect) {
+        const idStr = String(addressToSelect.id);
+        setSelectedAddress(idStr);
+        setSelectedAddressId(idStr);
+      }
+    }
+  }, [isDelivery, addresses, selectedAddress, selectedAddressId, setSelectedAddressId]);
 
   // Check if cart has items and location is changing
   const shouldShowLocationChangeAlert = (newLocationId: string): boolean => {
@@ -279,33 +293,31 @@ export const FulfillmentSelector: FC<FulfillmentSelectorProps> = ({
     }
   };
 
-  // Handle fulfillment type change (frontend-only, no backend update)
   const handleFulfillmentChange = async (checked: boolean) => {
     const newType: "delivery" | "pickup" = checked ? "delivery" : "pickup";
 
-    // No-op if the type isn't actually changing
+    if (checked && addresses.length > 0) {
+      const addressToSelect =
+        (selectedAddress &&
+          addresses.find((a) => String(a.id) === String(selectedAddress))) ||
+        (selectedAddressId &&
+          addresses.find((a) => String(a.id) === String(selectedAddressId))) ||
+        addresses.find((a) => a.isDefault) ||
+        addresses[0];
+
+      if (addressToSelect) {
+        setSelectedAddress(String(addressToSelect.id));
+        setSelectedAddressId(String(addressToSelect.id));
+      }
+    }
+
     if (newType === fulfillmentType) return;
 
-    // If switching to delivery but no addresses (and not loading), show dialog
     if (checked && !isLoading && addresses.length === 0) {
       setShowAddressDialog(true);
       return;
     }
 
-    // If the cart already has items, switching fulfillment type may make
-    // them invalid (different location/serviceability) - confirm first.
-    //disabling this featre for now
-
-    // if (cart && cart.items && cart.items.length > 0) {
-    //   setPendingChange({
-    //     type: "fulfillment",
-    //     newIsDelivery: checked,
-    //   });
-    //   setShowLocationChangeAlert(true);
-    //   return;
-    // }
-
-    // No items in cart, safe to switch immediately
     setFulfillmentType(menuType, newType);
   };
 

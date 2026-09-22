@@ -369,22 +369,53 @@ export default function CheckoutPage() {
     void loadLocation(cart?.locationId ?? null);
   }, [fulfillmentType, cart?.locationId]);
 
+  useEffect(() => {
+    if (!addresses.length) return;
+
+    const storedAddress = selectedAddressId
+      ? addresses.find((addr) => String(addr.id) === String(selectedAddressId))
+      : null;
+
+    const chosenAddress =
+      storedAddress ||
+      addresses.find((addr) => addr.isDefault) ||
+      addresses[0] ||
+      null;
+
+    setSelectedAddress(chosenAddress);
+    if (chosenAddress && String(chosenAddress.id) !== String(selectedAddressId)) {
+      useCartStore.getState().setSelectedAddressId(String(chosenAddress.id));
+    }
+  }, [addresses, selectedAddressId]);
+
+  useEffect(() => {
+    if (fulfillmentType === "delivery" && addresses.length === 0 && !isLoadingAddresses) {
+      loadAddresses();
+    }
+  }, [fulfillmentType, addresses.length, isLoadingAddresses]);
+
   const loadAddresses = async () => {
     try {
       setIsLoadingAddresses(true);
       const data = await addressService.getAddresses();
-      setAddresses(data);
+      setAddresses(data || []);
 
-      // Use the address selected in the menu page (from cart store)
-      if (selectedAddressId) {
-        const storedAddress = data.find(
-          (addr) => addr.id === selectedAddressId,
-        );
-        if (storedAddress) {
-          setSelectedAddress(storedAddress);
-        } else {
-          console.warn("Selected address not found in user addresses");
-        }
+      const currentSelectedId = useCartStore.getState().selectedAddressId;
+      const storedAddress = currentSelectedId
+        ? (data || []).find(
+            (addr) => String(addr.id) === String(currentSelectedId),
+          )
+        : null;
+
+      const chosenAddress =
+        storedAddress ||
+        (data || []).find((addr) => addr.isDefault) ||
+        (data || [])[0] ||
+        null;
+
+      setSelectedAddress(chosenAddress);
+      if (chosenAddress) {
+        useCartStore.getState().setSelectedAddressId(String(chosenAddress.id));
       }
     } catch (error) {
       console.error("Failed to load addresses:", error);
@@ -451,6 +482,7 @@ export default function CheckoutPage() {
       const newAddress = await addressService.addAddress(data);
       setAddresses([...addresses, newAddress]);
       setSelectedAddress(newAddress);
+      useCartStore.getState().setSelectedAddressId(String(newAddress.id));
       setShowAddressForm(false);
     } catch (error) {
       console.error("Failed to add address:", error);

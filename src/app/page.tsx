@@ -432,7 +432,6 @@ export default function Home() {
       <Link
         key={category.id}
         href={`/menu?category=${category.id}`}
-        scroll={false}
         className="
           group
           flex
@@ -655,7 +654,6 @@ export default function Home() {
 
                 <Link
                   href={`/menu?category=${category.id}`}
-                  scroll={false}
                   className="
                     group
                     flex shrink-0

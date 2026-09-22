@@ -13,6 +13,7 @@ import type {
 } from "@/types";
 import * as cartService from "@/lib/api/cart.service";
 import * as deliveryService from "@/lib/api/delivery.service";
+import * as addressService from "@/lib/api/address.service";
 
 interface CartState {
   cart: Cart | null;
@@ -311,6 +312,25 @@ export const useCartStore = create<CartState>()(
             [menuType]: true,
           },
         }));
+
+        if (type === "delivery") {
+          addressService
+            .getAddresses()
+            .then((addresses) => {
+              if (addresses && addresses.length > 0) {
+                const currentId = get().selectedAddressId;
+                const match = currentId
+                  ? addresses.find((a) => String(a.id) === String(currentId))
+                  : null;
+                const defaultAddr =
+                  match || addresses.find((a) => a.isDefault) || addresses[0];
+                if (defaultAddr) {
+                  set({ selectedAddressId: String(defaultAddr.id) });
+                }
+              }
+            })
+            .catch(() => {});
+        }
       },
 
       hasFulfillmentTypeSelected: (menuType: "regular" | "catering") => {
