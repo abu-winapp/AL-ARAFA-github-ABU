@@ -206,6 +206,9 @@ export default function OrderTrackingPage() {
     );
   }
 
+  const deliveryAddress =
+    typeof order.deliveryAddress === "string" ? order.deliveryAddress : "";
+    
   const isDelivered =
     order.status === "delivered" || order.status === "picked_up";
   const isCancelled = order.status === "cancelled";
@@ -257,30 +260,30 @@ export default function OrderTrackingPage() {
   };
 
   // formatting time and date for ui
-const formatScheduledDateTime = (datetime: string) => {
-  const date = new Date(datetime.replace(" ", "T"));
+  const formatScheduledDateTime = (datetime: string) => {
+    const date = new Date(datetime.replace(" ", "T"));
 
-  // Add 1 hour 30 minutes for every order
-  date.setMinutes(date.getMinutes() + 90);
+    // Add 1 hour 30 minutes for every order
+    date.setMinutes(date.getMinutes() + 90);
 
-  return {
-    date: date.toLocaleDateString("en-SG", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    }),
-    time: date.toLocaleTimeString("en-SG", {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    }),
+    return {
+      date: date.toLocaleDateString("en-SG", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+      }),
+      time: date.toLocaleTimeString("en-SG", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      }),
+    };
   };
-};
 
   // display value
 
   const scheduledDateTime = order.scheduledDatetime
-    ? formatScheduledDateTime(order.scheduledDatetime, order.fulfillmentType)
+    ? formatScheduledDateTime(order.scheduledDatetime)
     : null;
 
   const isPickup = order.fulfillmentType === "pickup";
@@ -573,7 +576,7 @@ const formatScheduledDateTime = (datetime: string) => {
                     key={item.id}
                     className="flex items-center gap-4 pb-4 border-b border-border-light last:border-0 last:pb-0"
                   >
-                    <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/30 flex items-center justify-center flex-shrink-0">
+                    {/* <div className="w-16 h-16 rounded-lg bg-gradient-to-br from-primary/20 to-secondary/30 flex items-center justify-center flex-shrink-0">
                       {itemImageUrl ? (
                         <img
                           src={itemImageUrl}
@@ -581,9 +584,9 @@ const formatScheduledDateTime = (datetime: string) => {
                           className="w-full h-full object-cover rounded-lg"
                         />
                       ) : (
-                        <span className="text-3xl">🍛</span>
+                        <span className="text-3xl"></span>
                       )}
-                    </div>
+                    </div> */}
                     <div className="flex-1">
                       <div className="font-semibold text-text-primary">
                         {item.quantity}x {itemName}
@@ -678,9 +681,8 @@ const formatScheduledDateTime = (datetime: string) => {
                     </span>
 
                     <span className="break-words font-semibold text-text-primary sm:max-w-[60%] sm:text-right">
-                      {typeof order.deliveryAddress === "string" &&
-                      order.deliveryAddress.trim() ? (
-                        order.deliveryAddress
+                      {deliveryAddress.trim() ? (
+                        deliveryAddress
                       ) : (
                         <span className="font-normal text-text-tertiary">
                           Not available
@@ -711,8 +713,6 @@ const formatScheduledDateTime = (datetime: string) => {
                 )}
 
                 {order.scheduledDatetime && scheduledDateTime && (
-
-                  
                   <>
                     <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
                       <span className="shrink-0 text-text-secondary">
