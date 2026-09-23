@@ -10,6 +10,8 @@ import { SuccessScreen } from "./SuccessScreen";
 // import { useAuthStore } from "@/lib/store/useAuthStore";
 
 import { useSettingsStore } from "@/lib/store/useSettingsStore";
+import { useCartStore } from "@/lib/store/useCartStore";
+import type { UserAddress } from "@/types";
 
 type OnboardingStep = "fulfillment" | "address" | "success";
 
@@ -65,14 +67,25 @@ export function OnboardingDialog({
 
   const handleSelectPickup = () => {
     setSelectedFulfillment("pickup");
+    useCartStore.getState().setFulfillmentType("regular", "pickup");
+    useCartStore.getState().setFulfillmentType("catering", "pickup");
     setCurrentStep("success");
   };
 
-  const handleAddressNext = () => {
+  const handleAddressNext = (savedAddress?: UserAddress) => {
+    setSelectedFulfillment("delivery");
+    useCartStore.getState().setFulfillmentType("regular", "delivery");
+    useCartStore.getState().setFulfillmentType("catering", "delivery");
+    if (savedAddress?.id) {
+      useCartStore.getState().setSelectedAddressId(String(savedAddress.id));
+    }
     setCurrentStep("success");
   };
 
   const handleAddressSkip = () => {
+    setSelectedFulfillment("pickup");
+    useCartStore.getState().setFulfillmentType("regular", "pickup");
+    useCartStore.getState().setFulfillmentType("catering", "pickup");
     setCurrentStep("success");
   };
 
@@ -86,6 +99,14 @@ export function OnboardingDialog({
 
   const handleOpenChange = (isOpen: boolean) => {
     if (!isOpen) {
+      const currentSelected = useCartStore.getState().fulfillmentTypes.regular;
+      if (
+        currentSelected === "delivery" &&
+        !useCartStore.getState().selectedAddressId
+      ) {
+        useCartStore.getState().setFulfillmentType("regular", "pickup");
+        useCartStore.getState().setFulfillmentType("catering", "pickup");
+      }
       setTimeout(() => {
         setCurrentStep("fulfillment");
         setSelectedFulfillment(null);

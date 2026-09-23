@@ -41,9 +41,7 @@ export function ProfileSetupScreen({ onNext }: ProfileSetupScreenProps) {
 
     try {
       // Format phone number with +65 prefix if provided
-      const phone = data.phoneNumber?.trim()
-        ? `+65${data.phoneNumber.trim()}`
-        : undefined;
+      const phone = data.phoneNumber?.trim() || undefined;
 
       // Call API to update profile
       const updatedUser = await profileService.updateProfile({
@@ -119,7 +117,7 @@ export function ProfileSetupScreen({ onNext }: ProfileSetupScreenProps) {
           {/* Phone Number Field */}
           <div className="space-y-2">
             <Label htmlFor="phoneNumber" className="text-base font-semibold">
-              Phone Number (Optional)
+              Phone Number (Required)
             </Label>
             <div className="flex gap-2">
               {/* Country Code */}

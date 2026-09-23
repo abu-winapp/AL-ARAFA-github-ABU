@@ -122,11 +122,8 @@ function ProfilePageContent() {
     setIsSubmitting(true);
 
     try {
-      // Add +65 prefix to phone number if not already present and not empty
-      let phoneToSave = data.phone?.trim() ? data.phone.trim() : undefined;
-      if (phoneToSave && !phoneToSave.startsWith("+65")) {
-        phoneToSave = `+65${phoneToSave}`;
-      }
+
+      const phoneToSave = data.phone?.trim() || undefined;
 
       const updatedUser = await updateProfile({
         name: data.name?.trim() || undefined,

@@ -332,6 +332,9 @@ export interface Order {
   scheduledDate?: string | null;
   scheduledTime?: string | null;
   scheduledEndTime?: string | null;
+  // order id page
+  scheduledDatetime?: string | null;
+  
 }
 
 export type OrderStatus =
@@ -660,6 +663,7 @@ export interface UserAddress {
   streetAddress?: string;
   country?: string;
   phone?: string;
+  blockNumber?:string;
 }
 
 export interface SaveAddressRequest {
@@ -674,6 +678,7 @@ export interface SaveAddressRequest {
   isDefault?: boolean;
   latitude?: number;
   longitude?: number;
+    blockNumber?:string;
 }
 
 // ===========================

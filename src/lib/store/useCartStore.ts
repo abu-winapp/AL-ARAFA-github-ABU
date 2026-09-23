@@ -133,8 +133,8 @@ export const useCartStore = create<CartState>()(
       // Frontend-only state (persisted in localStorage)
       // Store separate fulfillment types for regular and catering menus
       fulfillmentTypes: {
-        regular: "delivery",
-        catering: "delivery",
+        regular: "pickup",
+        catering: "pickup",
       },
       // Neither menu type has an explicit user selection yet by default
       fulfillmentTypeSelected: {
@@ -285,6 +285,14 @@ export const useCartStore = create<CartState>()(
           // Clear transient suggestions
           suggestedItems: null,
           lastSuggestedItemId: null,
+          fulfillmentTypes: {
+            regular: "pickup",
+            catering: "pickup",
+          },
+          fulfillmentTypeSelected: {
+            regular: false,
+            catering: false,
+          },
         });
       },
 

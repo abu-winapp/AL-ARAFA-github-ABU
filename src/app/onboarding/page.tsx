@@ -3,6 +3,8 @@ import { useSettingsStore } from "@/lib/store/useSettingsStore";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/lib/store/useAuthStore";
+import { useCartStore } from "@/lib/store/useCartStore";
+import type { UserAddress } from "@/types";
 import { FulfillmentTypeScreen } from "@/components/onboarding/FulfillmentTypeScreen";
 import { AddressSetupScreen } from "@/components/onboarding/AddressSetupScreen";
 import { SuccessScreen } from "@/components/onboarding/SuccessScreen";
@@ -36,15 +38,25 @@ export default function OnboardingPage() {
 
   const handleSelectPickup = () => {
     setSelectedFulfillment("pickup");
+    useCartStore.getState().setFulfillmentType("regular", "pickup");
+    useCartStore.getState().setFulfillmentType("catering", "pickup");
     // Skip address for pickup and go to success
     setCurrentStep("success");
   };
 
   const handleAddressNext = () => {
+  const handleAddressNext = (savedAddress?: UserAddress) => {
+    useCartStore.getState().setFulfillmentType("regular", "delivery");
+    useCartStore.getState().setFulfillmentType("catering", "delivery");
+    if (savedAddress?.id) {
+      useCartStore.getState().setSelectedAddressId(String(savedAddress.id));
+    }
     setCurrentStep("success");
   };
 
   const handleAddressSkip = () => {
+    useCartStore.getState().setFulfillmentType("regular", "pickup");
+    useCartStore.getState().setFulfillmentType("catering", "pickup");
     // Skip address setup and go directly to menu
     router.push("/menu");
   };

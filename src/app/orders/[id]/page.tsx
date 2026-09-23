@@ -14,6 +14,7 @@ import type {
   DeliveryBooking,
   PaymentStatus,
   PaymentMethod,
+  Location,
 } from "@/types";
 import * as orderService from "@/lib/api/order.service";
 import * as deliveryService from "@/lib/api/delivery.service";
@@ -21,7 +22,11 @@ import * as paymentService from "@/lib/api/payment.service";
 import { useAuthStore } from "@/lib/store/useAuthStore";
 import { useSettingsStore } from "@/lib/store/useSettingsStore";
 
+import * as locationService from "@/lib/api/location.service";
+
 export default function OrderTrackingPage() {
+  const [pickupLocation, setPickupLocation] = useState<Location | null>(null);
+
   const params = useParams();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -135,6 +140,21 @@ export default function OrderTrackingPage() {
       const orderData = await orderService.getOrder(orderId);
       setOrder(orderData);
 
+      if (orderData.fulfillmentType === "pickup" && orderData.locationId) {
+        try {
+          const locations = await locationService.getActiveLocations();
+
+          const location = locations.find(
+            (loc) => String(loc.id) === String(orderData.locationId),
+          );
+
+          setPickupLocation(location || null);
+        } catch (err) {
+          console.error("Failed to load pickup location:", err);
+          setPickupLocation(null);
+        }
+      }
+
       // Load delivery info if order has delivery
       if (orderData.fulfillmentType === "delivery") {
         try {
@@ -235,6 +255,40 @@ export default function OrderTrackingPage() {
       setIsRepaying(false);
     }
   };
+
+  // formatting time and date for ui
+const formatScheduledDateTime = (datetime: string) => {
+  const date = new Date(datetime.replace(" ", "T"));
+
+  // Add 1 hour 30 minutes for every order
+  date.setMinutes(date.getMinutes() + 90);
+
+  return {
+    date: date.toLocaleDateString("en-SG", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    }),
+    time: date.toLocaleTimeString("en-SG", {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    }),
+  };
+};
+
+  // display value
+
+  const scheduledDateTime = order.scheduledDatetime
+    ? formatScheduledDateTime(order.scheduledDatetime, order.fulfillmentType)
+    : null;
+
+  const isPickup = order.fulfillmentType === "pickup";
+  const isDelivery = order.fulfillmentType === "delivery";
+
+  const isOrderNow = order.instantOrder || order.orderType === "instant";
+
+  const isOrderInAdvance = order.orderType === "scheduled";
 
   return (
     <div className="min-h-screen bg-background-gray pt-12 pb-12 md:pt-0">
@@ -616,6 +670,7 @@ export default function OrderTrackingPage() {
                     {order.fulfillmentType}
                   </span>
                 </div>
+
                 {order.fulfillmentType === "delivery" && (
                   <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                     <span className="shrink-0 text-text-secondary">
@@ -635,7 +690,29 @@ export default function OrderTrackingPage() {
                   </div>
                 )}
 
-                {order.orderType === "scheduled" && (
+                {order.fulfillmentType === "pickup" && (
+                  <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                    <span className="shrink-0 text-text-secondary">
+                      Pickup Location:
+                    </span>
+
+                    <span className="break-words font-semibold text-text-primary sm:max-w-[60%] sm:text-right">
+                      {pickupLocation?.fullAddress?.trim() ? (
+                        pickupLocation.fullAddress
+                      ) : pickupLocation?.address?.trim() ? (
+                        pickupLocation.address
+                      ) : (
+                        <span className="font-normal text-text-tertiary">
+                          Not available
+                        </span>
+                      )}
+                    </span>
+                  </div>
+                )}
+
+                {order.scheduledDatetime && scheduledDateTime && (
+
+                  
                   <>
                     <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
                       <span className="shrink-0 text-text-secondary">
@@ -645,15 +722,7 @@ export default function OrderTrackingPage() {
                       </span>
 
                       <span className="font-semibold text-text-primary sm:text-right">
-                        {order.scheduledDate
-                          ? new Date(
-                              `${order.scheduledDate}T00:00:00`,
-                            ).toLocaleDateString("en-SG", {
-                              day: "2-digit",
-                              month: "short",
-                              year: "numeric",
-                            })
-                          : "Not available"}
+                        {scheduledDateTime.date}
                       </span>
                     </div>
 
@@ -665,15 +734,7 @@ export default function OrderTrackingPage() {
                       </span>
 
                       <span className="font-semibold text-text-primary sm:text-right">
-                        {order.scheduledTime
-                          ? new Date(
-                              `1970-01-01T${order.scheduledTime}`,
-                            ).toLocaleTimeString("en-SG", {
-                              hour: "numeric",
-                              minute: "2-digit",
-                              hour12: true,
-                            })
-                          : "Not available"}
+                        {scheduledDateTime.time}
                       </span>
                     </div>
                   </>

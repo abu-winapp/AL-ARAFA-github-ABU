@@ -302,8 +302,10 @@ function CartContent() {
       if (selected) {
         useCartStore.getState().setSelectedAddressId(String(selected.id));
       }
+      return data;
     } catch (error) {
       console.error("Failed to load addresses:", error);
+      return [];
     }
   }, []);
   // reloading the page with safe guard
@@ -319,7 +321,21 @@ function CartContent() {
         // Get fresh server time + order window first
         await fetchAllSettings(true);
 
-        await Promise.all([fetchCart(), loadAddresses()]);
+        const [, userAddresses] = await Promise.all([
+          fetchCart(),
+          loadAddresses(),
+        ]);
+
+        // If delivery was selected but user has no saved addresses, fallback to pickup (Self Collect)
+        const currentFulfillment = useCartStore
+          .getState()
+          .getFulfillmentType(menuType as "regular" | "catering");
+        if (
+          currentFulfillment === "delivery" &&
+          (!userAddresses || userAddresses.length === 0)
+        ) {
+          setFulfillmentType(menuType as "regular" | "catering", "pickup");
+        }
 
         setOrderStatusReady(true);
       } catch (err) {
@@ -328,7 +344,7 @@ function CartContent() {
     };
 
     init();
-  }, [fetchCart, loadAddresses, fetchAllSettings]);
+  }, [fetchCart, loadAddresses, fetchAllSettings, menuType, setFulfillmentType]);
 
   useEffect(() => {
     if (!addresses.length) return;
@@ -394,7 +410,7 @@ function CartContent() {
         return;
       }
 
-      setShowDeliveryDialog(true);
+      setFulfillmentType(menuType as "regular" | "catering", "pickup");
       hasAutoOpenedDeliveryDialog.current = true;
     }
   }, [
