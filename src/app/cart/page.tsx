@@ -226,7 +226,7 @@ function CartContent() {
 
   const isRestaurantOpen = Boolean(acceptingOrders) && insideOrderWindow;
 
-  const canCheckout = orderStatusReady && (isAdvanceOrder || isRestaurantOpen);
+  const canCheckout = orderStatusReady && Boolean(acceptingOrders) && (isAdvanceOrder || insideOrderWindow);
 
   const isDelivery = fulfillmentType === "delivery";
   const deliveryMet =
@@ -865,7 +865,7 @@ function CartContent() {
                     >
                       {!orderStatusReady
                         ? "Checking Order Status..."
-                        : !isAdvanceOrder && !acceptingOrders
+                        : !acceptingOrders
                           ? "Restaurant Closed"
                           : !isAdvanceOrder && !insideOrderWindow
                             ? "Outside Order Hours"

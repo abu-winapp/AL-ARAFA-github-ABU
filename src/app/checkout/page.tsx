@@ -297,15 +297,24 @@ export default function CheckoutPage() {
     };
 
     const checkOrderStatus = async () => {
+      await fetchAllSettings(true);
+
+      const settingsState = useSettingsStore.getState();
+      const stillAccepting = settingsState.getAcceptingOrdersNow();
+
+      if (!stillAccepting) {
+        restaurantClosedToast();
+        setTimeout(() => {
+          router.replace("/cart");
+        }, 2000);
+        return;
+      }
+
       if (isAdvanceOrder || menuType === "catering") {
         setOrderStatusReady(true);
         return;
       }
 
-      await fetchAllSettings(true);
-
-      const settingsState = useSettingsStore.getState();
-      const stillAccepting = settingsState.getAcceptingOrdersNow();
       const freshServerTime = settingsState.getServerTime();
       const stillInsideWindow = freshServerTime
         ? isCurrentTimeInsideWindow(
@@ -314,13 +323,11 @@ export default function CheckoutPage() {
           )
         : false;
 
-      if (!stillAccepting || !stillInsideWindow) {
+      if (!stillInsideWindow) {
         restaurantClosedToast();
-
         setTimeout(() => {
           router.replace("/cart");
         }, 2000);
-
         return;
       }
 
