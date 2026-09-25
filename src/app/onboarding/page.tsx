@@ -43,16 +43,16 @@ export default function OnboardingPage() {
     // Skip address for pickup and go to success
     setCurrentStep("success");
   };
+const handleAddressNext = (savedAddress?: UserAddress) => {
+  useCartStore.getState().setFulfillmentType("regular", "delivery");
+  useCartStore.getState().setFulfillmentType("catering", "delivery");
 
-  const handleAddressNext = () => {
-  const handleAddressNext = (savedAddress?: UserAddress) => {
-    useCartStore.getState().setFulfillmentType("regular", "delivery");
-    useCartStore.getState().setFulfillmentType("catering", "delivery");
-    if (savedAddress?.id) {
-      useCartStore.getState().setSelectedAddressId(String(savedAddress.id));
-    }
-    setCurrentStep("success");
-  };
+  if (savedAddress?.id) {
+    useCartStore.getState().setSelectedAddressId(String(savedAddress.id));
+  }
+
+  setCurrentStep("success");
+};
 
   const handleAddressSkip = () => {
     useCartStore.getState().setFulfillmentType("regular", "pickup");
