@@ -31,6 +31,8 @@ export function OrderTimingSelector({
     dayjs(),
   );
 
+  const PREPARATION_TIME_MINUTES = 90;
+
   const [selectedOrderSlot, setSelectedOrderSlot] = useState("");
 
   const [selectedOrderDeliveryTime, setSelectedOrderDeliveryTime] =
@@ -62,6 +64,34 @@ export function OrderTimingSelector({
   };
 
   /*
+   * Adds the 1 hour 30 minute preparation time for UI display only.
+   *
+   * Example:
+   * 07:00 PM -> 08:30 PM
+   *
+   * This does NOT change the scheduled time sent to the backend.
+   */
+  const getPreparationTime = (time: string) => {
+    if (!time) return "";
+
+    const [hourString, minuteString] = time.split(":");
+
+    const hour = Number(hourString);
+    const minute = Number(minuteString);
+
+    if (Number.isNaN(hour) || Number.isNaN(minute)) {
+      return "";
+    }
+
+    return dayjs()
+      .startOf("day")
+      .hour(hour)
+      .minute(minute)
+      .add(PREPARATION_TIME_MINUTES, "minute")
+      .format("hh:mm A");
+  };
+
+  /*
    * Compact label shown in the UI.
    */
   const scheduleLabel =
@@ -78,10 +108,7 @@ export function OrderTimingSelector({
    * after navigating between cart / checkout.
    */
   useEffect(() => {
-    if (
-      advanceSchedule?.scheduledDate &&
-      advanceSchedule?.scheduledTime
-    ) {
+    if (advanceSchedule?.scheduledDate && advanceSchedule?.scheduledTime) {
       setSelectedOrderDate(dayjs(advanceSchedule.scheduledDate));
 
       setSelectedOrderDeliveryTime(
@@ -92,10 +119,7 @@ export function OrderTimingSelector({
     } else {
       setOrderTimeType("now");
     }
-  }, [
-    advanceSchedule?.scheduledDate,
-    advanceSchedule?.scheduledTime,
-  ]);
+  }, [advanceSchedule?.scheduledDate, advanceSchedule?.scheduledTime]);
 
   /*
    * ORDER NOW
@@ -114,10 +138,7 @@ export function OrderTimingSelector({
     /*
      * If a schedule already exists, load it into the dialog.
      */
-    if (
-      advanceSchedule?.scheduledDate &&
-      advanceSchedule?.scheduledTime
-    ) {
+    if (advanceSchedule?.scheduledDate && advanceSchedule?.scheduledTime) {
       setSelectedOrderDate(dayjs(advanceSchedule.scheduledDate));
 
       setSelectedOrderDeliveryTime(
@@ -153,16 +174,11 @@ export function OrderTimingSelector({
 
       const rawHour = parseInt(rawHourString, 10);
 
-      const minute = parseInt(
-        rawMinutePart?.replace(/[^0-9]/g, "") || "0",
-        10,
-      );
+      const minute = parseInt(rawMinutePart?.replace(/[^0-9]/g, "") || "0", 10);
 
-      const isPM =
-        selectedOrderDeliveryTime.toUpperCase().includes("PM");
+      const isPM = selectedOrderDeliveryTime.toUpperCase().includes("PM");
 
-      const isAM =
-        selectedOrderDeliveryTime.toUpperCase().includes("AM");
+      const isAM = selectedOrderDeliveryTime.toUpperCase().includes("AM");
 
       let hour = rawHour;
 
@@ -172,18 +188,14 @@ export function OrderTimingSelector({
         hour = 0;
       }
 
-      const scheduledDate =
-        selectedOrderDate.format("YYYY-MM-DD");
+      const scheduledDate = selectedOrderDate.format("YYYY-MM-DD");
 
       const scheduledTime = `${String(hour).padStart(
         2,
         "0",
       )}:${String(minute).padStart(2, "0")}`;
 
-      setAdvanceOrderSchedule(
-        scheduledDate,
-        scheduledTime,
-      );
+      setAdvanceOrderSchedule(scheduledDate, scheduledTime);
 
       setShowOrderTimeDialog(false);
 
@@ -206,8 +218,6 @@ export function OrderTimingSelector({
           <h3 className="text-base font-bold leading-tight text-[#241F1B] sm:text-lg">
             When do you want your order?
           </h3>
-
-
         </div>
 
         {orderTiming === "scheduled" && (
@@ -261,9 +271,7 @@ export function OrderTimingSelector({
             </div>
 
             <div className="mt-1 text-[10px] leading-tight text-[#9A9086] sm:text-xs">
-              {isRestaurantOpen
-                ? "within 1.30 Hrs"
-                : "Outside opening hours"}
+              {isRestaurantOpen ? "within 1.30 Hrs" : "Outside opening hours"}
             </div>
           </div>
 
@@ -370,6 +378,13 @@ export function OrderTimingSelector({
               <div className="truncate text-sm font-semibold text-[#241F1B] sm:text-base">
                 {scheduleLabel}
               </div>
+
+              {advanceSchedule?.scheduledTime && (
+                <div className="mt-0.5 text-[10px] text-[#9A9086] sm:text-xs">
+                  Preparation time: 1 hr 30 min • Ready by{" "}
+                  {getPreparationTime(advanceSchedule.scheduledTime)}
+                </div>
+              )}
             </div>
           </div>
 

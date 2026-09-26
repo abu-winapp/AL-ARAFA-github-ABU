@@ -22,9 +22,7 @@ import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import FlashOnIcon from "@mui/icons-material/FlashOn";
 import ScheduleIcon from "@mui/icons-material/Schedule";
 
-import {
-  LocalizationProvider,
-} from "@mui/x-date-pickers/LocalizationProvider";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -55,6 +53,7 @@ interface Props {
 const BRAND_RED = "#A40301";
 
 const SLOT_INTERVAL_MINUTES = 30;
+const PREPARATION_TIME_MINUTES = 90;
 
 export default function OrderTimeDialog({
   open,
@@ -96,12 +95,12 @@ export default function OrderTimeDialog({
 
     const period = hours >= 12 ? "PM" : "AM";
 
-    const displayHour =
-      hours % 12 === 0 ? 12 : hours % 12;
+    const displayHour = hours % 12 === 0 ? 12 : hours % 12;
 
-    return `${String(displayHour).padStart(2, "0")}:${String(
-      minutes
-    ).padStart(2, "0")} ${period}`;
+    return `${String(displayHour).padStart(2, "0")}:${String(minutes).padStart(
+      2,
+      "0",
+    )} ${period}`;
   }, []);
 
   /*
@@ -150,7 +149,7 @@ export default function OrderTimeDialog({
         const mins = minutes % 60;
 
         const rawTime = `${String(hours).padStart(2, "0")}:${String(
-          mins
+          mins,
         ).padStart(2, "0")}`;
 
         times.push(formatTime(rawTime));
@@ -221,10 +220,42 @@ export default function OrderTimeDialog({
       hours = 0;
     }
 
-    return `${String(hours).padStart(2, "0")}:${String(
-      minutes
-    ).padStart(2, "0")}`;
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
+      2,
+      "0",
+    )}`;
   }, []);
+
+  /*
+   * Add the restaurant preparation time for UI display only.
+   *
+   * Example:
+   * 07:00 PM + 90 minutes = 08:30 PM
+   *
+   * IMPORTANT:
+   * This does NOT modify selectedDeliveryTime.
+   * The original selected time is still sent to the backend.
+   */
+  const getPreparationAdjustedTime = React.useCallback(
+    (time: string) => {
+      const time24 = displayTimeTo24Hour(time);
+
+      if (!time24) {
+        return time;
+      }
+
+      const [hours, minutes] = time24.split(":").map(Number);
+
+      const adjusted = dayjs()
+        .startOf("day")
+        .hour(hours)
+        .minute(minutes)
+        .add(PREPARATION_TIME_MINUTES, "minute");
+
+      return adjusted.format("hh:mm A");
+    },
+    [displayTimeTo24Hour],
+  );
 
   /*
    * Check whether a particular delivery time has already passed.
@@ -270,21 +301,13 @@ export default function OrderTimeDialog({
        */
       const serverOffset = serverTime.substring(19);
 
-      const slotDateTime = dayjs(
-        `${serverDate}T${time24}:00${serverOffset}`
-      );
+      const slotDateTime = dayjs(`${serverDate}T${time24}:00${serverOffset}`);
 
       const currentServerDateTime = dayjs(serverTime);
 
       return slotDateTime.isAfter(currentServerDateTime);
     },
-    [
-      selectedDate,
-      serverTime,
-      serverDate,
-      isToday,
-      displayTimeTo24Hour,
-    ]
+    [selectedDate, serverTime, serverDate, isToday, displayTimeTo24Hour],
   );
 
   /*
@@ -299,11 +322,7 @@ export default function OrderTimeDialog({
    * 12:30 PM should no longer remain selected.
    */
   React.useEffect(() => {
-    if (
-      orderType !== "advance" ||
-      !selectedDeliveryTime ||
-      !selectedDate
-    ) {
+    if (orderType !== "advance" || !selectedDeliveryTime || !selectedDate) {
       return;
     }
 
@@ -376,17 +395,11 @@ export default function OrderTimeDialog({
       isTimeAvailable(selectedDeliveryTime));
 
   return (
-    <Dialog
-      open={open}
-      onClose={onClose}
-      fullWidth
-      maxWidth="sm"
-    >
+    <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
       {/* Header */}
       <DialogTitle className="flex items-center justify-between">
         <div className="flex items-center gap-2 font-semibold">
           <AccessTimeIcon sx={{ color: BRAND_RED }} />
-
           Select Order Time
         </div>
 
@@ -412,22 +425,16 @@ export default function OrderTimeDialog({
             <FlashOnIcon sx={{ color: BRAND_RED }} />
 
             <div>
-              <p className="font-semibold">
-                Order Now
-              </p>
+              <p className="font-semibold">Order Now</p>
 
-              <p className="text-xs text-gray-500">
-                Prepare immediately
-              </p>
+              <p className="text-xs text-gray-500">Prepare immediately</p>
             </div>
           </button>
 
           {/* Order in Advance */}
           <button
             type="button"
-            onClick={() =>
-              handleOrderTypeChange("advance")
-            }
+            onClick={() => handleOrderTypeChange("advance")}
             className={`flex items-center gap-3 rounded-xl border-2 p-4 text-left transition ${
               orderType === "advance"
                 ? "border-[#A40301] bg-red-50"
@@ -437,22 +444,16 @@ export default function OrderTimeDialog({
             <ScheduleIcon sx={{ color: BRAND_RED }} />
 
             <div>
-              <p className="font-semibold">
-                Order in Advance
-              </p>
+              <p className="font-semibold">Order in Advance</p>
 
-              <p className="text-xs text-gray-500">
-                Schedule for later
-              </p>
+              <p className="text-xs text-gray-500">Schedule for later</p>
             </div>
           </button>
         </div>
 
         {/* Scheduler */}
         {orderType === "advance" && (
-          <LocalizationProvider
-            dateAdapter={AdapterDayjs}
-          >
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
             <div className="mt-5 space-y-4">
               {/* Date */}
               <DatePicker
@@ -472,31 +473,20 @@ export default function OrderTimeDialog({
               />
 
               {/* Delivery Window */}
-              <FormControl
-                fullWidth
-                size="small"
-                disabled={!selectedDate}
-              >
-                <InputLabel>
-                  Delivery Slot
-                </InputLabel>
+              <FormControl fullWidth size="small" disabled={!selectedDate}>
+                <InputLabel>Delivery Slot</InputLabel>
 
                 <Select
                   value={selectedSlot}
                   label="Delivery Slot"
                   onChange={(e: SelectChangeEvent) => {
-                    setSelectedSlot(
-                      String(e.target.value)
-                    );
+                    setSelectedSlot(String(e.target.value));
 
                     setSelectedDeliveryTime("");
                   }}
                 >
                   {deliverySlots.map((slot) => (
-                    <MenuItem
-                      key={slot.id}
-                      value={slot.id}
-                    >
+                    <MenuItem key={slot.id} value={slot.id}>
                       {slot.label}
                     </MenuItem>
                   ))}
@@ -507,46 +497,30 @@ export default function OrderTimeDialog({
               <FormControl
                 fullWidth
                 size="small"
-                disabled={
-                  !selectedSlot ||
-                  !selectedDate
-                }
+                disabled={!selectedSlot || !selectedDate}
               >
-                <InputLabel>
-                  Delivery Time
-                </InputLabel>
+                <InputLabel>Delivery Time</InputLabel>
 
                 <Select
                   value={selectedDeliveryTime}
                   label="Delivery Time"
                   onChange={(e: SelectChangeEvent) => {
-                    setSelectedDeliveryTime(
-                      String(e.target.value)
-                    );
+                    setSelectedDeliveryTime(String(e.target.value));
                   }}
                 >
                   {deliverySlots
-                    .find(
-                      (slot) =>
-                        slot.id === selectedSlot
-                    )
+                    .find((slot) => slot.id === selectedSlot)
                     ?.times.map((time) => {
-                      const available =
-                        isTimeAvailable(time);
+                      const available = isTimeAvailable(time);
 
                       return (
-                        <MenuItem
-                          key={time}
-                          value={time}
-                          disabled={!available}
-                        >
+                        <MenuItem key={time} value={time} disabled={!available}>
                           {time}
-                          {!available &&
-                            isToday() && (
-                              <span className="ml-2 text-xs text-gray-400">
-                                Unavailable
-                              </span>
-                            )}
+                          {!available && isToday() && (
+                            <span className="ml-2 text-xs text-gray-400">
+                              Unavailable
+                            </span>
+                          )}
                         </MenuItem>
                       );
                     })}
@@ -554,34 +528,34 @@ export default function OrderTimeDialog({
               </FormControl>
 
               {/* Selected Schedule Summary */}
-              {selectedDate &&
-                selectedSlot &&
-                selectedDeliveryTime && (
-                  <div className="rounded-lg border border-[#A40301]/20 bg-red-50 p-3 text-sm">
-                    <p>
-                      <b>Date:</b>{" "}
-                      {selectedDate.format(
-                        "DD MMM YYYY"
-                      )}
-                    </p>
+              {selectedDate && selectedSlot && selectedDeliveryTime && (
+                <div className="rounded-lg border border-[#A40301]/20 bg-red-50 p-3 text-sm">
+                  <p>
+                    <b>Date:</b> {selectedDate.format("DD MMM YYYY")}
+                  </p>
 
-                    <p>
-                      <b>Slot:</b>{" "}
-                      {
-                        deliverySlots.find(
-                          (slot) =>
-                            slot.id ===
-                            selectedSlot
-                        )?.label
-                      }
-                    </p>
+                  <p>
+                    <b>Slot:</b>{" "}
+                    {
+                      deliverySlots.find((slot) => slot.id === selectedSlot)
+                        ?.label
+                    }
+                  </p>
 
-                    <p>
-                      <b>Time:</b>{" "}
-                      {selectedDeliveryTime}
-                    </p>
-                  </div>
-                )}
+                  <p>
+                    <b>Requested Time:</b> {selectedDeliveryTime}
+                  </p>
+
+                  <p>
+                    <b>Preparation Ready Time:</b>{" "}
+                    {getPreparationAdjustedTime(selectedDeliveryTime)}
+                  </p>
+
+                  <p className="mt-1 text-xs text-gray-500">
+                    Includes 1 hour 30 minutes preparation time.
+                  </p>
+                </div>
+              )}
 
               {/* Backend server time information */}
               {serverTime && (
@@ -593,13 +567,11 @@ export default function OrderTimeDialog({
               )}
 
               {/* No windows configured */}
-              {selectedDate &&
-                deliverySlots.length === 0 && (
-                  <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-                    No delivery time slots are currently
-                    available.
-                  </div>
-                )}
+              {selectedDate && deliverySlots.length === 0 && (
+                <div className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
+                  No delivery time slots are currently available.
+                </div>
+              )}
             </div>
           </LocalizationProvider>
         )}
@@ -607,10 +579,7 @@ export default function OrderTimeDialog({
 
       {/* Footer */}
       <DialogActions className="p-4">
-        <Button
-          onClick={onClose}
-          color="inherit"
-        >
+        <Button onClick={onClose} color="inherit">
           Cancel
         </Button>
 
