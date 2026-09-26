@@ -54,7 +54,34 @@ interface Props {
 
 const BRAND_RED = "#A40301";
 
+<<<<<<< HEAD
 const SLOT_INTERVAL_MINUTES = 30;
+=======
+const deliverySlots = [
+  {
+    id: "afternoon",
+    label: "01:00 PM - 03:00 PM",
+    times: [
+      "01:00 PM",
+      "01:30 PM",
+      "02:00 PM",
+      "02:30 PM",
+      "03:00 PM",
+    ],
+  },
+  {
+    id: "evening",
+    label: "07:00 PM - 09:00 PM",
+    times: [
+      "07:00 PM",
+      "07:30 PM",
+      "08:00 PM",
+      "08:30 PM",
+      "09:00 PM",
+    ],
+  },
+];
+>>>>>>> e1fc17189e3032fc01bb1a8cc251a3e2e5e59b45
 
 export default function OrderTimeDialog({
   open,

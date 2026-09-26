@@ -98,7 +98,11 @@ export const MenuDetailDialog: FC<MenuDetailDialogProps> = ({
               "
             >
               {item.imageUrl ? (
+<<<<<<< HEAD
                 <img loading="lazy" decoding="async"
+=======
+                <img
+>>>>>>> e1fc17189e3032fc01bb1a8cc251a3e2e5e59b45
                   src={item.imageUrl}
                   alt={item.name}
                   className="
@@ -120,7 +124,11 @@ export const MenuDetailDialog: FC<MenuDetailDialogProps> = ({
                     to-[#e5d1ba]
                   "
                 >
+<<<<<<< HEAD
                   <img loading="lazy" decoding="async"
+=======
+                  <img
+>>>>>>> e1fc17189e3032fc01bb1a8cc251a3e2e5e59b45
                     src="/images/food-icon.svg"
                     alt="Food"
                     className="h-20 w-20 opacity-60"

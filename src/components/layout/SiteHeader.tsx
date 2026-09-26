@@ -1267,7 +1267,11 @@ export const SiteHeader: FC = () => {
                   "
                 >
                   {user.profileImageUrl ? (
+<<<<<<< HEAD
                     <img loading="lazy" decoding="async"
+=======
+                    <img
+>>>>>>> e1fc17189e3032fc01bb1a8cc251a3e2e5e59b45
                       src={user.profileImageUrl}
                       alt={
                         user.preferredName ||

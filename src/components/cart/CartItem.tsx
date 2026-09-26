@@ -92,14 +92,22 @@ export const CartItem: FC<CartItemProps> = ({ item }) => {
   {/* Image */}
   <div className="h-[76px] w-[76px] flex-shrink-0 overflow-hidden rounded-lg bg-gradient-to-br from-primary/10 to-secondary/20 sm:h-[84px] sm:w-[84px]">
     {itemImage ? (
+<<<<<<< HEAD
       <img loading="lazy" decoding="async"
+=======
+      <img
+>>>>>>> e1fc17189e3032fc01bb1a8cc251a3e2e5e59b45
         src={itemImage}
         alt={itemName}
         className="h-full w-full object-cover"
       />
     ) : (
       <div className="flex h-full w-full items-center justify-center">
+<<<<<<< HEAD
         <img loading="lazy" decoding="async"
+=======
+        <img
+>>>>>>> e1fc17189e3032fc01bb1a8cc251a3e2e5e59b45
           src="/images/food-icon.svg"
           alt="Food"
           className="h-9 w-9 object-contain opacity-75"
