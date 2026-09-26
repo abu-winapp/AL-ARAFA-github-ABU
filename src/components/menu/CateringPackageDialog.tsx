@@ -203,7 +203,7 @@ export const CateringPackageDialog: FC<CateringPackageDialogProps> = ({
           <div className="flex items-start gap-4">
             {/* Package Image */}
             {packageItem.imageUrl ? (
-              <img
+              <img loading="lazy" decoding="async"
                 src={packageItem.imageUrl}
                 alt={packageItem.name}
                 className="w-20 h-20 rounded-lg object-cover flex-shrink-0"

@@ -120,7 +120,7 @@ export default function Hero() {
           mx-auto
           flex h-full
           w-full
-          max-w-[1500px]
+          max-w-[1700px]
         "
       >
         {/* HERO CONTENT */}
@@ -177,7 +177,7 @@ export default function Hero() {
             >
               Good Food.
               <br />
-              <span className="text-[#d8b86a]">Great Mood.</span>
+              <span className="text-[white]">Great Mood.</span>
             </h1>
 
             {/* SUB HEADING */}
@@ -228,51 +228,35 @@ export default function Hero() {
     sm:gap-4
   "
             >
-              {/* ORDER NOW */}
-              <Link
-                href="/menu"
-                className="
-      inline-flex
-      items-center
-      gap-2
-      rounded-full
-      bg-[#d8b86a]
-      px-5
-      py-2.5
-      text-sm
-      font-semibold
-      text-[#3d1c12]
-      transition
-      hover:bg-white
+{/* ORDER NOW */}
+<Link
+  href="/menu"
+  className="
+    inline-flex
+    items-center
+    gap-2
+    rounded-full
+    border border-white/80
+    bg-white
+    px-5
+    py-2.5
+    text-sm
+    font-semibold
+    text-[#3D1C12]
+    shadow-[0_6px_20px_rgba(0,0,0,0.12)]
+    transition-all
+    duration-200
+    hover:border-[#B9090B]
+    hover:bg-[#B9090B]
+    hover:text-white
+    hover:shadow-[0_8px_24px_rgba(185,9,11,0.25)]
+    lg:inline-flex
+  "
+>
+  Order Now
+</Link>
 
-      lg:inline-flex
-    "
-              >
-                Order Now
-              </Link>
 
-              {/* CONTACT US */}
-              <Link
-                href="/contact"
-                className="
-      hidden
-      items-center
-      gap-2
-      rounded-full
-      bg-white
-      px-5
-      py-2.5
-      text-sm
-      font-semibold
-      text-black
-      transition
-      hover:bg-[#d8b86a]
-
-      lg:inline-flex
-    "
-              >
-                Contact Us
-              </Link>
             </div>
           </div>
         </div>

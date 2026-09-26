@@ -168,7 +168,7 @@ export const ImageUpload: React.FC<ImageUploadProps> = ({
         // Preview state
         <div className="relative group">
           <div className="relative aspect-video w-full overflow-hidden rounded-lg border-2 border-gray-200">
-            <img
+            <img loading="lazy" decoding="async"
               src={previewUrl}
               alt="Preview"
               className="h-full w-full object-cover"

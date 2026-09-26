@@ -47,7 +47,7 @@ function restaurantClosedToast() {
 
 // Checks whether the current server time falls inside any order window re
 const isCurrentTimeInsideWindow = (
-  windows: typeof orderWindows,
+  windows: OrderTimeWindow[],
   serverTime: string,
 ) => {
   // Convert server time into a Date object
@@ -101,7 +101,7 @@ function ProcessingContent() {
     }
 
     if (!isAuthenticated) {
-      router.push("/login?redirect=/checkout");
+      router.replace("/login?redirect=/checkout");
       return;
     }
 
@@ -144,6 +144,15 @@ function ProcessingContent() {
     // Final fresh check before we actually create the order - accepting
     // orders / order window can change between checkout and this page.
     const verifyOrderWindowAndProcess = async () => {
+      const isAdvance =
+        orderData?.orderType === "scheduled" ||
+        orderData?.orderType === "catering";
+
+      if (isAdvance) {
+        processOrder(orderData);
+        return;
+      }
+
       await useSettingsStore.getState().fetchAllSettings(true);
 
       const settingsState = useSettingsStore.getState();
@@ -205,26 +214,8 @@ function ProcessingContent() {
 
       console.log("Payment response:", paymentResponse);
 
-      // Extract payment URL
-      let paymentUrl: string | null = null;
-
-      if (paymentResponse.payment?.paymentUrl) {
-        paymentUrl = paymentResponse.payment.paymentUrl;
-      } else if (paymentResponse.payment) {
-        const dataString =
-          paymentResponse.payment.webhookData ||
-          paymentResponse.payment.gatewayResponse;
-        if (dataString) {
-          const urlMatch = dataString.match(/url=(https:\/\/[^\s,}]+)/);
-          if (urlMatch && urlMatch[1]) {
-            paymentUrl = urlMatch[1];
-          }
-        }
-      }
-
-      if (!paymentUrl && paymentResponse.paymentUrl) {
-        paymentUrl = paymentResponse.paymentUrl;
-      }
+      // Extract payment URL using robust helper that handles all backend field name variants
+      const paymentUrl = paymentService.extractPaymentUrl(paymentResponse);
 
       console.log("Extracted payment URL:", paymentUrl);
 
@@ -235,7 +226,6 @@ function ProcessingContent() {
         console.log("Cart cleared successfully");
       } catch (err) {
         console.error("Failed to clear cart:", err);
-        // Still clear local store even if API fails
         clearCart();
       }
 
@@ -248,12 +238,12 @@ function ProcessingContent() {
     } catch (error) {
       console.error("Failed to process order:", error);
 
-      // Allow processing again if user retries
       hasStarted.current = false;
 
-      setError(
-        error instanceof Error ? error.message : "Failed to process order",
-      );
+      const message =
+        error instanceof Error ? error.message : "Failed to process order";
+
+      setError(message);
 
       setTimeout(() => {
         router.push("/checkout");

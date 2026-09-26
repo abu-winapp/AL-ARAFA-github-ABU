@@ -1,3 +1,4 @@
+
 /**
  * Al-Arafa Restaurant - Sticky Cart Bar Component
  */
@@ -6,6 +7,7 @@
 
 import { FC, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ShoppingCart, ArrowRight } from "lucide-react";
 
 import { useCartStore } from "@/lib/store/useCartStore";
@@ -16,16 +18,26 @@ import {
 import { useSettingsStore } from "@/lib/store/useSettingsStore";
 
 export const CartBar: FC = () => {
+  const pathname = usePathname();
+
   const { cart, getItemCount } = useCartStore();
   const { user, isAuthenticated } = useAuthStore();
   const { fetchAllSettings, isGSTEnabled } = useSettingsStore();
 
-  // Fetch settings
+  // Show CartBar only on Home and Menu pages
+  const shouldShowCartBar = pathname === "/" || pathname === "/menu";
+
+  // Don't run cart/settings logic on other pages
   useEffect(() => {
-    if (isAuthenticated) {
+    if (shouldShowCartBar && isAuthenticated) {
       fetchAllSettings();
     }
-  }, [isAuthenticated, fetchAllSettings]);
+  }, [shouldShowCartBar, isAuthenticated, fetchAllSettings]);
+
+  // Don't render anything outside Home and Menu
+  if (!shouldShowCartBar) {
+    return null;
+  }
 
   // Only customers
   const isCustomerAuthenticated = isCustomerAuth(user, isAuthenticated);
@@ -39,7 +51,8 @@ export const CartBar: FC = () => {
   const platformFee = cart?.platformFee || 0;
   const gstAmount = gstEnabled ? cart?.gstAmount || 0 : 0;
 
-  const total = cart?.total || subtotal + deliveryFee + platformFee + gstAmount;
+  const total =
+    cart?.total || subtotal + deliveryFee + platformFee + gstAmount;
 
   // Don't show when empty / logged out
   if (!isCustomerAuthenticated || itemCount === 0) {
@@ -48,22 +61,16 @@ export const CartBar: FC = () => {
 
   return (
     <>
-      {/* 
-          MOBILE CART BAR
-          Floating just above the bottom tab bar
-          (tab bar = 66px tall, sits bottom-[calc(0.75rem+safe-area)],
-          so this bar's bottom clears that plus a small gap)
-       */}
-
+      {/* MOBILE CART BAR */}
       <div
         className="
-    fixed
-    left-3
-    right-3
-    bottom-[calc(1.5rem+66px+env(safe-area-inset-bottom))]
-    z-[60]
-    sm:hidden
-  "
+          fixed
+          left-3
+          right-3
+          bottom-[calc(1.5rem+66px+env(safe-area-inset-bottom))]
+          z-40
+          sm:hidden
+        "
       >
         <div
           className="
@@ -74,15 +81,12 @@ export const CartBar: FC = () => {
             rounded-[18px]
             border
             border-[#0b3b27]
-            bg-[#063b25]
+            bg-[#92251C]
             px-2
             shadow-[0_8px_28px_rgba(0,0,0,0.22)]
           "
         >
-          {/* 
-              CART ICON
-          = */}
-
+          {/* CART ICON */}
           <Link
             href="/cart"
             aria-label="View cart"
@@ -100,7 +104,10 @@ export const CartBar: FC = () => {
               active:scale-95
             "
           >
-            <ShoppingCart className="h-[22px] w-[22px]" strokeWidth={2} />
+            <ShoppingCart
+              className="h-[22px] w-[22px]"
+              strokeWidth={2}
+            />
 
             {/* Item badge */}
             <span
@@ -114,7 +121,7 @@ export const CartBar: FC = () => {
                 items-center
                 justify-center
                 rounded-full
-                bg-[#f4b400]
+                bg-[white]
                 px-1
                 text-[10px]
                 font-extrabold
@@ -127,10 +134,7 @@ export const CartBar: FC = () => {
             </span>
           </Link>
 
-          {/* 
-              CART INFORMATION
-          = */}
-
+          {/* CART INFORMATION */}
           <Link
             href="/cart"
             className="
@@ -166,10 +170,7 @@ export const CartBar: FC = () => {
             </div>
           </Link>
 
-          {/* 
-              PROCEED BUTTON
-          = */}
-
+          {/* PROCEED BUTTON */}
           <Link
             href="/cart"
             className="
@@ -179,44 +180,41 @@ export const CartBar: FC = () => {
               items-center
               gap-1
               rounded-full
-              bg-[#f4b400]
+              bg-[white]
               px-4
               text-[11px]
               font-extrabold
-              text-[#17351f]
+              text-[#92251C]
               shadow-sm
               transition-all
               duration-200
-              hover:bg-[#ffc21a]
               active:scale-[0.96]
             "
           >
             <span>Proceed</span>
 
-            <ArrowRight className="h-3.5 w-3.5" strokeWidth={2.8} />
+            <ArrowRight
+              className="h-3.5 w-3.5"
+              strokeWidth={2.8}
+            />
           </Link>
         </div>
       </div>
 
-      {/* 
-          DESKTOP CART BAR
-          Bottom sticky
-       */}
-
+      {/* DESKTOP CART BAR */}
       <div
         className="
           fixed
           bottom-0
           left-0
           right-0
-          z-[50]
+          z-40
           hidden
           border-t
           border-[#e7ddd2]
           bg-[#fffaf2]/95
           shadow-[0_-8px_30px_rgba(40,25,15,0.10)]
           backdrop-blur-xl
-
           sm:block
         "
       >
@@ -233,7 +231,6 @@ export const CartBar: FC = () => {
           "
         >
           {/* Cart summary */}
-
           <Link
             href="/cart"
             className="
@@ -245,7 +242,6 @@ export const CartBar: FC = () => {
             "
           >
             {/* Icon */}
-
             <div
               className="
                 relative
@@ -255,11 +251,14 @@ export const CartBar: FC = () => {
                 items-center
                 justify-center
                 rounded-full
-                bg-[#063b25]
+                bg-[#92251C]
                 text-white
               "
             >
-              <ShoppingCart className="h-6 w-6" strokeWidth={2} />
+              <ShoppingCart
+                className="h-6 w-6"
+                strokeWidth={2}
+              />
 
               <span
                 className="
@@ -284,7 +283,6 @@ export const CartBar: FC = () => {
             </div>
 
             {/* Text */}
-
             <div>
               <div
                 className="
@@ -311,7 +309,6 @@ export const CartBar: FC = () => {
           </Link>
 
           {/* Desktop button */}
-
           <Link
             href="/cart"
             className="
@@ -319,7 +316,7 @@ export const CartBar: FC = () => {
               items-center
               gap-2
               rounded-xl
-              bg-[#063b25]
+              bg-[#92251C]
               px-8
               py-3
               font-bold
@@ -327,7 +324,7 @@ export const CartBar: FC = () => {
               shadow-lg
               transition-all
               duration-200
-              hover:bg-[#07502f]
+              hover:text-[white]
               hover:shadow-xl
               active:scale-[0.98]
             "
@@ -350,3 +347,4 @@ export const CartBar: FC = () => {
     </>
   );
 };
+

@@ -5,15 +5,12 @@
 "use client";
 
 import { useEffect, useState, useCallback, useRef } from "react";
-import dayjs, { type Dayjs } from "dayjs";
+import dayjs from "dayjs";
 import { useCartStore } from "@/lib/store/useCartStore";
 import { Alert } from "@/components/ui/alert";
 import { Card } from "@/components/ui/card";
-import OrderTimeDialog from "@/components/ui/OrderTimeDialog";
 import type { DeliveryQuoteOption, UserAddress } from "@/types";
 import { Clock, Truck, AlertCircle, Loader2 } from "lucide-react";
-
-type OrderType = "now" | "advance";
 
 interface DeliveryProviderSelectorProps {
   deliveryAddress: UserAddress | null;
@@ -31,20 +28,7 @@ export function DeliveryProviderSelector({
     selectedDeliveryQuote,
     fetchDeliveryQuotes,
     selectDeliveryQuote,
-    orderTiming,
-    getAdvanceOrderSchedule,
-    setAdvanceOrderSchedule,
-    clearAdvanceOrderSchedule,
   } = useCartStore();
-
-  const [showOrderTimeDialog, setShowOrderTimeDialog] = useState(false);
-  const [orderTimeType, setOrderTimeType] = useState<OrderType>("advance");
-  const [selectedOrderDate, setSelectedOrderDate] = useState<Dayjs | null>(
-    dayjs().hour(19).minute(30),
-  );
-  const [selectedOrderSlot, setSelectedOrderSlot] = useState("");
-  const [selectedOrderDeliveryTime, setSelectedOrderDeliveryTime] =
-    useState("");
 
   const [timeUntilExpiry, setTimeUntilExpiry] = useState<number | null>(null);
   const refreshTimerRef = useRef<NodeJS.Timeout | null>(null);
@@ -136,18 +120,7 @@ export function DeliveryProviderSelector({
 
   const handleSelectProvider = (quote: DeliveryQuoteOption) => {
     if (!quote.available) return;
-    // Selecting a delivery provider never changes when the order is fulfilled -
-    // orderTiming/advanceOrderSchedule are managed independently below.
     selectDeliveryQuote(quote);
-  };
-
-  const handleOrderNowClick = () => {
-    clearAdvanceOrderSchedule();
-  };
-
-  const handleScheduleClick = () => {
-    setOrderTimeType("advance");
-    setShowOrderTimeDialog(true);
   };
 
   const handleRetry = () => {
@@ -244,73 +217,14 @@ export function DeliveryProviderSelector({
     );
   }
 
-  //useffect to select the lalamove selected default if no provider is selected
-
   const availableOptions = deliveryQuotes?.options ?? [];
-  const advanceSchedule = getAdvanceOrderSchedule();
-  const scheduleLabel =
-    advanceSchedule?.scheduledDate && advanceSchedule?.scheduledTime
-      ? `${dayjs(advanceSchedule.scheduledDate).format("DD MMM YYYY")} at ${selectedOrderDeliveryTime || advanceSchedule.scheduledTime}`
-      : "No schedule selected yet";
 
   return (
     <div className="mb-6">
-      {/* When do you want your order? Independent of which delivery provider is used. */}
-      <h3 className="text-lg font-semibold text-text-primary mb-4">
-        When do you want your order?
-      </h3>
-      <div className="grid grid-cols-2 gap-3 mb-6">
-        <Card
-          className={`p-4 cursor-pointer transition-all ${
-            orderTiming === "instant"
-              ? "border-2 border-primary bg-primary/5"
-              : "border border-border-light hover:border-primary/50"
-          }`}
-          onClick={handleOrderNowClick}
-        >
-          <div className="font-semibold text-text-primary">Order Now</div>
-          <div className="text-sm text-text-secondary">As soon as possible</div>
-        </Card>
-        <Card
-          className={`p-4 cursor-pointer transition-all ${
-            orderTiming === "scheduled"
-              ? "border-2 border-primary bg-primary/5"
-              : "border border-border-light hover:border-primary/50"
-          }`}
-          onClick={handleScheduleClick}
-        >
-          <div className="font-semibold text-text-primary">
-            Schedule for Later
-          </div>
-          <div className="text-sm text-text-secondary">
-            {orderTiming === "scheduled"
-              ? scheduleLabel
-              : "Pick a date and time"}
-          </div>
-        </Card>
-      </div>
-
-      {orderTiming === "scheduled" && (
-        <div className="flex items-center justify-between gap-3 mb-6 -mt-2">
-          <div className="flex items-center gap-2 text-sm text-text-secondary">
-            <Clock className="h-4 w-4" />
-            <span>{scheduleLabel}</span>
-          </div>
-          <button
-            type="button"
-            onClick={handleScheduleClick}
-            className="text-xs font-semibold text-primary hover:underline"
-          >
-            Change
-          </button>
-        </div>
-      )}
-
       <h3 className="text-lg font-semibold text-text-primary mb-4">
         Delivery Options
       </h3>
 
-      {/* Expiry warning */}
       {timeUntilExpiry !== null &&
         timeUntilExpiry > 0 &&
         timeUntilExpiry <= 120000 && (
@@ -346,7 +260,6 @@ export function DeliveryProviderSelector({
               onClick={() => handleSelectProvider(quote)}
             >
               <div className="flex items-start gap-4">
-                {/* Radio button */}
                 <div className="flex items-center pt-1">
                   <div
                     className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
@@ -361,7 +274,6 @@ export function DeliveryProviderSelector({
                   </div>
                 </div>
 
-                {/* Provider details */}
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
                     <Truck className="h-5 w-5 text-text-secondary" />
@@ -369,7 +281,6 @@ export function DeliveryProviderSelector({
                       {quote.providerName}
                     </span>
 
-                    {/* Badges */}
                     {isCheapest && (
                       <span className="px-2 py-0.5 text-xs font-semibold bg-green-100 text-green-800 rounded-full">
                         Cheapest
@@ -384,11 +295,6 @@ export function DeliveryProviderSelector({
 
                   {quote.available ? (
                     <div className="space-y-1 text-sm text-text-secondary">
-                      <div className="flex items-center gap-2">
-                        {/* commented estimated delivery until we get respose from api */}
-                        {/* <Clock className="h-4 w-4" /> */}
-                        {/* <span>Estimated delivery: {quote.estimatedTime}</span> */}
-                      </div>
                       <div className="font-semibold text-text-primary">
                         S$ {quote.fee.toFixed(2)}
                       </div>
@@ -404,50 +310,6 @@ export function DeliveryProviderSelector({
           );
         })}
       </div>
-
-      <OrderTimeDialog
-        open={showOrderTimeDialog}
-        onClose={() => setShowOrderTimeDialog(false)}
-        orderType={orderTimeType}
-        setOrderType={setOrderTimeType}
-        selectedDate={selectedOrderDate}
-        setSelectedDate={setSelectedOrderDate}
-        selectedSlot={selectedOrderSlot}
-        setSelectedSlot={setSelectedOrderSlot}
-        selectedDeliveryTime={selectedOrderDeliveryTime}
-        setSelectedDeliveryTime={setSelectedOrderDeliveryTime}
-        onConfirm={() => {
-          setShowOrderTimeDialog(false);
-
-          // Save the advance schedule to cart store so checkout can send it to the API.
-          // This only sets orderTiming/advanceOrderSchedule - the delivery provider
-          // selection (lalamove, grab_express, ...) above is untouched.
-          if (
-            orderTimeType === "advance" &&
-            selectedOrderDate &&
-            selectedOrderDeliveryTime
-          ) {
-            // Convert "12:30 PM" → "12:30" (24h) for the API
-            const parsed = selectedOrderDate
-              .hour(
-                parseInt(selectedOrderDeliveryTime.split(":")[0]) +
-                  (selectedOrderDeliveryTime.includes("PM") &&
-                  !selectedOrderDeliveryTime.startsWith("12")
-                    ? 12
-                    : selectedOrderDeliveryTime.includes("AM") &&
-                        selectedOrderDeliveryTime.startsWith("12")
-                      ? -12
-                      : 0),
-              )
-              .minute(parseInt(selectedOrderDeliveryTime.split(":")[1]));
-            const scheduledDate = selectedOrderDate.format("YYYY-MM-DD");
-            const scheduledTime = parsed.format("HH:mm");
-            setAdvanceOrderSchedule(scheduledDate, scheduledTime);
-          } else if (orderTimeType === "now") {
-            clearAdvanceOrderSchedule();
-          }
-        }}
-      />
     </div>
   );
 }

@@ -766,3 +766,21 @@ img {
         transform: translateX(-120px);
     }
 }
+
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #92251C;
+    border-radius: 9999px;
+}
+
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #92251C transparent;
+}

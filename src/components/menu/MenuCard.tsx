@@ -73,6 +73,28 @@ export const MenuCard: FC<MenuCardProps> = ({
 
   const currentQuantity = cartItem?.quantity || 0;
 
+
+const cleanedDescription = item.description
+  ? item.description
+      // Remove HTML tags
+      .replace(/<[^>]*>/g, " ")
+      // Decode common HTML entities
+      .replace(/&nbsp;|&#160;/gi, " ")
+      .replace(/&amp;/gi, "&")
+      .replace(/&lt;/gi, "<")
+      .replace(/&gt;/gi, ">")
+      .replace(/&quot;/gi, '"')
+      .replace(/&#39;|&apos;/gi, "'")
+      // Clean whitespace
+      .replace(/\u00a0/g, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+  : "";
+
+const mobileDescription = cleanedDescription.slice(0, 10);
+const hasMoreDescription = cleanedDescription.length > 15;
+  
+
   // Check if cart contains another menu type
   const hasConflictingMenuType = () => {
     if (!cart || !cart.items || cart.items.length === 0) {
@@ -84,6 +106,8 @@ export const MenuCard: FC<MenuCardProps> = ({
 
     return existingMenuType && existingMenuType !== item.menuType;
   };
+
+
 
   // ADD TO CART
 
@@ -460,7 +484,7 @@ export const MenuCard: FC<MenuCardProps> = ({
           "
           >
             {item.imageUrl ? (
-              <img
+              <img loading="lazy" decoding="async"
                 src={item.imageUrl}
                 alt={item.name}
                 className="
@@ -496,7 +520,7 @@ export const MenuCard: FC<MenuCardProps> = ({
                   sm:text-6xl
                 "
                 >
-                <img
+                <img loading="lazy" decoding="async"
                   src="/images/food-icon.svg"
                   alt="Food Icon"
                   className="h-10 w-10 sm:h-16 sm:w-16"
@@ -699,9 +723,10 @@ export const MenuCard: FC<MenuCardProps> = ({
           </div>
         </div>
 
-        {/* CONTENT */}
-        <div
-          className="
+
+{/* CONTENT */}
+<div
+  className="
     relative
     min-w-0
     flex-1
@@ -712,137 +737,193 @@ export const MenuCard: FC<MenuCardProps> = ({
     sm:px-3.5
     sm:py-3
   "
-        >
-          {/* MOBILE: CENTERED TITLE + DESCRIPTION */}
-          <div
-            className="
+>
+  {/* MOBILE: PRODUCT INFO */}
+  <div
+    className="
       absolute
-      left-3
-      right-3
-      top-1/2
-      -translate-y-1/2
+      left-0
+      right-0
+      top-0
 
       sm:static
-      sm:translate-y-0
     "
-          >
-            {/* NAME + PRICE */}
-            <div
-              className="
+  >
+    {/* NAME + PRICE */}
+    <div
+      className="
         flex
-        w-full
-        items-center
-        justify-between
+        items-start
         gap-2
-
-        sm:static
+        pr-0
       "
-            >
-              <span
-                className="
+    >
+      <span
+        className="
           min-w-0
           flex-1
-          truncate
-          text-[15px]
+          mt-2
+          line-clamp-2
+          overflow-hidden
+
+          text-[13.5px]
           font-bold
-          leading-[18px]
+          leading-[16px]
           text-[#7a231d]
 
-          sm:whitespace-normal
+          sm:line-clamp-none
           sm:text-2xl
+          sm:leading-tight
         "
-              >
-                {item.name}
-              </span>
+      >
+        {item.name}
+      </span>
 
-              {/* MOBILE PRICE */}
-              <span
-                className="
+      {/* MOBILE PRICE */}
+      <span
+        className="
           shrink-0
           whitespace-nowrap
+          mt-2
+
           text-[12px]
           font-bold
-          leading-[18px]
+          leading-[16px]
           text-[#92251C]
 
           sm:hidden
         "
-              >
-                S$ {item.price.toFixed(2)}
-              </span>
-            </div>
+      >
+        S$ {item.price.toFixed(2)}
+      </span>
+    </div>
 
-            {/* DESCRIPTION */}
-            {item.description && (
-              <p
-                className="
-          mt-0.5
-          line-clamp-1
-          text-[11px]
-          leading-[16px]
+{/* DESCRIPTION */}
+{cleanedDescription && (
+  <div className="mt-1 sm:mt-1.5">
+    {/* MOBILE */}
+    <div
+      className="
+        flex
+        min-w-0
+        items-center
+        whitespace-nowrap
+        mt-4
+        overflow-hidden
+        sm:hidden
+      "
+    >
+      <span
+        className="
+          min-w-0
+          overflow-hidden
+          text-ellipsis
+          text-[10px]
+          leading-[14px]
           text-[#6b625c]
-
-          sm:mt-1.5
-          sm:line-clamp-2
-          sm:text-[14px]
-          sm:leading-[1.45]
         "
-              >
-                {item.description}
-              </p>
-            )}
-          </div>
+      >
+        {mobileDescription} 
+        {hasMoreDescription ? "..." : ""}
+        
+      </span>
+      
+      {hasMoreDescription && (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowDetailDialog(true);
+          }}
+          className="
+            ml-1
+            shrink-0
+            text-[9px]
+            font-bold
+            leading-[14px]
+            text-[#92251C]
+            underline
+            underline-offset-2
+          "
+        >
+          Read more
+        </button>
+      )}
 
-          {/* BOTTOM / ADD BUTTON */}
-          <div
-            className="
+    </div>
+
+    {/* DESKTOP */}
+    <p
+      className="
+        hidden
+        sm:line-clamp-2
+        sm:text-[14px]
+        sm:leading-[1.45]
+        sm:text-[#6b625c]
+      "
+    >
+      {cleanedDescription}
+    </p>
+  </div>
+)}
+  </div>
+
+  {/* MOBILE: ADD / QUANTITY CONTROL */}
+  <div
+    className="
       absolute
       bottom-0
-      right-3
+      right-0
 
       sm:static
       sm:mt-4
       sm:flex
       sm:w-full
+      sm:items-center
       sm:justify-between
     "
-          >
-            {/* DESKTOP PRICE */}
-            <span
-              className="
+  >
+    {/* DESKTOP PRICE */}
+    <span
+      className="
         hidden
+
         sm:block
         sm:text-[19px]
         sm:font-bold
         sm:text-[#92251C]
       "
-            >
-              S$ {item.price.toFixed(2)}
-            </span>
+    >
+      S$ {item.price.toFixed(2)}
+    </span>
 
-            {/* ADD TO CART */}
-            {currentQuantity === 0 ? (
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleAdd();
-                }}
-                disabled={!item.available || isAdding}
-                className="
+    {/* ADD TO CART */}
+    {currentQuantity === 0 ? (
+      <button
+        type="button"
+        onClick={(e) => {
+          e.stopPropagation();
+          handleAdd();
+        }}
+        disabled={!item.available || isAdding}
+        className="
           flex
           h-7
           w-[68px]
           shrink-0
           items-center
           justify-center
+
           rounded-[6px]
           bg-[#92251C]
-          text-[11px]
+
+          text-[10.5px]
           font-bold
           text-white
+
           transition-colors
           hover:bg-[#7e1f18]
+
           disabled:cursor-not-allowed
           disabled:opacity-50
 
@@ -851,28 +932,32 @@ export const MenuCard: FC<MenuCardProps> = ({
           sm:rounded-[7px]
           sm:text-[13px]
         "
-              >
-                {isAdding ? (
-                  "Adding..."
-                ) : item.isCateringPackage ? (
-                  "Customize"
-                ) : (
-                  <>
-                    <Plus
-                      className="mr-0.5 h-3 w-3 sm:hidden"
-                      strokeWidth={3}
-                    />
+      >
+        {isAdding ? (
+          "Adding..."
+        ) : item.isCateringPackage ? (
+          "Customize"
+        ) : (
+          <>
+            <Plus
+              className="mr-0.5 h-3 w-3 sm:hidden"
+              strokeWidth={3}
+            />
 
-                    <span className="sm:hidden">Add</span>
+            <span className="sm:hidden">
+              Add
+            </span>
 
-                    <span className="hidden sm:inline">Add to Cart</span>
-                  </>
-                )}
-              </button>
-            ) : (
-              <div
-                onClick={(e) => e.stopPropagation()}
-                className="
+            <span className="hidden sm:inline">
+              Add to Cart
+            </span>
+          </>
+        )}
+      </button>
+    ) : (
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="
           flex
           items-center
           gap-1
@@ -880,13 +965,13 @@ export const MenuCard: FC<MenuCardProps> = ({
           bg-[#f0e7dc]
           p-0.5
         "
-              >
-                <button
-                  type="button"
-                  onClick={handleDecrease}
-                  disabled={isAdding}
-                  aria-label="Decrease quantity"
-                  className="
+      >
+        <button
+          type="button"
+          onClick={handleDecrease}
+          disabled={isAdding}
+          aria-label="Decrease quantity"
+          className="
             flex
             h-6
             w-6
@@ -897,28 +982,31 @@ export const MenuCard: FC<MenuCardProps> = ({
             text-[#92251C]
             shadow-sm
           "
-                >
-                  <Minus className="h-3 w-3" strokeWidth={2.2} />
-                </button>
+        >
+          <Minus
+            className="h-3 w-3"
+            strokeWidth={2.2}
+          />
+        </button>
 
-                <span
-                  className="
+        <span
+          className="
             min-w-[22px]
             text-center
             text-xs
             font-bold
             text-[#211a16]
           "
-                >
-                  {currentQuantity}
-                </span>
+        >
+          {currentQuantity}
+        </span>
 
-                <button
-                  type="button"
-                  onClick={handleIncrease}
-                  disabled={isAdding}
-                  aria-label="Increase quantity"
-                  className="
+        <button
+          type="button"
+          onClick={handleIncrease}
+          disabled={isAdding}
+          aria-label="Increase quantity"
+          className="
             flex
             h-6
             w-6
@@ -929,13 +1017,17 @@ export const MenuCard: FC<MenuCardProps> = ({
             text-white
             shadow-sm
           "
-                >
-                  <Plus className="h-3 w-3" strokeWidth={2.2} />
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
+        >
+          <Plus
+            className="h-3 w-3"
+            strokeWidth={2.2}
+          />
+        </button>
+      </div>
+    )}
+  </div>
+</div>
+
       </div>
 
       {/* 

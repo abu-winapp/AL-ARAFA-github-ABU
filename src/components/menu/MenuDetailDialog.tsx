@@ -1,19 +1,15 @@
 /**
  * Al-Arafa Restaurant - Menu Detail Dialog Component
- * Displays menu item details in a modal without quantity controls
+ * Responsive food detail modal
  */
 
-'use client';
+"use client";
 
-import { FC } from 'react';
-import type { MenuItem } from '@/types';
-import { Flame } from 'lucide-react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { FC } from "react";
+import type { MenuItem } from "@/types";
+import { Flame, Star, Users } from "lucide-react";
+
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 
 interface MenuDetailDialogProps {
   item: MenuItem | null;
@@ -29,7 +25,6 @@ export const MenuDetailDialog: FC<MenuDetailDialogProps> = ({
   if (!item || !open) return null;
 
   const handleOpenChange = (isOpen: boolean) => {
-    // Ensure clean close with slight delay to prevent immediate reopen
     if (!isOpen) {
       requestAnimationFrame(() => {
         onOpenChange(false);
@@ -39,104 +34,459 @@ export const MenuDetailDialog: FC<MenuDetailDialogProps> = ({
     }
   };
 
+  const cleanedDescription = (() => {
+    if (!item.description) return "";
+
+    return item.description
+      .replace(/<br\s*\/?>/gi, " ")
+      .replace(/<\/?p[^>]*>/gi, " ")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/&nbsp;|&#160;|&#xa0;/gi, " ")
+      .replace(/&amp;/gi, "&")
+      .replace(/&lt;/gi, "<")
+      .replace(/&gt;/gi, ">")
+      .replace(/&quot;/gi, '"')
+      .replace(/&#39;|&apos;/gi, "'")
+      .replace(/\u00A0/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
+  })();
+
   return (
     <Dialog open={open} onOpenChange={handleOpenChange} modal>
-      <DialogContent className="max-w-3xl max-h-[90vh] p-0 overflow-hidden">
-        <div className="overflow-y-auto max-h-[90vh]">
-          {/* Add spacing for close button */}
-          <div className="pt-12 md:pt-0">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
-            {/* Image Section - Left */}
-            <div className="relative h-64 md:h-auto bg-gradient-to-br from-primary/20 to-secondary/30 flex items-center justify-center overflow-hidden">
-            {item.imageUrl ? (
-              <img
-                src={item.imageUrl}
-                alt={item.name}
-                className="w-full h-full object-cover"
+      <DialogContent
+        className="
+          w-[calc(100%-20px)]
+          max-w-md
+          overflow-hidden
+          rounded-[24px]
+          border-0
+          bg-[#fffaf2]
+          p-0
+          shadow-[0_24px_80px_rgba(40,20,10,0.25)]
+
+          sm:w-[calc(100%-32px)]
+          sm:max-w-3xl
+          sm:rounded-2xl
+        "
+      >
+        {/* 
+            MAIN LAYOUT
+         */}
+        <div
+          className="
+            max-h-[88vh]
+            overflow-y-auto
+            overscroll-contain
+
+            sm:max-h-[90vh]
+            sm:overflow-hidden
+          "
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2">
+            {/* 
+                IMAGE
+             */}
+            <div
+              className="
+                relative
+                h-[220px]
+                overflow-hidden
+                bg-[#eadfd2]
+
+                sm:h-[520px]
+              "
+            >
+              {item.imageUrl ? (
+                <img loading="lazy" decoding="async"
+                  src={item.imageUrl}
+                  alt={item.name}
+                  className="
+                    h-full
+                    w-full
+                    object-cover
+                  "
+                />
+              ) : (
+                <div
+                  className="
+                    flex
+                    h-full
+                    w-full
+                    items-center
+                    justify-center
+                    bg-gradient-to-br
+                    from-[#f3e7d7]
+                    to-[#e5d1ba]
+                  "
+                >
+                  <img loading="lazy" decoding="async"
+                    src="/images/food-icon.svg"
+                    alt="Food"
+                    className="h-20 w-20 opacity-60"
+                  />
+                </div>
+              )}
+
+              {/* Image bottom gradient */}
+              <div
+                className="
+                  absolute
+                  inset-x-0
+                  bottom-0
+                  h-28
+                  bg-gradient-to-t
+                  from-black/45
+                  to-transparent
+                  sm:h-36
+                "
               />
-            ) : (
-              <span className="text-6xl">🍛</span>
-            )}
 
-            {/* Badges */}
-            <div className="absolute top-3 right-3 flex flex-col gap-2">
-              {item.popular && (
-                <span className="bg-warning text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-md flex items-center gap-1">
-                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                  Popular
+              {/* MOBILE NAME OVER IMAGE */}
+              <div
+                className="
+                  absolute
+                  bottom-4
+                  left-4
+                  right-4
+                  sm:hidden
+                "
+              >
+                <DialogTitle
+                  className="
+                    max-w-[85%]
+                    text-xl
+                    font-extrabold
+                    leading-tight
+                    tracking-tight
+                    text-white
+                    drop-shadow-[0_2px_5px_rgba(0,0,0,0.35)]
+                  "
+                >
+                  {item.name}
+                </DialogTitle>
+              </div>
+
+              {/* BADGES */}
+              <div
+                className="
+                  absolute
+                  left-3
+                  top-3
+                  flex
+                  flex-wrap
+                  gap-1.5
+                  sm:left-4
+                  sm:top-4
+                "
+              >
+                {item.popular && (
+                  <span
+                    className="
+                      flex
+                      items-center
+                      gap-1
+                      rounded-full
+                      bg-[#92251C]
+                      px-2.5
+                      py-1
+                      text-[10px]
+                      font-bold
+                      text-white
+                      shadow-lg
+                    "
+                  >
+                    <Star className="h-3 w-3 fill-current" strokeWidth={2} />
+                    Popular
+                  </span>
+                )}
+
+                {!item.available && (
+                  <span
+                    className="
+                      rounded-full
+                      bg-white/95
+                      px-2.5
+                      py-1
+                      text-[10px]
+                      font-bold
+                      text-[#92251C]
+                      shadow-lg
+                    "
+                  >
+                    Unavailable
+                  </span>
+                )}
+              </div>
+
+              {/* VEGETARIAN BADGE
+              <div
+                className="
+                  absolute
+                  bottom-4
+                  right-4
+                  rounded-full
+                  bg-white/95
+                  px-2.5
+                  py-1
+                  text-[9px]
+                  font-bold
+                  shadow-lg
+                  sm:bottom-5
+                  sm:right-5
+                "
+              >
+                <span
+                  className={
+                    item.isVegetarian ? "text-green-700" : "text-red-700"
+                  }
+                >
+                  {item.isVegetarian ? "VEGETARIAN" : "NON-VEG"}
                 </span>
-              )}
-              {!item.available && (
-                <span className="bg-error text-white text-xs font-bold px-2.5 py-1 rounded-full shadow-md">
-                  Unavailable
-                </span>
-              )}
+              </div> */}
             </div>
-          </div>
 
-          {/* Content Section - Right */}
-          <div className="p-6 flex flex-col">
-            {/* Header */}
-            <DialogHeader className="mb-4">
-              <DialogTitle className="text-2xl font-bold text-text-primary mb-1">
-                {item.name}
-              </DialogTitle>
-              <p className="text-sm text-text-secondary">{item.categoryName}</p>
-            </DialogHeader>
+            {/* 
+                CONTENT
+             */}
+            <div
+              className="
+                flex
+                flex-col
+                bg-[#fffaf2]
+                p-5
 
-            {/* Badges */}
-            <div className="flex flex-wrap gap-2 mb-4">
-              <span className={`px-2.5 py-1 rounded-full text-xs font-medium flex items-center gap-1 ${
-                item.isVegetarian
-                  ? 'bg-green-50 text-green-700 border border-green-200'
-                  : 'bg-red-50 text-red-700 border border-red-200'
-              }`}>
-                <div className={`w-1.5 h-1.5 rounded-full ${
-                  item.isVegetarian ? 'bg-green-600' : 'bg-red-600'
-                }`} />
-                {item.isVegetarian ? 'Vegetarian' : 'Non-Veg'}
-              </span>
-              {item.spiceLevel > 0 && (
-                <span className="px-2.5 py-1 rounded-full text-xs font-medium bg-orange-50 text-orange-700 border border-orange-200 flex items-center gap-1">
-                  {[...Array(item.spiceLevel)].map((_, i) => (
-                    <Flame key={i} className="w-2.5 h-2.5 fill-orange-600" />
-                  ))}
-                </span>
-              )}
-            </div>
+                sm:p-7
+              "
+            >
+              {/* DESKTOP TITLE */}
+              <div className="hidden sm:block">
+                <DialogTitle
+                  className="
+                    text-2xl
+                    font-extrabold
+                    leading-tight
+                    tracking-tight
+                    text-[#211a16]
+                  "
+                >
+                  {item.name}
+                </DialogTitle>
 
-            {/* Description */}
-            {item.description && (
-              <div className="mb-4">
-                <h4 className="text-sm font-semibold text-text-primary mb-2">Description</h4>
-                <p className="text-text-secondary text-sm leading-relaxed">
-                  {item.description}
+                {item.categoryName && (
+                  <p className="mt-1 text-sm text-[#8a7b70]">
+                    {item.categoryName}
+                  </p>
+                )}
+              </div>
+
+              {/* MOBILE CATEGORY */}
+              {item.categoryName && (
+                <p
+                  className="
+                    mb-3
+                    text-xs
+                    font-medium
+                    text-[#8a7b70]
+                    sm:hidden
+                  "
+                >
+                  {item.categoryName}
                 </p>
-              </div>
-            )}
+              )}
 
-            {/* Serves People */}
-            {item.servesPeople && (
-              <div className="mb-4 flex items-center gap-2 text-sm">
-                <span className="text-text-secondary">Serves:</span>
-                <span className="font-semibold text-text-primary">{item.servesPeople} people</span>
-              </div>
-            )}
+              {/* INFO BADGES */}
+              <div className="mb-4 flex flex-wrap gap-1.5">
+                <span
+                  className={`
+                    inline-flex
+                    items-center
+                    gap-1.5
+                    rounded-full
+                    border
+                    px-2.5
+                    py-1
+                    text-[10px]
+                    font-semibold
 
-            {/* Price */}
-            <div className="mt-auto pt-4 border-t border-border-light">
-              <div className="flex items-baseline gap-2">
-                <span className="text-3xl font-bold text-primary">
-                  S$ {item.price.toFixed(2)}
+                    ${
+                      item.isVegetarian
+                        ? "border-green-200 bg-green-50 text-green-700"
+                        : "border-red-200 bg-red-50 text-red-700"
+                    }
+                  `}
+                >
+                  <span
+                    className={`
+                      h-1.5
+                      w-1.5
+                      rounded-full
+                      ${item.isVegetarian ? "bg-green-600" : "bg-red-600"}
+                    `}
+                  />
+
+                  {item.isVegetarian ? "Vegetarian" : "Non-Veg"}
                 </span>
+
+                {item.spiceLevel > 0 && (
+                  <span
+                    className="
+                      inline-flex
+                      items-center
+                      gap-0.5
+                      rounded-full
+                      border
+                      border-orange-200
+                      bg-orange-50
+                      px-2.5
+                      py-1
+                      text-[10px]
+                      font-semibold
+                      text-orange-700
+                    "
+                  >
+                    {[...Array(item.spiceLevel)].map((_, i) => (
+                      <Flame key={i} className="h-3 w-3 fill-orange-500" />
+                    ))}
+                  </span>
+                )}
+              </div>
+
+              {/* DESCRIPTION */}
+              {cleanedDescription && (
+                <section className="mb-4">
+                  <h4
+                    className="
+                      mb-1.5
+                      text-[11px]
+                      font-bold
+                      uppercase
+                      tracking-[0.08em]
+                      text-[#92251C]
+                    "
+                  >
+                    About this dish
+                  </h4>
+
+                  <p
+                    className="
+                      text-[13px]
+                      leading-[1.65]
+                      text-[#625850]
+
+                      sm:text-sm
+                      sm:leading-relaxed
+                    "
+                  >
+                    {cleanedDescription}
+                  </p>
+                </section>
+              )}
+
+              {/* SERVES */}
+              {item.servesPeople && (
+                <div
+                  className="
+                    mb-5
+                    flex
+                    items-center
+                    gap-3
+                    rounded-xl
+                    border
+                    border-[#eadfd2]
+                    bg-white/70
+                    px-3.5
+                    py-3
+                  "
+                >
+                  <div
+                    className="
+                      flex
+                      h-8
+                      w-8
+                      shrink-0
+                      items-center
+                      justify-center
+                      rounded-lg
+                      bg-[#f5e8d9]
+                      text-[#92251C]
+                    "
+                  >
+                    <Users className="h-4 w-4" />
+                  </div>
+
+                  <div>
+                    <p className="text-[10px] font-medium text-[#8a7b70]">
+                      Serves
+                    </p>
+
+                    <p className="text-sm font-bold text-[#211a16]">
+                      {item.servesPeople} people
+                    </p>
+                  </div>
+                </div>
+              )}
+
+              {/* PRICE */}
+              <div
+                className="
+                  mt-auto
+                  flex
+                  items-end
+                  justify-between
+                  gap-4
+                  border-t
+                  border-[#eadfd2]
+                  pt-4
+                "
+              >
+                <div>
+                  <p
+                    className="
+                      text-[10px]
+                      font-semibold
+                      uppercase
+                      tracking-[0.08em]
+                      text-[#8a7b70]
+                    "
+                  >
+                    Price
+                  </p>
+
+                  <p
+                    className="
+                      mt-0.5
+                      text-2xl
+                      font-extrabold
+                      tracking-tight
+                      text-[#92251C]
+
+                      sm:text-3xl
+                    "
+                  >
+                    S$ {item.price.toFixed(2)}
+                  </p>
+                </div>
+
+                {!item.available && (
+                  <span
+                    className="
+                      rounded-full
+                      bg-red-50
+                      px-3
+                      py-1.5
+                      text-[10px]
+                      font-bold
+                      text-red-700
+                    "
+                  >
+                    Currently unavailable
+                  </span>
+                )}
               </div>
             </div>
           </div>
         </div>
-      </div>
-      </div>
       </DialogContent>
     </Dialog>
   );

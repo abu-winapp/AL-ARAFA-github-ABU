@@ -13,6 +13,7 @@ import type {
 } from "@/types";
 import * as cartService from "@/lib/api/cart.service";
 import * as deliveryService from "@/lib/api/delivery.service";
+import * as addressService from "@/lib/api/address.service";
 
 interface CartState {
   cart: Cart | null;
@@ -86,6 +87,7 @@ interface CartState {
     menuType: "regular" | "catering",
     type: "delivery" | "pickup",
   ) => void;
+  updateCartLocation: (locationId: string) => Promise<void>;
   // Whether the user has explicitly chosen a fulfillment method for this
   // menu type yet (as opposed to just the untouched default).
   hasFulfillmentTypeSelected: (menuType: "regular" | "catering") => boolean;
@@ -131,8 +133,8 @@ export const useCartStore = create<CartState>()(
       // Frontend-only state (persisted in localStorage)
       // Store separate fulfillment types for regular and catering menus
       fulfillmentTypes: {
-        regular: "delivery",
-        catering: "delivery",
+        regular: "pickup",
+        catering: "pickup",
       },
       // Neither menu type has an explicit user selection yet by default
       fulfillmentTypeSelected: {
@@ -265,6 +267,11 @@ export const useCartStore = create<CartState>()(
         }
       },
 
+      updateCartLocation: async (locationId: string) => {
+        const cart = await cartService.updateCartLocation(locationId);
+        set({ cart });
+      },
+
       clearCart: () => {
         set({
           cart: null,
@@ -278,6 +285,14 @@ export const useCartStore = create<CartState>()(
           // Clear transient suggestions
           suggestedItems: null,
           lastSuggestedItemId: null,
+          fulfillmentTypes: {
+            regular: "pickup",
+            catering: "pickup",
+          },
+          fulfillmentTypeSelected: {
+            regular: false,
+            catering: false,
+          },
         });
       },
 
@@ -305,6 +320,25 @@ export const useCartStore = create<CartState>()(
             [menuType]: true,
           },
         }));
+
+        if (type === "delivery") {
+          addressService
+            .getAddresses()
+            .then((addresses) => {
+              if (addresses && addresses.length > 0) {
+                const currentId = get().selectedAddressId;
+                const match = currentId
+                  ? addresses.find((a) => String(a.id) === String(currentId))
+                  : null;
+                const defaultAddr =
+                  match || addresses.find((a) => a.isDefault) || addresses[0];
+                if (defaultAddr) {
+                  set({ selectedAddressId: String(defaultAddr.id) });
+                }
+              }
+            })
+            .catch(() => {});
+        }
       },
 
       hasFulfillmentTypeSelected: (menuType: "regular" | "catering") => {

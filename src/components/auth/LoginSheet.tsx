@@ -35,12 +35,21 @@ interface LoginSheetProps {
   onLoginSuccess?: () => void; // Optional callback after successful login
 }
 
+function sanitizeRedirect(url?: string): string {
+  if (!url) return "/menu";
+  if (url.startsWith("/") && !url.startsWith("//") && !url.startsWith("/\\")) {
+    return url;
+  }
+  return "/menu";
+}
+
 export function LoginSheet({
   open,
   onOpenChange,
   redirectTo = "/menu",
   onLoginSuccess,
 }: LoginSheetProps) {
+  const safeRedirect = sanitizeRedirect(redirectTo);
   const [step, setStep] = useState<LoginStep>("email");
   const [email, setEmail] = useState("");
   const [isRequestingOTP, setIsRequestingOTP] = useState(false);
@@ -123,57 +132,48 @@ export function LoginSheet({
     }
   };
 
-  // Handle OTP verification
   const handleOTPSubmit = async (data: OTPFormData) => {
     try {
       clearError();
-      // await login(email, data.otp);
       const authResponse = await login(email, data.otp);
 
       const profileComplete = handleLoginSuccess(authResponse.user);
 
-      onOpenChange(false);
+      handleOpenChange(false);
 
-      // Notify other components that login succeeded so they can retry pending actions
       if (typeof window !== 'undefined') {
         try {
           window.dispatchEvent(new CustomEvent('alarafa:loginSuccess'));
         } catch (e) {
-          // ignore
         }
       }
 
-      // Detect first-time users by checking if they have any addresses
+      if (!profileComplete) {
+        router.push(
+          `/profile?showOnboarding=1&redirect=${encodeURIComponent(safeRedirect)}`,
+        );
+        return;
+      }
+
       try {
         const addresses = await addressService.getAddresses();
         const isFirstTime = !addresses || addresses.length === 0;
-        if (!profileComplete) {
-          // Preserve where the user was headed so /profile can send them
-          // back there (Menu or Cart) once their profile is complete.
-          router.push(
-            `/profile?showOnboarding=1&redirect=${encodeURIComponent(redirectTo)}`,
-          );
-          return;
-        }
 
-        // First-time users ALWAYS see onboarding dialog
         if (isFirstTime) {
           setShowOnboarding(true);
         } else {
-          // Returning users: use callback if provided, otherwise redirect
           if (onLoginSuccess) {
             onLoginSuccess();
           } else {
-            router.push(redirectTo);
+            router.push(safeRedirect);
           }
         }
       } catch (addressError) {
-        // If address check fails, fall back to default behavior
         console.error("Failed to check addresses:", addressError);
         if (onLoginSuccess) {
           onLoginSuccess();
         } else {
-          router.push(redirectTo);
+          router.push(safeRedirect);
         }
       }
     } catch (error) {
@@ -208,13 +208,11 @@ export function LoginSheet({
     otpForm.reset();
   };
 
-  // Handle onboarding completion
   const handleOnboardingComplete = () => {
-    // After onboarding, redirect to menu or use callback
     if (onLoginSuccess) {
       onLoginSuccess();
     } else {
-      router.push(redirectTo);
+      router.push(safeRedirect);
     }
   };
 
@@ -224,7 +222,7 @@ export function LoginSheet({
         <SheetContent side="right" className="w-full sm:max-w-md">
           <SheetHeader className="mb-6">
             <div className="w-20 h-20 mx-auto mb-4 relative">
-              <img
+              <img loading="lazy" decoding="async"
                 src="/logo.webp"
                 alt="Al Arafa Cuisine"
                 width={80}

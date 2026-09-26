@@ -88,7 +88,7 @@ export const UserMenu: FC<UserMenuProps> = ({ user }) => {
           overflow: 'hidden'
         }}>
           {user.profileImageUrl ? (
-            <img
+            <img loading="lazy" decoding="async"
               src={user.profileImageUrl}
               alt="Profile"
               style={{

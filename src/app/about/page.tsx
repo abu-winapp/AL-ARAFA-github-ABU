@@ -6,7 +6,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowUpRight, ChefHat, Leaf, Heart, MapPin } from "lucide-react";
-import { restaurantClosedToast } from "../checkout/page";
 
 export const metadata: Metadata = {
   title: "About Us - Al Arafa Cuisine",
@@ -25,6 +24,8 @@ const IMAGES = {
   experience: "/images/restaurant-1.png",
 };
 
+
+const food3 = "./images/mandi-3.webp";
 const food = "./images/mandi-1.webp";
 const food2 = "./images/mandi-2.webp";
 const restaurant = "./images/restaurant.webp";
@@ -99,7 +100,7 @@ export default function AboutPage() {
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: `url(${ABOUT_HERO})`,
+            backgroundImage: `url(${food3})`,
           }}
         />
 
@@ -161,7 +162,7 @@ export default function AboutPage() {
 
           <div className="relative">
             <div className="aspect-[4/5] overflow-hidden bg-[#e8dfd4]">
-              <img
+              <img loading="lazy" decoding="async"
                 src={IMAGES.story}
                 alt="Al Arafa Cuisine"
                 className="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
@@ -258,7 +259,7 @@ export default function AboutPage() {
 
           <div className="relative order-1 lg:order-2">
             <div className="aspect-[4/5] overflow-hidden bg-[#e8dfd4]">
-              <img
+              <img loading="lazy" decoding="async"
                 src={food}
                 alt="Chef preparing food at Al Arafa Cuisine"
                 className="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
@@ -273,7 +274,7 @@ export default function AboutPage() {
        */}
 
       <section className="relative min-h-[520px] overflow-hidden">
-        <img
+        <img loading="lazy" decoding="async"
           src={food2}
           alt="Fresh ingredients used at Al Arafa Cuisine"
           className="absolute inset-0 h-full w-full object-cover"
@@ -316,7 +317,7 @@ export default function AboutPage() {
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-24">
           <div className="relative">
             <div className="aspect-[5/4] overflow-hidden">
-              <img
+              <img loading="lazy" decoding="async"
                 src={IMAGES.experience}
                 alt="Dining experience at Al Arafa Cuisine"
                 className="h-full w-full object-cover transition-transform duration-700 hover:scale-[1.03]"
@@ -386,7 +387,7 @@ export default function AboutPage() {
       <section className="mx-auto max-w-[1400px] px-5 py-20 sm:px-6 lg:px-8 lg:py-28">
         <div className="grid overflow-hidden bg-white lg:grid-cols-2">
           <div className="relative min-h-[400px] bg-[#ddd7ce]">
-            <img
+            <img loading="lazy" decoding="async"
               src={restaurant}
               alt="Al Arafa Cuisine"
               className="absolute inset-0 h-full w-full object-cover"

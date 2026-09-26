@@ -463,7 +463,7 @@ export default function AdminMenuPage() {
                           <div className="flex items-center gap-3">
                             <div className="w-12 h-12 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 overflow-hidden">
                               {item.imageUrl ? (
-                                <img src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
+                                <img loading="lazy" decoding="async" src={item.imageUrl} alt={item.name} className="w-full h-full object-cover" />
                               ) : (
                                 <span className="text-2xl">🍛</span>
                               )}

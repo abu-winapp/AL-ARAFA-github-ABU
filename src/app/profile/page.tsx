@@ -55,7 +55,7 @@ function ProfilePageContent() {
     }
 
     if (!isAuthenticated) {
-      router.push("/login?redirect=/profile");
+      router.replace("/login?redirect=/profile");
       return;
     }
 
@@ -122,11 +122,8 @@ function ProfilePageContent() {
     setIsSubmitting(true);
 
     try {
-      // Add +65 prefix to phone number if not already present and not empty
-      let phoneToSave = data.phone?.trim() ? data.phone.trim() : undefined;
-      if (phoneToSave && !phoneToSave.startsWith("+65")) {
-        phoneToSave = `+65${phoneToSave}`;
-      }
+
+      const phoneToSave = data.phone?.trim() || undefined;
 
       const updatedUser = await updateProfile({
         name: data.name?.trim() || undefined,
@@ -196,7 +193,7 @@ function ProfilePageContent() {
   // Show loading state while fetching profile
   if (isLoading) {
     return (
-      <div className="container max-w-2xl mx-auto py-8 px-4">
+      <div className="container max-w-2xl mx-auto pt-8 pb-8 px-4 md:pt-0">
         <Card>
           <CardContent className="flex items-center justify-center py-12">
             <div className="text-center">
@@ -210,7 +207,7 @@ function ProfilePageContent() {
   }
 
   return (
-    <div className="container max-w-2xl mx-auto py-8 px-4">
+    <div className="container max-w-2xl mx-auto pt-8 pb-8 px-4 md:pt-0">
       <Card>
         <CardHeader>
           <CardTitle>My Profile</CardTitle>
@@ -238,7 +235,7 @@ function ProfilePageContent() {
                   <div className="relative">
                     <div className="w-24 h-24 rounded-full overflow-hidden bg-muted border-2 border-gray-200">
                       {profileImageUrl ? (
-                        <img
+                        <img loading="lazy" decoding="async"
                           src={profileImageUrl}
                           alt="Profile"
                           className="w-full h-full object-cover"
@@ -399,7 +396,7 @@ export default function ProfilePage() {
   return (
     <Suspense
       fallback={
-        <div className="container max-w-2xl mx-auto py-8 px-4">
+        <div className="container max-w-2xl mx-auto pt-8 pb-8 px-4 md:pt-0">
           <Card>
             <CardContent className="flex items-center justify-center py-12">
               <div className="text-center">

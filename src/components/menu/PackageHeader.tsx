@@ -32,7 +32,7 @@ export function PackageHeader({ packageItem, onBack }: PackageHeaderProps) {
             {/* Package image */}
             <div className="w-32 h-32 rounded-lg bg-muted flex items-center justify-center flex-shrink-0 overflow-hidden">
               {packageItem.imageUrl ? (
-                <img
+                <img loading="lazy" decoding="async"
                   src={packageItem.imageUrl}
                   alt={packageItem.name}
                   className="w-full h-full object-cover"

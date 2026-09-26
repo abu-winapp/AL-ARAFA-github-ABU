@@ -7,19 +7,31 @@ import * as authService from "@/lib/api/auth.service";
 
 import type { User, AuthResponse } from "@/types";
 
+export function isAdminAuthenticated(
+  user: User | null | undefined,
+  isAuthenticated: boolean,
+): boolean {
+  if (!isAuthenticated || !user) return false;
+  return (
+    user.userType === "admin" ||
+    user.admin === true ||
+    user.role === "admin" ||
+    user.role === "ADMIN"
+  );
+}
+
 export function isCustomerAuthenticated(
   user: User | null | undefined,
   isAuthenticated: boolean,
 ): boolean {
   if (!isAuthenticated || !user) return false;
-
-  if (user.userType === "admin") return false;
-  if (user.userType === "customer") return true;
- if (!user.userType && !user.role) return false;
+  if (isAdminAuthenticated(user, isAuthenticated)) return false;
   return (
+    user.userType === "customer" ||
     user.customer === true ||
     user.role === "customer" ||
-    user.role === "CUSTOMER"
+    user.role === "CUSTOMER" ||
+    (!user.userType && !user.role)
   );
 }
 
@@ -134,11 +146,15 @@ export const useAuthStore = create<AuthState>((set) => ({
     try {
       set({ isLoading: true });
       await authService.logout();
-
-      // Clear cart on logout (import cart store to avoid circular dependency issues)
+    } catch (error) {
+      console.error("Logout error:", error);
+    } finally {
       if (typeof window !== "undefined") {
-        const { useCartStore } = await import("./useCartStore");
-        useCartStore.getState().clearCart();
+        try {
+          const { useCartStore } = await import("./useCartStore");
+          useCartStore.getState().clearCart();
+        } catch {
+        }
       }
 
       set({
@@ -146,11 +162,6 @@ export const useAuthStore = create<AuthState>((set) => ({
         isAuthenticated: false,
         isLoading: false,
         error: null,
-      });
-    } catch (error) {
-      set({
-        error: error instanceof Error ? error.message : "Logout failed",
-        isLoading: false,
       });
     }
   },

@@ -214,14 +214,14 @@ export default function ItemDetailPage({ params }: ItemDetailPageProps) {
   return (
     <>
       {/* Item Details */}
-      <section className="bg-background-gray min-h-screen py-6">
+      <section className="bg-background-gray min-h-screen pt-6 pb-6 md:pt-0">
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="bg-white rounded-lg shadow-sm overflow-hidden">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-0">
               {/* Image Section - Left */}
               <div className="relative h-56 md:h-auto bg-gradient-to-br from-primary/20 to-secondary/30 flex items-center justify-center overflow-hidden">
                 {item.imageUrl ? (
-                  <img
+                  <img loading="lazy" decoding="async"
                     src={item.imageUrl}
                     alt={item.name}
                     className="w-full h-full object-cover"

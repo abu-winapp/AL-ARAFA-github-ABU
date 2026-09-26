@@ -2,6 +2,7 @@
  * Al-Arafa Restaurant - Authentication API Service
  */
 
+import axios from "axios";
 import apiClient from "./client";
 
 import {
@@ -53,31 +54,41 @@ export function clearUser(): void {
  * Request OTP for email
  */
 export async function requestOTP(email: string): Promise<{ message: string }> {
-  const response = await apiClient.post("/customer/auth/request-otp", {
-    email,
-  });
-  return response.data.data;
+  try {
+    const response = await apiClient.post("/customer/auth/request-otp", {
+      email,
+    });
+    return response.data.data;
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      const message = err.response?.data?.message || err.response?.data?.error;
+      if (message) throw new Error(message);
+    }
+    throw err;
+  }
 }
 
-/**
- * Verify OTP and login
- */
 export async function verifyOTP(
   request: OTPVerifyRequest,
 ): Promise<AuthResponse> {
-  const response = await apiClient.post("/customer/auth/verify-otp", request);
+  let response;
+  try {
+    response = await apiClient.post("/customer/auth/verify-otp", request);
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      const message = err.response?.data?.message || err.response?.data?.error;
+      if (message) throw new Error(message);
+    }
+    throw err;
+  }
   const authData: AuthResponse = response.data.data;
 
-  // Store tokens and user data
   saveTokens(authData.accessToken, authData.refreshToken);
   setUser(authData.user);
 
   return authData;
 }
 
-/**
- * Refresh access token
- */
 export async function refreshAccessToken(
   refreshToken: string,
 ): Promise<AuthResponse> {
@@ -90,16 +101,18 @@ export async function refreshAccessToken(
   return authData;
 }
 
-/**
- * Logout user
- */
 export async function logout(): Promise<void> {
   try {
     await apiClient.post("/auth/logout");
+  } catch {
   } finally {
-    // Clear tokens and user data even if API call fails
     clearTokens();
     clearUser();
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("userName");
+      localStorage.removeItem("userPhone");
+      localStorage.removeItem("profileComplete");
+    }
   }
 }
 

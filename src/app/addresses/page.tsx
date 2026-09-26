@@ -23,6 +23,7 @@ import {
 import type { UserAddress } from "@/types";
 import * as addressService from "@/lib/api/address.service";
 import { toast } from "@/lib/hooks/use-toast";
+import { useCartStore } from "@/lib/store/useCartStore";
 
 function AddressesPage() {
  const {
@@ -104,9 +105,12 @@ useEffect(() => {
     setIsDeleting(true);
     try {
       await addressService.deleteAddress(deletingAddressId);
-      setAddresses((prev) =>
-        prev.filter((addr) => addr.id !== deletingAddressId),
-      );
+      const remaining = addresses.filter((addr) => addr.id !== deletingAddressId);
+      setAddresses(remaining);
+      if (String(useCartStore.getState().selectedAddressId) === String(deletingAddressId)) {
+        const nextDefault = remaining.find((a) => a.isDefault) || remaining[0];
+        useCartStore.getState().setSelectedAddressId(nextDefault ? String(nextDefault.id) : null);
+      }
       toast({
         title: "Success",
         description: "Address deleted successfully",
@@ -129,6 +133,8 @@ useEffect(() => {
 
     try {
       await addressService.setDefaultAddress(address.id);
+
+      useCartStore.getState().setSelectedAddressId(String(address.id));
 
       // Optimistically update UI
       setAddresses((prev) =>
@@ -173,7 +179,7 @@ useEffect(() => {
   }
 
   return (
-    <div className="min-h-screen bg-background-gray py-12">
+    <div className="min-h-screen bg-background-gray pt-12 pb-12 md:pt-0">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           {/* Header */}

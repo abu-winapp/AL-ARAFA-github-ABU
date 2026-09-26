@@ -3,6 +3,8 @@ import { useSettingsStore } from "@/lib/store/useSettingsStore";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/lib/store/useAuthStore";
+import { useCartStore } from "@/lib/store/useCartStore";
+import type { UserAddress } from "@/types";
 import { FulfillmentTypeScreen } from "@/components/onboarding/FulfillmentTypeScreen";
 import { AddressSetupScreen } from "@/components/onboarding/AddressSetupScreen";
 import { SuccessScreen } from "@/components/onboarding/SuccessScreen";
@@ -11,6 +13,7 @@ type OnboardingStep = "fulfillment" | "address" | "success";
 
 export default function OnboardingPage() {
   const router = useRouter();
+  const isInitialized = useAuthStore((state) => state.isInitialized);
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
   const user = useAuthStore((state) => state.user);
   const [currentStep, setCurrentStep] = useState<OnboardingStep>("fulfillment");
@@ -19,14 +22,14 @@ export default function OnboardingPage() {
   >(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Auth guard
   useEffect(() => {
+    if (!isInitialized) return;
     if (!isAuthenticated) {
-      router.push("/login?redirect=/onboarding");
+      router.replace("/login?redirect=/onboarding");
     } else {
       setIsLoading(false);
     }
-  }, [isAuthenticated, router]);
+  }, [isInitialized, isAuthenticated, router]);
 
   const handleSelectDelivery = () => {
     setSelectedFulfillment("delivery");
@@ -35,15 +38,25 @@ export default function OnboardingPage() {
 
   const handleSelectPickup = () => {
     setSelectedFulfillment("pickup");
+    useCartStore.getState().setFulfillmentType("regular", "pickup");
+    useCartStore.getState().setFulfillmentType("catering", "pickup");
     // Skip address for pickup and go to success
     setCurrentStep("success");
   };
+const handleAddressNext = (savedAddress?: UserAddress) => {
+  useCartStore.getState().setFulfillmentType("regular", "delivery");
+  useCartStore.getState().setFulfillmentType("catering", "delivery");
 
-  const handleAddressNext = () => {
-    setCurrentStep("success");
-  };
+  if (savedAddress?.id) {
+    useCartStore.getState().setSelectedAddressId(String(savedAddress.id));
+  }
+
+  setCurrentStep("success");
+};
 
   const handleAddressSkip = () => {
+    useCartStore.getState().setFulfillmentType("regular", "pickup");
+    useCartStore.getState().setFulfillmentType("catering", "pickup");
     // Skip address setup and go directly to menu
     router.push("/menu");
   };

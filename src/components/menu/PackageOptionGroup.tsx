@@ -104,7 +104,7 @@ export const PackageOptionGroup: FC<PackageOptionGroupProps> = ({
                 >
                   {/* Item Image/Icon */}
                   {option.itemImageUrl ? (
-                    <img
+                    <img loading="lazy" decoding="async"
                       src={option.itemImageUrl}
                       alt={option.itemName}
                       className="w-12 h-12 rounded object-cover flex-shrink-0"
@@ -178,7 +178,7 @@ export const PackageOptionGroup: FC<PackageOptionGroupProps> = ({
                 >
                   {/* Item Image/Icon */}
                   {option.itemImageUrl ? (
-                    <img
+                    <img loading="lazy" decoding="async"
                       src={option.itemImageUrl}
                       alt={option.itemName}
                       className="w-12 h-12 rounded object-cover flex-shrink-0"

@@ -3,9 +3,9 @@
  */
 
 import axios from 'axios';
-// import apiClient, { setAccessToken, setRefreshToken } from './client';
 import apiClient from './client';
 import { setUser } from './auth.service';
+import { saveTokens } from '@/lib/auth/tokenManager';
 import type {
   Order,
   AuthResponse,
@@ -106,9 +106,7 @@ export async function adminLogin(email: string, password: string): Promise<AuthR
   }
   const authData: AuthResponse = response.data.data;
 
-  // Store tokens and user data
-  // setAccessToken(authData.accessToken);
-  // setRefreshToken(authData.refreshToken);
+  saveTokens(authData.accessToken, authData.refreshToken);
   setUser(authData.user);
 
   return authData;

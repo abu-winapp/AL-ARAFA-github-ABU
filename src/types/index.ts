@@ -328,6 +328,13 @@ export interface Order {
   pickup?: boolean;
   instantOrder?: boolean;
   cateringOrder?: boolean;
+
+  scheduledDate?: string | null;
+  scheduledTime?: string | null;
+  scheduledEndTime?: string | null;
+  // order id page
+  scheduledDatetime?: string | null;
+  
 }
 
 export type OrderStatus =
@@ -381,7 +388,7 @@ export interface CreateOrderRequest {
   customerNotes?: string;
   promoCode?: string;
   pointsRedeemed?: number;
-    serviceCharge?: number | string;
+  serviceCharge?: number | string;
   //order_delivery date and time decleration
   order_delivery_date?: string;
   order_delivery_time?: string;
@@ -656,6 +663,7 @@ export interface UserAddress {
   streetAddress?: string;
   country?: string;
   phone?: string;
+  blockNumber?:string;
 }
 
 export interface SaveAddressRequest {
@@ -670,6 +678,7 @@ export interface SaveAddressRequest {
   isDefault?: boolean;
   latitude?: number;
   longitude?: number;
+    blockNumber?:string;
 }
 
 // ===========================
@@ -855,7 +864,6 @@ export interface DeliverySettings {
   pick_from_store: boolean;
 }
 
-
 // updated settings structure for service charges
 export interface ServiceChargeSettings {
   type: "percentage" | "fixed" | "flat";
@@ -866,25 +874,24 @@ export interface ChargesSettings {
   service_charge: ServiceChargeSettings;
 }
 
+// "order_hours": {
+//     "server_time": "2026-07-29T13:15:05+08:00",
+//     "timezone": "Asia\/Singapore",
+//     "accepting_orders_now": true,
+//     "windows": [
+//         {
+//             "name": "Morning",
+//             "start": "10:30",
+//             "end": "13:30"
+//         },
+//         {
+//             "name": "Evening",
+//             "start": "15:30",
+//             "end": "22:30"
+//         }
+//     ]
 
-        // "order_hours": {
-        //     "server_time": "2026-07-29T13:15:05+08:00",
-        //     "timezone": "Asia\/Singapore",
-        //     "accepting_orders_now": true,
-        //     "windows": [
-        //         {
-        //             "name": "Morning",
-        //             "start": "10:30",
-        //             "end": "13:30"
-        //         },
-        //         {
-        //             "name": "Evening",
-        //             "start": "15:30",
-        //             "end": "22:30"
-        //         }
-        //     ]
-
-// order-widow 
+// order-widow
 
 export interface OrderHoursConfig {
   serverTime: string;
@@ -1028,8 +1035,6 @@ export interface AdjustLoyaltyPointsRequest {
   points: number;
   reason: string;
 }
-
-
 
 // ===========================
 // Catering Package Configuration Types

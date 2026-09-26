@@ -157,7 +157,7 @@ export const SuggestionCard: FC<SuggestionCardProps> = ({ item, locationId, onIt
       {/* Image */}
       <div className="relative h-40 bg-gradient-to-br from-background-gray to-gray-100 overflow-hidden">
         {item.imageUrl ? (
-          <img
+          <img loading="lazy" decoding="async"
             src={item.imageUrl}
             alt={item.name}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useCallback } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 import {
   useAuthStore,
@@ -12,6 +12,7 @@ import { useCartStore } from "@/lib/store/useCartStore";
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
+  const pathname = usePathname();
 
   const initialize = useAuthStore((state) => state.initialize);
 
@@ -27,37 +28,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const isCustomerAuthenticated = isCustomerAuth(user, isAuthenticated);
 
-  /*
-    Restore session when app loads
-  */
   useEffect(() => {
     if (!isInitialized) {
       initialize();
     }
   }, [initialize, isInitialized]);
 
-  /*
-    Global 401 logout handler
-
-    Axios interceptor triggers:
-    window.dispatchEvent(
-       new CustomEvent("auth:logout")
-    )
-
-  */
   const handleLogout = useCallback(async () => {
+    const isAdmin = user?.userType === "admin" || pathname?.startsWith("/admin");
     await logout();
 
-    router.replace("/login");
-  }, [logout, router]);
+    if (isAdmin) {
+      router.replace("/admin/login");
+    } else {
+      router.replace("/login");
+    }
+  }, [logout, router, user, pathname]);
 
   useEffect(() => {
     window.addEventListener("auth:logout", handleLogout);
 
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === "alarafa_access_token" && !e.newValue) {
+        logout();
+      }
+    };
+    window.addEventListener("storage", handleStorageChange);
+
     return () => {
       window.removeEventListener("auth:logout", handleLogout);
+      window.removeEventListener("storage", handleStorageChange);
     };
-  }, [handleLogout]);
+  }, [handleLogout, logout]);
 
   /*
     Load customer cart after authentication

@@ -21,6 +21,8 @@ import { useAuthStore } from "@/lib/store/useAuthStore";
 
 import * as menuService from "@/lib/api/menu.service";
 import * as locationService from "@/lib/api/location.service";
+const ContactHero = "/images/contactushero.png";
+
 
 import {
   Select,
@@ -60,6 +62,9 @@ function MenuPageContent() {
   const [error, setError] = useState<string | null>(null);
 
   const hasInitializedLocation = useRef(false);
+
+  const [activeCategory, setActiveCategory] = useState<string>("all");
+  const categoryPillsRef = useRef<Record<string, HTMLButtonElement | null>>({});
 
   const categoryScrollRef = useRef<HTMLDivElement>(null);
 
@@ -321,7 +326,93 @@ function MenuPageContent() {
     >
   );
 
-  // Initial loading
+  const scrollToCategory = (categoryId: string) => {
+    setActiveCategory(categoryId);
+    const element = document.getElementById(`category-${categoryId}`);
+
+    if (element) {
+      const isMobile = window.innerWidth < 768;
+      const yOffset = isMobile ? -60 : -140;
+
+      const y =
+        element.getBoundingClientRect().top +
+        window.pageYOffset +
+        yOffset;
+
+      window.scrollTo({
+        top: Math.max(0, y),
+        behavior: "smooth",
+      });
+
+      const pill = categoryPillsRef.current[categoryId];
+      if (pill) {
+        pill.scrollIntoView({
+          behavior: "smooth",
+          inline: "center",
+          block: "nearest",
+        });
+      }
+    }
+  };
+
+  useEffect(() => {
+    const categoryParam = searchParams.get("category");
+    if (
+      !categoryParam ||
+      isInitialLoading ||
+      isMenuLoading ||
+      categories.length === 0
+    ) {
+      return;
+    }
+
+    const targetCategory = categories.find(
+      (c) =>
+        c.id === categoryParam ||
+        c.name.toLowerCase() === categoryParam.toLowerCase() ||
+        c.id.toLowerCase() === categoryParam.toLowerCase()
+    );
+
+    if (targetCategory) {
+      setActiveCategory(targetCategory.id);
+
+      const timer = setTimeout(() => {
+        scrollToCategory(targetCategory.id);
+      }, 150);
+
+      return () => clearTimeout(timer);
+    }
+  }, [searchParams, isInitialLoading, isMenuLoading, categories]);
+
+  useEffect(() => {
+    if (isMenuLoading || isInitialLoading || categories.length === 0) return;
+
+    const handleScroll = () => {
+      const isMobile = window.innerWidth < 768;
+      const scrollPosition = window.scrollY + (isMobile ? 120 : 200);
+
+      if (window.scrollY < 200) {
+        setActiveCategory("all");
+        return;
+      }
+
+      for (let i = categories.length - 1; i >= 0; i--) {
+        const cat = categories[i];
+        const el = document.getElementById(`category-${cat.id}`);
+        if (el) {
+          const top = el.getBoundingClientRect().top + window.pageYOffset;
+          if (scrollPosition >= top) {
+            setActiveCategory(cat.id);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [isMenuLoading, isInitialLoading, categories]);
+
   if (isInitialLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#faf7f2]">
@@ -336,7 +427,6 @@ function MenuPageContent() {
     );
   }
 
-  // Error
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#faf7f2]">
@@ -368,30 +458,6 @@ function MenuPageContent() {
     );
   }
 
-  // Scroll to category
-  const scrollToCategory = (
-    categoryId: string
-  ) => {
-    const element =
-      document.getElementById(
-        `category-${categoryId}`
-      );
-
-    if (element) {
-      const yOffset = -100;
-
-      const y =
-        element.getBoundingClientRect().top +
-        window.pageYOffset +
-        yOffset;
-
-      window.scrollTo({
-        top: y,
-        behavior: "smooth",
-      });
-    }
-  };
-
 return (
   <>
    
@@ -413,7 +479,7 @@ return (
   <div className="absolute inset-0 bg-[#4d0907]/65" />
 
   {/* Hero content */}
-  <div className="relative z-10 mx-auto flex min-h-[260px] w-full max-w-[1500px] items-center justify-center px-5 py-8 sm:min-h-[280px] sm:px-6 sm:py-10 lg:px-8">
+  {/* <div className="relative z-10 mx-auto flex min-h-[260px] w-full max-w-[1500px] items-center justify-center px-5 py-8 sm:min-h-[280px] sm:px-6 sm:py-10 lg:px-8">
     {isAuthenticated ? (
       <div className="w-full max-w-[720px]">
         <FulfillmentSelector
@@ -482,7 +548,59 @@ return (
         </div>
       )
     )}
+  </div> */}
+
+<section className="relative h-[10vh] min-h-[100px] overflow-hidden bg-[#4d0907] text-white md:min-h-[180px] md:pt-[80px] lg:min-h-[188px] lg:pt-[88px]">
+  <div
+    className="absolute inset-0 bg-cover bg-center"
+    style={{
+      backgroundImage: `url(${ContactHero})`,
+    }}
+  />
+
+  <div className="absolute inset-0 bg-gradient-to-r from-[#430705]/95 via-[#650b08]/80 to-[#74100c]/25" />
+
+  <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#4d0907]/80 to-transparent" />
+<div
+  className="
+    relative z-10
+    mx-auto
+    flex h-full w-full
+    max-w-[1650px]
+    items-center
+    justify-center
+    px-5
+    text-center
+
+    sm:px-6
+    md:px-8
+    lg:px-10
+    xl:px-12
+    2xl:px-16
+  "
+>
+  <div className="w-full max-w-[680px]">
+    <p
+      className="
+        mb-2
+        text-[clamp(0.7rem,1.2vw,0.95rem)]
+        font-semibold
+        uppercase
+        tracking-[0.3em]
+        text-[#f4d27a]
+
+        sm:mb-3
+      "
+    >
+      Al Arafa Cuisine Menu
+    </p>
   </div>
+</div>
+
+  {/* Curved transition */}
+
+</section>
+
 </section>
 
 
@@ -490,7 +608,7 @@ return (
         CATEGORY NAVIGATION
      */}
     {!isMenuLoading && Object.keys(groupedItems).length > 0 && (
-      <div className="sticky top-16 z-40 border-b border-black/5 bg-white/95 shadow-sm backdrop-blur-md lg:top-20">
+      <div className="sticky top-0 z-40 border-b border-black/5 bg-white/95 shadow-sm backdrop-blur-md md:top-16 lg:top-20">
         <div className="relative mx-auto w-full max-w-[1500px] px-3 sm:px-6 lg:px-8">
           {/* Desktop left arrow */}
           <button
@@ -508,18 +626,23 @@ return (
           {/* Categories */}
           <div
             ref={categoryScrollRef}
-            className="scrollbar-hide flex items-center gap-2 overflow-x-auto py-3 px-1 sm:gap-3 md:px-12"
+            className="scrollbar-hide flex items-center gap-2 overflow-x-auto py-2 px-1 sm:gap-3 md:px-12"
           >
             {/* All */}
             <button
               type="button"
               onClick={() => {
+                setActiveCategory("all");
                 window.scrollTo({
                   top: 0,
                   behavior: "smooth",
                 });
               }}
-              className="shrink-0 rounded-full bg-[#92251C] px-4 py-2.5 text-sm font-semibold text-white transition-all hover:bg-[#7f1f17]"
+              className={`shrink-0 rounded-full px-4 py-2.5 text-sm font-semibold transition-all ${
+                activeCategory === "all"
+                  ? "bg-[#92251C] text-white shadow-sm"
+                  : "bg-[#f5f1eb] text-[#211a16] hover:bg-[#92251C] hover:text-white"
+              }`}
             >
               All
             </button>
@@ -529,16 +652,29 @@ return (
 
               if (!group) return null;
 
+              const isActive = activeCategory === category.id;
+
               return (
                 <button
                   key={category.id}
+                  ref={(el) => {
+                    categoryPillsRef.current[category.id] = el;
+                  }}
                   type="button"
                   onClick={() => scrollToCategory(category.id)}
-                  className="flex shrink-0 items-center whitespace-nowrap rounded-full bg-[#f5f1eb] px-4 py-2.5 text-sm font-semibold text-[#211a16] transition-all hover:bg-[#92251C] hover:text-white"
+                  className={`flex shrink-0 items-center whitespace-nowrap rounded-full px-4 py-2.5 text-sm font-semibold transition-all ${
+                    isActive
+                      ? "bg-[#92251C] text-white shadow-sm"
+                      : "bg-[#f5f1eb] text-[#211a16] hover:bg-[#92251C] hover:text-white"
+                  }`}
                 >
                   {category.name}
 
-                  <span className="ml-1.5 text-xs opacity-60">
+                  <span
+                    className={`ml-1.5 text-xs ${
+                      isActive ? "text-white/80" : "opacity-60"
+                    }`}
+                  >
                     {group.items.length}
                   </span>
                 </button>
@@ -565,7 +701,7 @@ return (
     {/* 
         MENU
      */}
-    <section className="min-h-screen bg-[#faf7f2] px-0 py-10 pb-32 sm:py-14 lg:py-16">
+    <section className="min-h-screen bg-[#faf7f2] px-0 pt-5 pb-32 sm:pt-7 md:pt-0">
       <div className="mx-auto w-full max-w-[1500px] px-5 sm:px-6 lg:px-8">
         {isMenuLoading ? (
           /* Loading */
@@ -601,7 +737,7 @@ return (
                 <section
                   key={category.id}
                   id={`category-${category.id}`}
-                  className="scroll-mt-28"
+                  className="scroll-mt-20 md:scroll-mt-36 lg:scroll-mt-40"
                 >
                   {/* Category heading */}
                   <div className="mb-6 sm:mb-7">

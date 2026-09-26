@@ -1,5 +1,5 @@
 /**
- * Al-Arafa Restaurant - Add Address Dialog Component
+ * Salem RR Briyani - Add Address Dialog Component
  */
 
 'use client';
@@ -176,27 +176,32 @@ export const AddAddressDialog: FC<AddAddressDialogProps> = ({
               <p className="text-xs text-gray-500">Auto-fills address details</p>
             )}
           </div>
-
-          {/* Row 2: Building Name & Unit Number */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            <div className="space-y-2">
-              <Label htmlFor="buildingName">Building</Label>
-              <Input
-                id="buildingName"
-                placeholder="e.g., Block A"
-                {...register('buildingName')}
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label htmlFor="unitNumber">Unit No.</Label>
-              <Input
-                id="unitNumber"
-                placeholder="e.g., #12-34"
-                {...register('unitNumber')}
-              />
-            </div>
+        {/* Row 2: Building Name & Unit Number & block number */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="space-y-2">
+            
+            <Label htmlFor="blockNumber">Block Number </Label>
+            <Input
+              id="blockNumber"
+              placeholder="e.g., 123"
+              {...register("blockNumber", {
+                required: "Block number is required",
+              })}
+            />
+            {errors.blockNumber && (
+              <p className="text-xs text-error">{errors.blockNumber.message}</p>
+            )}
           </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="unitNumber">Unit No.</Label>
+            <Input
+              id="unitNumber"
+              placeholder="e.g., #12-34"
+              {...register("unitNumber")}
+            />
+          </div>
+        </div>
 
           {/* Row 3: Address Line 1 (full width) */}
           <div className="space-y-2">

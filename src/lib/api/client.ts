@@ -19,7 +19,9 @@ import {
 
 // API Base URL - Update this based on environment
 // const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'https://b2bezysales.com/RR-Briyani/ApiService/api';
-const API_BASE_URL = "https://b2bezysales.com/RR-Briyani/ApiService/api";
+// const API_BASE_URL = "https://b2bezysales.com/RR-Briyani/ApiService/api";
+const API_BASE_URL = "https://b2bezysales.com/AlArafa/ApiService/api";
+
 
 /**
  * Create Axios instance
@@ -77,10 +79,20 @@ apiClient.interceptors.response.use(
       _retry?: boolean;
     };
 
-    // If error is 401 and we haven't tried to refresh yet
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (!originalRequest) {
+      return Promise.reject(error);
+    }
+
+    const requestUrl = originalRequest.url || "";
+    const isAuthEndpoint =
+      requestUrl.includes("/auth/login") ||
+      requestUrl.includes("/admin/auth/login") ||
+      requestUrl.includes("/customer/auth/verify-otp") ||
+      requestUrl.includes("/customer/auth/request-otp") ||
+      requestUrl.includes("/auth/refresh");
+
+    if (error.response?.status === 401 && !originalRequest._retry && !isAuthEndpoint) {
       if (isRefreshing) {
-        // If already refreshing, queue this request
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
         })
@@ -96,25 +108,21 @@ apiClient.interceptors.response.use(
       }
 
       originalRequest._retry = true;
-      isRefreshing = true;
 
       const refreshToken = getRefreshToken();
 
       if (!refreshToken) {
-        // No refresh token — if this is a login request, just reject so the
-        // login page can display the error instead of redirecting elsewhere.
-        const isLoginRequest = originalRequest.url?.includes("/auth/login");
-        if (!isLoginRequest) {
-          clearTokens();
-          if (typeof window !== "undefined") {
-            window.dispatchEvent(new CustomEvent("auth:logout"));
-          }
+        clearTokens();
+        processQueue(error, null);
+        if (typeof window !== "undefined") {
+          window.dispatchEvent(new CustomEvent("auth:logout"));
         }
         return Promise.reject(error);
       }
 
+      isRefreshing = true;
+
       try {
-        // Attempt to refresh the token
         const response = await axios.post(
           `${API_BASE_URL}/auth/refresh`,
           { refreshToken },
@@ -149,7 +157,6 @@ apiClient.interceptors.response.use(
       }
     }
 
-    // For other errors, just reject
     return Promise.reject(error);
   },
 );
