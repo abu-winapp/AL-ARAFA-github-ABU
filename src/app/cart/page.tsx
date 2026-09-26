@@ -629,9 +629,7 @@ function CartContent() {
                   {homeDeliveryAvailable && fulfillmentType === "delivery" && (
                     <section className="rounded-2xl border border-[#E8E1D8] bg-[white] p-5 shadow-md md:p-6">
                       <div className="mb-4">
-                        <h2 className="text-lg font-bold text-[#241F1B]">
-                          Delivery options
-                        </h2>
+
                         <p className="mt-1 text-sm text-[#9A9086]">
                           Choose the available delivery provider for your
                           address.
