@@ -963,11 +963,7 @@ export default function Home() {
     "
             >
               {/* Serving icon */}
-<<<<<<< HEAD
               <img loading="lazy" decoding="async"
-=======
-              <img
->>>>>>> e1fc17189e3032fc01bb1a8cc251a3e2e5e59b45
                 src={logo}
                 alt="Every meal served with love"
                 className="
