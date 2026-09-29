@@ -12,9 +12,10 @@ import { useSettingsStore } from "@/lib/store/useSettingsStore";
  */
 export default function Hero() {
   const heroImages = [
-    "/images/mandi-1.webp",
-    "/images/mandi-2.webp",
-    "/images/mandi-3.webp",
+    "/images/hero1.PNG",
+    "/images/hero2.PNG",
+    "/images/hero3.PNG",
+    "/images/hero4.jpeg"
   ];
 
   const [currentImage, setCurrentImage] = useState(0);

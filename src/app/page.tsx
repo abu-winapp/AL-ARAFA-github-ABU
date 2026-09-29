@@ -35,6 +35,8 @@ const catName = "Categories"
 const herobg = "/images/HeroBg.webp";
 
 const serving = "/images/serving.png";
+const hero3 = "/images/hero3.png";
+const hero1 = "/images/hero1.png";
 const alarafa = "/images/AL-ARAFA.png";
 
 const logo = "/images/logo.webp";
@@ -67,7 +69,6 @@ const orderWays1 = "/images/dinein.png";
 const orderWays2 = "/images/takeaway.png";
 const orderWays3 = "/images/delivery.png";
 
-const restaurant = "/images/restaurant.webp";
 
 const orderWays = [
   {
@@ -853,7 +854,7 @@ export default function Home() {
               {/* Image 1 */}
               <div className="group relative h-[45vh] min-h-[360px] w-full overflow-hidden md:h-[560px] lg:h-[600px] xl:h-[640px]">
                 <Image
-                  src={images[0].src}
+                  src={hero1}
                   alt={images[0].alt}
                   fill
                   priority
@@ -904,7 +905,7 @@ export default function Home() {
             {/* Row 3 — Full Width Image and video */}
             <div className="group relative h-[45vh] min-h-[360px] w-full overflow-hidden rounded-[24px] sm:h-[50vh] lg:h-[600px] xl:h-[650px] lg:rounded-[28px]">
               <video
-                src="/videos/herovid.mp4"
+                src="/videos/herovid.MOV"
                 autoPlay
                 loop
                 muted
@@ -1050,7 +1051,7 @@ export default function Home() {
       "
             >
               <img loading="lazy" decoding="async"
-                src={restaurant}
+                src={hero3}
                 alt="Restaurant"
                 className="
           h-full w-full

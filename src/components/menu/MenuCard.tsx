@@ -73,27 +73,25 @@ export const MenuCard: FC<MenuCardProps> = ({
 
   const currentQuantity = cartItem?.quantity || 0;
 
+  const cleanedDescription = item.description
+    ? item.description
+        // Remove HTML tags
+        .replace(/<[^>]*>/g, " ")
+        // Decode common HTML entities
+        .replace(/&nbsp;|&#160;/gi, " ")
+        .replace(/&amp;/gi, "&")
+        .replace(/&lt;/gi, "<")
+        .replace(/&gt;/gi, ">")
+        .replace(/&quot;/gi, '"')
+        .replace(/&#39;|&apos;/gi, "'")
+        // Clean whitespace
+        .replace(/\u00a0/g, " ")
+        .replace(/\s+/g, " ")
+        .trim()
+    : "";
 
-const cleanedDescription = item.description
-  ? item.description
-      // Remove HTML tags
-      .replace(/<[^>]*>/g, " ")
-      // Decode common HTML entities
-      .replace(/&nbsp;|&#160;/gi, " ")
-      .replace(/&amp;/gi, "&")
-      .replace(/&lt;/gi, "<")
-      .replace(/&gt;/gi, ">")
-      .replace(/&quot;/gi, '"')
-      .replace(/&#39;|&apos;/gi, "'")
-      // Clean whitespace
-      .replace(/\u00a0/g, " ")
-      .replace(/\s+/g, " ")
-      .trim()
-  : "";
-
-const mobileDescription = cleanedDescription.slice(0, 10);
-const hasMoreDescription = cleanedDescription.length > 15;
-  
+  const mobileDescription = cleanedDescription.slice(0, 10);
+  const hasMoreDescription = cleanedDescription.length > 15;
 
   // Check if cart contains another menu type
   const hasConflictingMenuType = () => {
@@ -106,8 +104,6 @@ const hasMoreDescription = cleanedDescription.length > 15;
 
     return existingMenuType && existingMenuType !== item.menuType;
   };
-
-
 
   // ADD TO CART
 
@@ -484,7 +480,9 @@ const hasMoreDescription = cleanedDescription.length > 15;
           "
           >
             {item.imageUrl ? (
-              <img loading="lazy" decoding="async"
+              <img
+                loading="lazy"
+                decoding="async"
                 src={item.imageUrl}
                 alt={item.name}
                 className="
@@ -520,16 +518,18 @@ const hasMoreDescription = cleanedDescription.length > 15;
                   sm:text-6xl
                 "
                 >
-                <img loading="lazy" decoding="async"
-                  src="/images/food-icon.svg"
-                  alt="Food Icon"
-                  className="h-10 w-10 sm:h-16 sm:w-16"
-                />
+                  <img
+                    loading="lazy"
+                    decoding="async"
+                    src="/images/food-icon.svg"
+                    alt="Food Icon"
+                    className="h-10 w-10 sm:h-16 sm:w-16"
+                  />
                 </span>
               </div>
             )}
 
-            {/* VEG / NON-VEG PREMIUM BADGE */}
+            {/* HALAL BADGE */}
             <div
               className="
     absolute
@@ -556,24 +556,20 @@ const hasMoreDescription = cleanedDescription.length > 15;
     sm:py-1.5
   "
             >
-
-
-              {/* TEXT */}
               <span
-                className={`
+                className="
       text-[8px]
       font-extrabold
       uppercase
       leading-none
       tracking-[0.08em]
+      text-green-700
 
       sm:text-[10px]
       sm:tracking-[0.1em]
-
-      ${item.isVegetarian ? "text-green-700" : "text-red-700"}
-    `}
+    "
               >
-                {item.isVegetarian ? "VEG" : "NON-VEG"}
+                HALAL
               </span>
             </div>
 
@@ -723,10 +719,9 @@ const hasMoreDescription = cleanedDescription.length > 15;
           </div>
         </div>
 
-
-{/* CONTENT */}
-<div
-  className="
+        {/* CONTENT */}
+        <div
+          className="
     relative
     min-w-0
     flex-1
@@ -737,10 +732,10 @@ const hasMoreDescription = cleanedDescription.length > 15;
     sm:px-3.5
     sm:py-3
   "
->
-  {/* MOBILE: PRODUCT INFO */}
-  <div
-    className="
+        >
+          {/* MOBILE: PRODUCT INFO */}
+          <div
+            className="
       absolute
       left-0
       right-0
@@ -748,18 +743,18 @@ const hasMoreDescription = cleanedDescription.length > 15;
 
       sm:static
     "
-  >
-    {/* NAME + PRICE */}
-    <div
-      className="
+          >
+            {/* NAME + PRICE */}
+            <div
+              className="
         flex
         items-start
         gap-2
         pr-0
       "
-    >
-      <span
-        className="
+            >
+              <span
+                className="
           min-w-0
           flex-1
           mt-2
@@ -775,13 +770,13 @@ const hasMoreDescription = cleanedDescription.length > 15;
           sm:text-2xl
           sm:leading-tight
         "
-      >
-        {item.name}
-      </span>
+              >
+                {item.name}
+              </span>
 
-      {/* MOBILE PRICE */}
-      <span
-        className="
+              {/* MOBILE PRICE */}
+              <span
+                className="
           shrink-0
           whitespace-nowrap
           mt-2
@@ -793,17 +788,17 @@ const hasMoreDescription = cleanedDescription.length > 15;
 
           sm:hidden
         "
-      >
-        S$ {item.price.toFixed(2)}
-      </span>
-    </div>
+              >
+                S$ {item.price.toFixed(2)}
+              </span>
+            </div>
 
-{/* DESCRIPTION */}
-{cleanedDescription && (
-  <div className="mt-1 sm:mt-1.5">
-    {/* MOBILE */}
-    <div
-      className="
+            {/* DESCRIPTION */}
+            {cleanedDescription && (
+              <div className="mt-1 sm:mt-1.5">
+                {/* MOBILE */}
+                <div
+                  className="
         flex
         min-w-0
         items-center
@@ -812,9 +807,9 @@ const hasMoreDescription = cleanedDescription.length > 15;
         overflow-hidden
         sm:hidden
       "
-    >
-      <span
-        className="
+                >
+                  <span
+                    className="
           min-w-0
           overflow-hidden
           text-ellipsis
@@ -822,20 +817,19 @@ const hasMoreDescription = cleanedDescription.length > 15;
           leading-[14px]
           text-[#6b625c]
         "
-      >
-        {mobileDescription} 
-        {hasMoreDescription ? "..." : ""}
-        
-      </span>
-      
-      {hasMoreDescription && (
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            setShowDetailDialog(true);
-          }}
-          className="
+                  >
+                    {mobileDescription}
+                    {hasMoreDescription ? "..." : ""}
+                  </span>
+
+                  {hasMoreDescription && (
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setShowDetailDialog(true);
+                      }}
+                      className="
             ml-1
             shrink-0
             text-[9px]
@@ -845,32 +839,31 @@ const hasMoreDescription = cleanedDescription.length > 15;
             underline
             underline-offset-2
           "
-        >
-          Read more
-        </button>
-      )}
+                    >
+                      Read more
+                    </button>
+                  )}
+                </div>
 
-    </div>
-
-    {/* DESKTOP */}
-    <p
-      className="
+                {/* DESKTOP */}
+                <p
+                  className="
         hidden
         sm:line-clamp-2
         sm:text-[14px]
         sm:leading-[1.45]
         sm:text-[#6b625c]
       "
-    >
-      {cleanedDescription}
-    </p>
-  </div>
-)}
-  </div>
+                >
+                  {cleanedDescription}
+                </p>
+              </div>
+            )}
+          </div>
 
-  {/* MOBILE: ADD / QUANTITY CONTROL */}
-  <div
-    className="
+          {/* MOBILE: ADD / QUANTITY CONTROL */}
+          <div
+            className="
       absolute
       bottom-0
       right-0
@@ -882,10 +875,10 @@ const hasMoreDescription = cleanedDescription.length > 15;
       sm:items-center
       sm:justify-between
     "
-  >
-    {/* DESKTOP PRICE */}
-    <span
-      className="
+          >
+            {/* DESKTOP PRICE */}
+            <span
+              className="
         hidden
 
         sm:block
@@ -893,20 +886,20 @@ const hasMoreDescription = cleanedDescription.length > 15;
         sm:font-bold
         sm:text-[#92251C]
       "
-    >
-      S$ {item.price.toFixed(2)}
-    </span>
+            >
+              S$ {item.price.toFixed(2)}
+            </span>
 
-    {/* ADD TO CART */}
-    {currentQuantity === 0 ? (
-      <button
-        type="button"
-        onClick={(e) => {
-          e.stopPropagation();
-          handleAdd();
-        }}
-        disabled={!item.available || isAdding}
-        className="
+            {/* ADD TO CART */}
+            {currentQuantity === 0 ? (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleAdd();
+                }}
+                disabled={!item.available || isAdding}
+                className="
           flex
           h-7
           w-[68px]
@@ -932,32 +925,28 @@ const hasMoreDescription = cleanedDescription.length > 15;
           sm:rounded-[7px]
           sm:text-[13px]
         "
-      >
-        {isAdding ? (
-          "Adding..."
-        ) : item.isCateringPackage ? (
-          "Customize"
-        ) : (
-          <>
-            <Plus
-              className="mr-0.5 h-3 w-3 sm:hidden"
-              strokeWidth={3}
-            />
+              >
+                {isAdding ? (
+                  "Adding..."
+                ) : item.isCateringPackage ? (
+                  "Customize"
+                ) : (
+                  <>
+                    <Plus
+                      className="mr-0.5 h-3 w-3 sm:hidden"
+                      strokeWidth={3}
+                    />
 
-            <span className="sm:hidden">
-              Add
-            </span>
+                    <span className="sm:hidden">Add</span>
 
-            <span className="hidden sm:inline">
-              Add to Cart
-            </span>
-          </>
-        )}
-      </button>
-    ) : (
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className="
+                    <span className="hidden sm:inline">Add to Cart</span>
+                  </>
+                )}
+              </button>
+            ) : (
+              <div
+                onClick={(e) => e.stopPropagation()}
+                className="
           flex
           items-center
           gap-1
@@ -965,13 +954,13 @@ const hasMoreDescription = cleanedDescription.length > 15;
           bg-[#f0e7dc]
           p-0.5
         "
-      >
-        <button
-          type="button"
-          onClick={handleDecrease}
-          disabled={isAdding}
-          aria-label="Decrease quantity"
-          className="
+              >
+                <button
+                  type="button"
+                  onClick={handleDecrease}
+                  disabled={isAdding}
+                  aria-label="Decrease quantity"
+                  className="
             flex
             h-6
             w-6
@@ -982,31 +971,28 @@ const hasMoreDescription = cleanedDescription.length > 15;
             text-[#92251C]
             shadow-sm
           "
-        >
-          <Minus
-            className="h-3 w-3"
-            strokeWidth={2.2}
-          />
-        </button>
+                >
+                  <Minus className="h-3 w-3" strokeWidth={2.2} />
+                </button>
 
-        <span
-          className="
+                <span
+                  className="
             min-w-[22px]
             text-center
             text-xs
             font-bold
             text-[#211a16]
           "
-        >
-          {currentQuantity}
-        </span>
+                >
+                  {currentQuantity}
+                </span>
 
-        <button
-          type="button"
-          onClick={handleIncrease}
-          disabled={isAdding}
-          aria-label="Increase quantity"
-          className="
+                <button
+                  type="button"
+                  onClick={handleIncrease}
+                  disabled={isAdding}
+                  aria-label="Increase quantity"
+                  className="
             flex
             h-6
             w-6
@@ -1017,17 +1003,13 @@ const hasMoreDescription = cleanedDescription.length > 15;
             text-white
             shadow-sm
           "
-        >
-          <Plus
-            className="h-3 w-3"
-            strokeWidth={2.2}
-          />
-        </button>
-      </div>
-    )}
-  </div>
-</div>
-
+                >
+                  <Plus className="h-3 w-3" strokeWidth={2.2} />
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
       {/* 
